@@ -1,5 +1,9 @@
 # home-manager switch
 { config, pkgs, ... }: {
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
   home = {
     username = "dobiko";
     homeDirectory = "/home/dobiko";

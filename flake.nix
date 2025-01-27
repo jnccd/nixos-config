@@ -11,7 +11,7 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: let
-    system = "x86_linux";
+    system = "x86_64-linux";
     user = "dobiko";
     homeStateVersion = "24.11";
 
