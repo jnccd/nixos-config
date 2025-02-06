@@ -38,7 +38,9 @@
     extensions = with pkgs.vscode-extensions; [
       bbenoist.nix
       jnoortheen.nix-ide
+      arrterian.nix-env-selector
 
+      ms-dotnettools.csdevkit
       ms-python.python
 
       ms-vscode-remote.remote-ssh
