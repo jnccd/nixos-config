@@ -1,4 +1,4 @@
-# home-manager switch
+# home-manager switch --flake .
 { config, pkgs, ... }: {
   nixpkgs.config = {
     allowUnfree = true;

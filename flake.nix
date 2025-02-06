@@ -1,3 +1,5 @@
+# sudo nixos-rebuild switch --flake .
+# sudo nixos-rebuild switch --install-bootloader --flake .
 {
   description = "My System Config";
 
