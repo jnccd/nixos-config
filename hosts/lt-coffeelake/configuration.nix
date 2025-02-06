@@ -23,7 +23,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
   networking.hostName = "lt-coffeelake";
-  #networking.wireless.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
