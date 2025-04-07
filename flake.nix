@@ -1,7 +1,8 @@
 # sudo nixos-rebuild switch --flake .
 # sudo nixos-rebuild switch --install-bootloader --flake .
+# nix flake update --flake /home/dobiko/nix
 {
-  description = "My System Config";
+  description = "Dobiko Config";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
