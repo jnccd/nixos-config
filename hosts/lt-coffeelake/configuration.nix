@@ -1,73 +1,9 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# !Flakeless behaviour! sudo nixos-rebuild switch
 
-{ config, pkgs, ... }:
+{ config, pkgs, stateVersion, ... }:
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  # --- User and packages ---
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.useOSProber = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-  networking.hostName = "lt-coffeelake";
-
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
-  };
-
-  services.xserver.enable = true;
-
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "Breeze Dark";
-  services.desktopManager.plasma6.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "de";
-    variant = "";
-  };
-
-  console.keyMap = "de";
-
-  services.printing.enable = true;
-
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # sudo nixos-rebuild switch
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dobiko = {
     isNormalUser = true;
     description = "dobiko";
@@ -90,6 +26,7 @@
     neofetch
     wget
     vim
+    libsForQt5.filelight
   ];
 
   # nix-collect-garbage -d
@@ -99,6 +36,52 @@
     options = "--delete-older-than 30d";
   };
 
+  # --- UI ---
+
+  services.xserver.enable = true;
+
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.theme = "Breeze Dark";
+  services.desktopManager.plasma6.enable = true;
+
+  time.timeZone = "Europe/Berlin";
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "de_DE.UTF-8";
+    LC_IDENTIFICATION = "de_DE.UTF-8";
+    LC_MEASUREMENT = "de_DE.UTF-8";
+    LC_MONETARY = "de_DE.UTF-8";
+    LC_NAME = "de_DE.UTF-8";
+    LC_NUMERIC = "de_DE.UTF-8";
+    LC_PAPER = "de_DE.UTF-8";
+    LC_TELEPHONE = "de_DE.UTF-8";
+    LC_TIME = "de_DE.UTF-8";
+  };
+
+  # --- IO ---
+
+  # Configure keymap
+  services.xserver.xkb = {
+    layout = "de";
+    variant = "";
+  };
+  console.keyMap = "de";
+
+  # Enable networking
+  networking.networkmanager.enable = true;
+  networking.hostName = "lt-coffeelake";
+
+  services.printing.enable = true;
+
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
   # Some programs need SUID wrappers
   programs.mtr.enable = true;
   programs.gnupg.agent = {
@@ -106,8 +89,31 @@
     enableSSHSupport = true;
   };
 
-  # Services
+  # --- Services ---
+
   services.openssh.enable = true;
 
-  system.stateVersion = "24.11";
+  # --- Nix ---
+
+  system.stateVersion = stateVersion;
+
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+
+  # --- Hardware ---
+
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+  # Bootloader
+  boot.loader = {
+    systemd-boot.enable = false;
+    grub.enable = true;
+    grub.device = "nodev";
+    grub.useOSProber = true;
+    grub.efiSupport = true;
+    efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/boot";
+  }
 }
