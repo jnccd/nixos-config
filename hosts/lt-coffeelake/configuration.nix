@@ -1,6 +1,6 @@
 # !Flakeless behaviour! sudo nixos-rebuild switch
 
-{ config, pkgs, stateVersion, ... }:
+{ config, pkgs, stateVersion, hostname, ... }:
 {
   # --- User and packages ---
 
@@ -9,12 +9,8 @@
     description = "dobiko";
     extraGroups = [ "networkmanager" "input" "wheel" ];
     packages = with pkgs; [
-      kdePackages.kate
-      gparted
     ];
   };
-
-  programs.firefox.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
@@ -26,7 +22,6 @@
     neofetch
     wget
     vim
-    libsForQt5.filelight
   ];
 
   # nix-collect-garbage -d
@@ -44,8 +39,10 @@
   services.displayManager.sddm.theme = "Breeze Dark";
   services.desktopManager.plasma6.enable = true;
 
+  # --- Locale ---
+
   time.timeZone = "Europe/Berlin";
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "de_DE.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
     LC_IDENTIFICATION = "de_DE.UTF-8";
@@ -69,7 +66,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.hostName = "lt-coffeelake";
+  networking.hostName = hostname;
 
   services.printing.enable = true;
 
@@ -115,5 +112,5 @@
     grub.efiSupport = true;
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
-  }
+  };
 }

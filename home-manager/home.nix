@@ -10,6 +10,10 @@
     stateVersion = "24.11";
 
     packages = with pkgs; [
+      libsForQt5.filelight
+      kdePackages.kate
+      gparted
+
       (vivaldi.overrideAttrs
       (oldAttrs: {
         dontWrapQtApps = false;
@@ -19,6 +23,8 @@
       vivaldi-ffmpeg-codecs
     ];
   };
+  
+  programs.firefox.enable = true;
 
   programs.bash = {
     enable = true;
