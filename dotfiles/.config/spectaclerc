@@ -1,0 +1,10 @@
+[GuiConfig]
+captureMode=0
+
+[ImageSave]
+lastImageSaveAsLocation=file:///home/dobiko/Pictures/Screenshots/Screenshot_20250206_231927.png
+lastImageSaveLocation=file:///home/dobiko/Pictures/Screenshots/Screenshot_20250206_231927.png
+translatedScreenshotsFolder=Screenshots
+
+[VideoSave]
+translatedScreencastsFolder=Screencasts

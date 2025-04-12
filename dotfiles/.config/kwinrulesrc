@@ -1,0 +1,15 @@
+[1f275c8f-aad2-4137-b300-f3e5ae8cac58]
+Description=Settings for plasmashell plasmashell
+opacityactive=21
+opacityactiverule=2
+opacityinactive=13
+opacityinactiverule=2
+shade=true
+shaderule=5
+wmclass=plasmashell plasmashell
+wmclasscomplete=true
+wmclassmatch=1
+
+[General]
+count=1
+rules=1f275c8f-aad2-4137-b300-f3e5ae8cac58
