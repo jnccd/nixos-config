@@ -1,11 +1,11 @@
 # !Flakeless behaviour! sudo nixos-rebuild switch
-{ config, pkgs, stateVersion, hostname, ... }:
+{ config, pkgs, stateVersion, hostname, username, ... }:
 {
   # --- User and packages ---
 
-  users.users.dobiko = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "dobiko";
+    description = username;
     extraGroups = [ "networkmanager" "input" "wheel" ];
     packages = with pkgs; [
     ];
@@ -15,13 +15,13 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  packageImportArgs = { inherit config pkgs stateVersion hostname; };
   environment.systemPackages = with pkgs; [
     home-manager
     htop
     neofetch
     wget
-    vim
-  ];
+  ] ++ import ../../packages/common.nix (packageImportArgs);
 
   # nix-collect-garbage -d
   nix.gc = {
