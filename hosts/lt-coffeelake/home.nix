@@ -1,20 +1,19 @@
 # home-manager switch --flake .
-{ config, pkgs, ... }: {
+{ config, pkgs, username, homeStateVersion, ... }: {
   nixpkgs.config = {
     allowUnfree = true;
   };
 
   home = {
-    username = "dobiko";
-    homeDirectory = "/home/dobiko";
-    stateVersion = "24.11";
+    inherit username;
+    homeDirectory = "/home/${username}";
+    stateVersion = homeStateVersion;
 
     packages = with pkgs; [
       libsForQt5.filelight
       kdePackages.kate
       gparted
 
-      minecraft
       gimp
 
       (vivaldi.overrideAttrs

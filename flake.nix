@@ -14,18 +14,17 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: let
-    user = "dobiko";
+    username = "dobiko";
     homeStateVersion = "24.11";
-    defaultSystem = "x86_64-linux";
 
     hosts = [
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; stateVersion = "24.11"; }
     ];
 
-    mkSystem = { hostname, system, stateVersion, homeStateVersion, user }: nixpkgs.lib.nixosSystem {
+    mkSystem = { hostname, system, stateVersion, homeStateVersion, username }: nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
-        inherit inputs stateVersion hostname user;
+        inherit inputs stateVersion hostname username;
       };
 
       modules = [
@@ -36,9 +35,9 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = {
-            inherit inputs hostname homeStateVersion user;
+            inherit inputs hostname homeStateVersion username;
           };
-          home-manager.users.${user} = {...}: {
+          home-manager.users.${username} = {
             imports = [
               ./hosts/${hostname}/home.nix
             ];
@@ -52,19 +51,8 @@
         "${host.hostname}" = mkSystem {
           inherit (host) hostname system stateVersion;
           inherit homeStateVersion;
-          inherit user;
+          inherit username;
         };
       }) {} hosts;
-
-    # homeConfigurations.${user} = home-manager.lib.homeManagerConfiguration {
-    #   pkgs = nixpkgs.legacyPackages.${defaultSystem};
-    #   extraSpecialArgs = {
-    #     inherit inputs homeStateVersion user;
-    #   };
-
-    #   modules = [
-    #     ./home-manager/home.nix
-    #   ];
-    # };
   };
 }
