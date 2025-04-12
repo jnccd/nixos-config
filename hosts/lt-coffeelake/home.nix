@@ -1,4 +1,4 @@
-# home-manager switch --flake .
+# !Doesnt work anymore :) build the enitre flake! home-manager switch --flake .
 { config, pkgs, username, homeStateVersion, ... }: {
   nixpkgs.config = {
     allowUnfree = true;
@@ -25,6 +25,9 @@
       vivaldi-ffmpeg-codecs
     ];
   };
+
+  home.file."/test".source = "./test";
+  home.file."/test2/test4321".text = "UwU";
   
   programs.firefox.enable = true;
 
