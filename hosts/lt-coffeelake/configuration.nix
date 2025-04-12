@@ -22,7 +22,7 @@
     neofetch
     wget
     vim
-  ] ++ import ../../packages/common.nix (packageImportArgs);
+  ];
 
   # nix-collect-garbage -d
   nix.gc = {

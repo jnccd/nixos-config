@@ -26,9 +26,6 @@
     ];
   };
 
-  home.file."/test".source = "./test";
-  home.file."/test2/test4321".text = "UwU";
-  
   programs.firefox.enable = true;
 
   programs.bash = {
