@@ -14,6 +14,9 @@
       kdePackages.kate
       gparted
 
+      minecraft
+      gimp
+
       (vivaldi.overrideAttrs
       (oldAttrs: {
         dontWrapQtApps = false;

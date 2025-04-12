@@ -1,5 +1,4 @@
 # !Flakeless behaviour! sudo nixos-rebuild switch
-
 { config, pkgs, stateVersion, hostname, ... }:
 {
   # --- User and packages ---
