@@ -39,7 +39,7 @@
 
     homeConfigurations = nixpkgs.lib.foldl' (configs: host:
       configs // {
-        "${username}@${host.hostname}" = {
+        "${username}@${host.hostname}" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${host.system};
           extraSpecialArgs = {
             inherit inputs homeStateVersion username;
