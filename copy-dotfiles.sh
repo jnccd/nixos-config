@@ -1,3 +1,5 @@
+# Copy dotfiles into repo
+
 mk_and_cp() {
     mkdir -p $(dirname $2)
     cp $1 $2
@@ -8,15 +10,13 @@ mk_and_cpr() {
 }
 
 cp_to_dotfiles() {
-    mkdir -p $(dirname "./dotfiles/$1")
-    cp ~/$1 "./dotfiles/$1"
+    mk_and_cp ~/$1 "./dotfiles/$1"
 }
 cpr_to_dotfiles() {
-    mkdir -p "./dotfiles/$1"
-    cp -r ~/$1 $(dirname "./dotfiles/$1")
+    mk_and_cpr ~/$1 "./dotfiles/$1"
 }
 
-# Copy KDE dotfiles into repo
+# KDE Plasma 6
 cp_to_dotfiles .background-image
 # based on: https://github.com/shalva97/kde-configuration-files
 cp_to_dotfiles .config/plasma-org.kde.plasma.desktop-appletsrc
@@ -33,7 +33,6 @@ cp_to_dotfiles .config/plasmarc
 cp_to_dotfiles .config/kdeglobals
 cp_to_dotfiles .config/Trolltech.conf
 cp_to_dotfiles .config/breezerc
-cp_to_dotfiles .config/kwinrc
 cp_to_dotfiles .config/kdeglobals
 cp_to_dotfiles .config/kcmfonts
 cp_to_dotfiles .config/kdeglobals
@@ -42,8 +41,6 @@ cp_to_dotfiles .config/klaunchrc
 cp_to_dotfiles .config/kfontinstuirc
 cp_to_dotfiles .config/ksplashrc
 cp_to_dotfiles .config/plasmarc
-cp_to_dotfiles .config/kwinrc
-cp_to_dotfiles .config/kwinrc
 cp_to_dotfiles .config/kglobalshortcutsrc
 cp_to_dotfiles .config/kscreenlockerrc
 cp_to_dotfiles .config/kactivitymanagerdrc
@@ -52,11 +49,8 @@ cp_to_dotfiles .config/kactivitymanagerd-statsrc
 cp_to_dotfiles .config/kactivitymanagerd-pluginsrc
 cp_to_dotfiles .config/kglobalshortcutsrc
 cp_to_dotfiles .config/plasma-org.kde.plasma.desktop-appletsrc
-cp_to_dotfiles .config/kwinrc
 cp_to_dotfiles .config/kwinrulesrc
 cp_to_dotfiles .config/kglobalshortcutsrc
-cp_to_dotfiles .config/kwinrc
-cp_to_dotfiles .config/kwinrc
 cp_to_dotfiles .config/khotkeysrc
 cp_to_dotfiles .config/kglobalshortcutsrc
 cp_to_dotfiles .config/kded5rc
@@ -79,12 +73,8 @@ cp_to_dotfiles .config/PlasmaUserFeedback
 cp_to_dotfiles /etc/NetworkManager/system-connections
 cp_to_dotfiles .config/kcminputrc
 cp_to_dotfiles .config/kxkbrc
-cp_to_dotfiles .config/kxkbrc
-cp_to_dotfiles .config/kcminputrc
 cp_to_dotfiles .config/touchpadxlibinputrc
-cp_to_dotfiles .config/kcminputrc
 cp_to_dotfiles .config/kgammarc
-cp_to_dotfiles .config/kwinrc
 cp_to_dotfiles .config/powermanagementprofilesrc
 cp_to_dotfiles .config/bluedevilglobalrc
 cp_to_dotfiles .config/kdeconnect
@@ -99,9 +89,12 @@ cp_to_dotfiles .config/katevirc
 cp_to_dotfiles .config/kate-externaltoolspluginrc
 cp_to_dotfiles .config/kcalcrc
 cp_to_dotfiles .config/partitionmanagerrc
-cp_to_dotfiles .config/konsolerc
 cp_to_dotfiles .config/konsolesshconfig
 cp_to_dotfiles .config/krusaderrc
 cp_to_dotfiles .config/spectaclerc
 cp_to_dotfiles .config/systemmonitorrc
 cp_to_dotfiles .config/systemsettingsrc
+
+# Konsole
+cp_to_dotfiles .config/konsolerc
+cpr_to_dotfiles .local/share/konsole/
