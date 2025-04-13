@@ -39,10 +39,10 @@
 
     homeConfigurations = nixpkgs.lib.foldl' (configs: host:
       configs // {
-        "dobiko@${host.hostname}" = {
-          pkgs = nixpkgs.legacyPackages.${system};
+        "${username}@${host.hostname}" = {
+          pkgs = nixpkgs.legacyPackages.${host.system};
           extraSpecialArgs = {
-            inherit inputs homeStateVersion user;
+            inherit inputs homeStateVersion username;
           };
 
           modules = [
