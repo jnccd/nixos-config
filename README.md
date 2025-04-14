@@ -12,8 +12,10 @@ But flakes are definitely reproducible which is neat.
 2. `sudo nixos-generate-config`
 3. Edit the initial config to get git and add the desired hostname
 4. `sudo nixos-rebuild swtich`
-5. Generate a new ssh key and register it to your github/gitlab
-6. Clone the nixos-config repo via ssh
-7. In the hosts folder, add a nixos folder and within it the `hardware-configuration.nix` from the initial config
-8. Populate the nixos folder with the configs from another host
-9. 
+5. Reboot for good measure
+6. Generate a new ssh key and register it to your github/gitlab
+7. Clone the nixos-config repo via ssh
+8. In the flake.nix, add the new host in the hosts array
+9. In the hosts folder, add a folder for the given hostname and within it the `hardware-configuration.nix` from the initial config
+10. Populate the hostname folder with the conguration.nix and home.nix from another host to init
+11. 
