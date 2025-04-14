@@ -1,5 +1,5 @@
 # !Flakeless behaviour! sudo nixos-rebuild switch
-{ config, pkgs, stateVersion, hostname, username, ... }:
+{ config, pkgs, stateVersion, username, ... }:
 {
   # --- User and packages ---
 
@@ -15,7 +15,6 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  packageImportArgs = { inherit config pkgs stateVersion hostname; };
   environment.systemPackages = with pkgs; [
     home-manager
     htop
@@ -66,7 +65,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.hostName = hostname;
+  networking.hostName = "lt-coffeelake";
 
   services.printing.enable = true;
 
