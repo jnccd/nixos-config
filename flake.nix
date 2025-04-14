@@ -15,11 +15,11 @@
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: let
     username = "dobiko";
+    stateVersion = "24.11";
     homeStateVersion = "24.11";
 
     hosts = [
-      { hostname = "lt-coffeelake"; system = "x86_64-linux"; stateVersion = "24.11"; }
-      { hostname = "nixos"; system = "x86_64-linux"; stateVersion = "24.11"; }
+      { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
     ];
   in {
     nixosConfigurations = map (host:
@@ -27,8 +27,8 @@
         "${host.hostname}" = nixpkgs.lib.nixosSystem {
           inherit (host) system;
           specialArgs = {
-            inherit inputs username;
-            inherit (host) hostname stateVersion;
+            inherit inputs username stateVersion;
+            inherit (host) hostname;
           };
 
           modules = [
