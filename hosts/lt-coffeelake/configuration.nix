@@ -1,27 +1,18 @@
 # !Flakeless behaviour! sudo nixos-rebuild switch
-{ config, pkgs, stateVersion, username, ... }:
-{
+{ config, pkgs, stateVersion, username, ... }: let
+  commonModule = import ../../modules/common.nix ({ inherit pkgs; });
+in {
   # --- User and packages ---
 
   users.users.${username} = {
     isNormalUser = true;
     description = username;
     extraGroups = [ "networkmanager" "input" "wheel" ];
-    packages = with pkgs; [
-    ];
+    packages = [];
   };
 
   nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    home-manager
-    htop
-    neofetch
-    wget
-    vim
-  ];
+  environment.systemPackages = commonModule.systemPackages;
 
   # nix-collect-garbage -d
   nix.gc = {
