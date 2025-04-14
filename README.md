@@ -10,12 +10,16 @@ But flakes are definitely reproducible which is neat.
 
 1. Use the nixos iso installer to get the basic system
 2. `sudo nixos-generate-config`
-3. Edit the initial config to get git and add the desired hostname
+3. Edit the initial config to get git and add the desired hostname in networking.hostname, also add `nix.settings.experimental-features = ["nix-command" "flakes"];` so you can use flakes later
 4. `sudo nixos-rebuild swtich`
-5. Reboot for good measure
+5. Reboot
 6. Generate a new ssh key and register it to your github/gitlab
 7. Clone the nixos-config repo via ssh
 8. In the flake.nix, add the new host in the hosts array
 9. In the hosts folder, add a folder for the given hostname and within it the `hardware-configuration.nix` from the initial config
 10. Populate the hostname folder with the conguration.nix and home.nix from another host to init
-11. 
+11. `sudo nixos-rebuild switch --install-bootloader --flake .` <- if your computer just fucking dies during this step you fucked up and have to start from the beginning again :)
+12. `home-manager switch --flake .`
+13. Reboot for good measure
+
+There you go, and its exactly 13 steps, how fitting :)
