@@ -26,6 +26,12 @@
     ];
   };
 
+  home.file."." = {
+    source = ../../dotfiles;
+    force = true;
+    recursive = true;
+  };
+
   programs.firefox.enable = true;
 
   programs.bash = {
