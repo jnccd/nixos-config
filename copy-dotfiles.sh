@@ -14,6 +14,7 @@ cp_to_dotfiles() {
 }
 cpr_to_dotfiles() {
     mk_and_cpr ~/$1 "./dotfiles/$1"
+    find ./dotfiles/ -name "*.backup" -type f -delete
 }
 
 # KDE Plasma 6
