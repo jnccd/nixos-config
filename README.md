@@ -22,5 +22,5 @@ But flakes are definitely reproducible which is neat.
 12. `home-manager switch --flake .`
 13. Reboot for good measure
 14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
-15. I dont know how to sync KDE Plasma extensions using nix yet, so install the missing ones
+15. I dont know how to sync KDE Plasma widgets using nix yet, so install the missing ones
 16. Done, enjoy :)
