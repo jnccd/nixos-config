@@ -51,6 +51,6 @@
             ./hosts/${host.hostname}/home.nix
           ];
         };
-      }) hosts;
+      }) hosts);
   };
 }
