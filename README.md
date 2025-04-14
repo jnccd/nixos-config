@@ -10,7 +10,7 @@ But flakes are definitely reproducible which is neat.
 
 1. Use the nixos iso installer to get the basic system
 2. `sudo nixos-generate-config`
-3. Edit the initial config to get git
+3. Edit the initial config to get git and add the desired hostname
 4. `sudo nixos-rebuild swtich`
 5. Generate a new ssh key and register it to your github/gitlab
 6. Clone the nixos-config repo via ssh
