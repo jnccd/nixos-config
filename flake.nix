@@ -22,8 +22,8 @@
       { hostname = "nixos"; system = "x86_64-linux"; stateVersion = "24.11"; }
     ];
   in {
-    nixosConfigurations = nixpkgs.lib.foldl' (configs: host:
-      configs // {
+    nixosConfigurations = map (host:
+      {
         "${host.hostname}" = nixpkgs.lib.nixosSystem {
           inherit (host) system;
           specialArgs = {
@@ -35,10 +35,10 @@
             ./hosts/${host.hostname}/configuration.nix
           ];
         };
-      }) {} hosts;
+      }) hosts;
 
-    homeConfigurations = nixpkgs.lib.foldl' (configs: host:
-      configs // {
+    homeConfigurations = map (host:
+      {
         "${username}@${host.hostname}" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${host.system};
           extraSpecialArgs = {
@@ -49,6 +49,6 @@
             ./hosts/${host.hostname}/home.nix
           ];
         };
-      }) {} hosts;
+      }) hosts;
   };
 }
