@@ -29,3 +29,5 @@ But flakes are definitely reproducible which is neat.
 
 Whenever you change and rebuild a flake, make sure to look at the memory usage of the system. 
 You might have created a memory leak thats about to fill up your swapfile :)
+
+[Me when memory leek](https://www.reddit.com/r/196/comments/13z6p1x/hatsune_miku_devouring_her_leek/)
