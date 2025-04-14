@@ -22,9 +22,10 @@
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
     ];
   in {
-    nixosConfigurations = map (host:
-      {
-        "${host.hostname}" = nixpkgs.lib.nixosSystem {
+    nixosConfigurations = builtins.listToAttrs
+      (map (host: {
+        name = "${host.hostname}";
+        value = nixpkgs.lib.nixosSystem {
           inherit (host) system;
           specialArgs = {
             inherit inputs username stateVersion;
@@ -35,11 +36,12 @@
             ./hosts/${host.hostname}/configuration.nix
           ];
         };
-      }) hosts;
+      }) hosts);
 
-    homeConfigurations = map (host:
-      {
-        "${username}@${host.hostname}" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations = builtins.listToAttrs
+      (map (host: {
+        name = "${username}@${host.hostname}";
+        value = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${host.system};
           extraSpecialArgs = {
             inherit inputs homeStateVersion username;
