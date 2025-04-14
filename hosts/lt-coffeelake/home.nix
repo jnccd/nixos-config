@@ -1,4 +1,4 @@
-# home-manager switch --flake .
+# home-manager switch -b backup --flake .
 { config, pkgs, username, homeStateVersion, ... }: {
   nixpkgs.config = {
     allowUnfree = true;
@@ -25,11 +25,20 @@
       vivaldi-ffmpeg-codecs
     ];
   };
-
-  home.file."." = {
-    source = ../../dotfiles;
+  # Write dotfiles
+  home.file."/.config" = {
+    source = ../../dotfiles/.config;
     force = true;
     recursive = true;
+  };
+  home.file."/.local" = {
+    source = ../../dotfiles/.local;
+    force = true;
+    recursive = true;
+  };
+  home.file."/.background-image" = {
+    source = ../../dotfiles/.background-image;
+    force = true;
   };
 
   programs.firefox.enable = true;
