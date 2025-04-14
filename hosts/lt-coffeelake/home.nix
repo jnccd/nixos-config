@@ -1,4 +1,4 @@
-# !Doesnt work anymore :) build the enitre flake! home-manager switch --flake .
+# home-manager switch --flake .
 { config, pkgs, username, homeStateVersion, ... }: {
   nixpkgs.config = {
     allowUnfree = true;
