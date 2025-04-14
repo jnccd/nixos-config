@@ -24,3 +24,8 @@ But flakes are definitely reproducible which is neat.
 14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
 15. I dont know how to sync KDE Plasma widgets using nix yet, so install the missing ones (and log out / in to reload the desktop environemnt)
 16. Done, enjoy :)
+
+## Tip
+
+Whenever you change and rebuild a flake, make sure to look at the memory usage of the system. 
+You might have created a memory leak thats about to fill up your swapfile :)
