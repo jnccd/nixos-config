@@ -6,11 +6,12 @@
 
   environment.systemPackages = with pkgs; [
     home-manager
+
+    nushell
+    vim
+    wget
     htop
     neofetch
-    wget
-    vim
-    nushell
   ];
 
   # --- Main User ---

@@ -1,5 +1,6 @@
 # home-manager switch -b backup --flake .
-{ config, pkgs, username, homeStateVersion, ... }: {
+{ config, pkgs, homeStateVersion, username, ... }: 
+{
   nixpkgs.config = {
     allowUnfree = true;
   };
