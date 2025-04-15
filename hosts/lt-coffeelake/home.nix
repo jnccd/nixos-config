@@ -8,23 +8,24 @@
     inherit username;
     homeDirectory = "/home/${username}";
     stateVersion = homeStateVersion;
-
-    packages = with pkgs; [
-      libsForQt5.filelight
-      kdePackages.kate
-      gparted
-
-      gimp
-
-      (vivaldi.overrideAttrs
-      (oldAttrs: {
-        dontWrapQtApps = false;
-        dontPatchELF = true;
-        nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.kdePackages.wrapQtAppsHook];
-      }))
-      vivaldi-ffmpeg-codecs
-    ];
   };
+
+  home.packages = with pkgs; [
+    libsForQt5.filelight
+    kdePackages.kate
+    gparted
+
+    gimp
+
+    (vivaldi.overrideAttrs
+    (oldAttrs: {
+      dontWrapQtApps = false;
+      dontPatchELF = true;
+      nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.kdePackages.wrapQtAppsHook];
+    }))
+    vivaldi-ffmpeg-codecs
+  ];
+
   # Write dotfiles
   home.file."/.config" = {
     source = ../../dotfiles/.config;
