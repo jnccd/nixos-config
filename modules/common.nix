@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     home-manager
     htop
     neofetch

@@ -1,7 +1,14 @@
 # !Flakeless behaviour! sudo nixos-rebuild switch
-{ config, pkgs, stateVersion, username, ... }: let
-  commonModule = import ../../modules/common.nix ({ inherit pkgs; });
-in {
+{ config, pkgs, stateVersion, username, ... }: 
+{
+  # --- Imports ---
+
+  imports = [
+    ../../modules/common.nix
+
+    ./hardware-configuration.nix
+  ];
+
   # --- User and packages ---
 
   users.users.${username} = {
@@ -12,7 +19,6 @@ in {
   };
 
   nixpkgs.config.allowUnfree = true;
-  environment.systemPackages = commonModule.systemPackages;
 
   # nix-collect-garbage -d
   nix.gc = {
@@ -87,11 +93,6 @@ in {
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # --- Hardware ---
-
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
 
   # Bootloader
   boot.loader = {
