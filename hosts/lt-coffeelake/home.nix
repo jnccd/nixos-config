@@ -63,6 +63,8 @@
       jnoortheen.nix-ide
       arrterian.nix-env-selector
 
+      streetsidesoftware.code-spell-checker
+
       ms-dotnettools.csdevkit
       ms-python.python
 
