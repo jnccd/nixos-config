@@ -1,4 +1,4 @@
-{ pkgs, homeStateVersion, username, ... }:
+{ config, pkgs, homeStateVersion, username, ... }:
 {
 
 }

@@ -1,4 +1,4 @@
-{ pkgs, stateVersion, username, ... }:
+{ config, pkgs, stateVersion, username, ... }:
 {
   # --- Packages ---
 
