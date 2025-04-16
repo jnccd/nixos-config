@@ -1,7 +1,8 @@
 # sudo nixos-rebuild switch --flake .
 # sudo nixos-rebuild switch --install-bootloader --flake .
-# nix flake update --flake /home/dobiko/nix
+# nix flake update --flake .
 # home-manager switch -b backup --flake .
+# sudo nixos-rebuild switch --flake . && home-manager switch -b backup --flake .
 {
   description = "Dobiko Config";
 
