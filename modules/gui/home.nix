@@ -43,17 +43,17 @@
   # --- Dotfiles ---
 
   home.file."/.config" = {
-    source = ../../dotfiles/.config;
+    source = config.lib.file.mkOutOfStoreSymlink ../../dotfiles/.config;
     force = true;
     recursive = true;
   };
   home.file."/.local" = {
-    source = ../../dotfiles/.local;
+    source = config.lib.file.mkOutOfStoreSymlink ../../dotfiles/.local;
     force = true;
     recursive = true;
   };
   home.file."/.background-image" = {
-    source = ../../dotfiles/.background-image;
+    source = config.lib.file.mkOutOfStoreSymlink ../../dotfiles/.background-image;
     force = true;
   };
 }
