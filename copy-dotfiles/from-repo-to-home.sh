@@ -1,4 +1,4 @@
-# Copy dotfiles into home
+#!/usr/bin/env bash
 
 cp -r ~/git/nixos-config/dotfiles/.config/ ~
 cp -r ~/git/nixos-config/dotfiles/.local/ ~

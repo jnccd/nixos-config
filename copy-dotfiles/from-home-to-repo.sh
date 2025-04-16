@@ -1,4 +1,4 @@
-# Copy dotfiles into repo
+#!/usr/bin/env bash
 
 mk_and_cp() {
     mkdir -p $(dirname $2)
