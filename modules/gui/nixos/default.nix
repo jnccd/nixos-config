@@ -1,3 +1,4 @@
+# This is not how you usually use a default.nix but it works in this case
 { config, pkgs, stateVersion, username, ... }:
 {
   # --- Packages ---
