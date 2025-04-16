@@ -2,17 +2,11 @@
 {
   system.stateVersion = stateVersion;
   
-  # --- Packages ---
+  # --- Nix ---
 
-  environment.systemPackages = with pkgs; [
-    home-manager
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
-    nushell
-    vim
-    wget
-    htop
-    neofetch
-  ];
+  nixpkgs.config.allowUnfree = true;
 
   # --- Main User ---
 
@@ -23,11 +17,17 @@
     packages = [];
   };
 
-  # --- Nix ---
+  # --- Packages ---
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  environment.systemPackages = with pkgs; [
+    home-manager
 
-  nixpkgs.config.allowUnfree = true;
+    wget
+    htop
+    nushell
+    neofetch
+    vim
+  ];
 
   # nix-collect-garbage -d
   nix.gc = {

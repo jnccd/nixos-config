@@ -20,23 +20,6 @@
     vivaldi-ffmpeg-codecs
   ];
 
-  # --- Dotfiles ---
-
-  home.file."/.config" = {
-    source = ../../dotfiles/.config;
-    force = true;
-    recursive = true;
-  };
-  home.file."/.local" = {
-    source = ../../dotfiles/.local;
-    force = true;
-    recursive = true;
-  };
-  home.file."/.background-image" = {
-    source = ../../dotfiles/.background-image;
-    force = true;
-  };
-
   # --- Programs ---
 
   programs.firefox.enable = true;
@@ -55,5 +38,22 @@
 
       ms-vscode-remote.remote-ssh
     ];
+  };
+
+  # --- Dotfiles ---
+
+  home.file."/.config" = {
+    source = ../../dotfiles/.config;
+    force = true;
+    recursive = true;
+  };
+  home.file."/.local" = {
+    source = ../../dotfiles/.local;
+    force = true;
+    recursive = true;
+  };
+  home.file."/.background-image" = {
+    source = ../../dotfiles/.background-image;
+    force = true;
   };
 }
