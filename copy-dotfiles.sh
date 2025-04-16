@@ -100,3 +100,5 @@ cp_to_dotfiles .config/systemsettingsrc
 cp_to_dotfiles .config/konsolerc
 cpr_to_dotfiles .local/share/konsole/
 cp_to_dotfiles .local/state/konsolestaterc
+
+cp_to_dotfiles .local/share/kio/servicemenus/openVSCode.desktop
