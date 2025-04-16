@@ -1,5 +1,7 @@
+MenuBar=Disabled
+
 [Desktop Entry]
-DefaultProfile=Profile 1.profile
+DefaultProfile=BlurredBackground.profile
 
 [General]
 ConfigVersion=1

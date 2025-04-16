@@ -31,3 +31,7 @@ WindowSnapZone=3
 
 [Xwayland]
 Scale=1.25
+
+[org.kde.kdecoration2]
+library=org.kde.breeze
+theme=Breeze
