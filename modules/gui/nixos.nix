@@ -20,7 +20,6 @@
   services.xserver.enable = true;
 
   services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "Breeze Dark";
   services.desktopManager.plasma6.enable = true;
 
   # --- IO ---
