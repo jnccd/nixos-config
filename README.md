@@ -20,10 +20,11 @@ But flakes are definitely reproducible which is neat.
 10. Populate the hostname folder with the configuration.nix and home.nix from another host to init
 11. `sudo nixos-rebuild switch --install-bootloader --flake .` <- if your computer just fucking dies during this step you fucked up and have to start from the beginning again :)
 12. `home-manager switch --flake .`
-13. Reboot for good measure
-14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
-15. I dont know how to sync KDE Plasma widgets using nix yet, so install the missing ones (and log out / in to reload the desktop environment)
-16. Done, enjoy :)
+13. `bash copy-dotfiles/from-repo-to-home.sh`
+14. Reboot for good measure
+15. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
+16. I dont know how to sync KDE Plasma widgets using nix yet, so install the missing ones (and log out / in to reload the desktop environment)
+17. Done, enjoy :)
 
 ## Tip
 
