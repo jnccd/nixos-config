@@ -99,3 +99,4 @@ cp_to_dotfiles .config/systemsettingsrc
 # Konsole
 cp_to_dotfiles .config/konsolerc
 cpr_to_dotfiles .local/share/konsole/
+cp_to_dotfiles .local/state/konsolestaterc
