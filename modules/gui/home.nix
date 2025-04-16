@@ -8,6 +8,8 @@
     gparted
 
     gimp
+    thunderbird
+    anki
 
     (vivaldi.overrideAttrs
     (oldAttrs: {
