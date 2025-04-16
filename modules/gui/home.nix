@@ -39,22 +39,4 @@
       ms-vscode-remote.remote-ssh
     ];
   };
-
-  # --- Dotfiles ---
-  # Home-manager symlinks are too annoying
-
-  # home.file."/.config" = {
-  #   source = config.lib.file.mkOutOfStoreSymlink ../../dotfiles/.config;
-  #   force = true;
-  #   recursive = true;
-  # };
-  # home.file."/.local" = {
-  #   source = config.lib.file.mkOutOfStoreSymlink ../../dotfiles/.local;
-  #   force = true;
-  #   recursive = true;
-  # };
-  # home.file."/.background-image" = {
-  #   source = config.lib.file.mkOutOfStoreSymlink ../../dotfiles/.background-image;
-  #   force = true;
-  # };
 }
