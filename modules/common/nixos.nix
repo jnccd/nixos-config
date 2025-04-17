@@ -24,6 +24,7 @@
 
     wget
     htop
+    screen
     nushell
     neofetch
     vim
