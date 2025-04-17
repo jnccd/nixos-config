@@ -1,0 +1,3 @@
+[submodule "modules/miniserver/private-module"]
+	path = modules/miniserver/private-module
+	url = git@github.com:jnccd/nixos-config-miniserver-private-module.git
