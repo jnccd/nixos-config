@@ -1,10 +1,10 @@
-# sudo nixos-rebuild switch --flake .
-# sudo nixos-rebuild switch --install-bootloader --flake .
-# nix flake update --flake .
-# home-manager switch -b backup --flake .
+# sudo nixos-rebuild switch --flake .?submodules=1
+# sudo nixos-rebuild switch --install-bootloader --flake .?submodules=1
+# nix flake update --flake .?submodules=1
+# home-manager switch -b backup --flake .?submodules=1
 # nix-collect-garbage -d
 # ---
-# sudo nixos-rebuild switch --flake . && home-manager switch -b backup --flake .
+# sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1
 {
   description = "Dobiko Config";
 
