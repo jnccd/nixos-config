@@ -10,8 +10,6 @@
     ../../modules/common/nixos.nix
     ../../modules/gui/nixos
 
-    ../../modules/miniserver/private-module
-
     ./hardware-configuration.nix
   ];
 
