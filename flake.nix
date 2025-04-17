@@ -25,36 +25,37 @@
     hosts = [
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
     ];
+
+    mkSystem = host: {
+      name = "${host.hostname}";
+      value = nixpkgs.lib.nixosSystem {
+        inherit (host) system;
+        specialArgs = {
+          inherit inputs username stateVersion;
+          inherit (host) hostname;
+        };
+
+        modules = [
+          ./hosts/${host.hostname}/configuration.nix
+        ];
+      };
+    };
+
+    mkHome = host: {
+      name = "${username}@${host.hostname}";
+      value = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.${host.system};
+        extraSpecialArgs = {
+          inherit inputs homeStateVersion username;
+        };
+
+        modules = [
+          ./hosts/${host.hostname}/home.nix
+        ];
+      };
+    };
   in {
-    nixosConfigurations = builtins.listToAttrs
-      (map (host: {
-        name = "${host.hostname}";
-        value = nixpkgs.lib.nixosSystem {
-          inherit (host) system;
-          specialArgs = {
-            inherit inputs username stateVersion;
-            inherit (host) hostname;
-          };
-
-          modules = [
-            ./hosts/${host.hostname}/configuration.nix
-          ];
-        };
-      }) hosts);
-
-    homeConfigurations = builtins.listToAttrs
-      (map (host: {
-        name = "${username}@${host.hostname}";
-        value = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${host.system};
-          extraSpecialArgs = {
-            inherit inputs homeStateVersion username;
-          };
-
-          modules = [
-            ./hosts/${host.hostname}/home.nix
-          ];
-        };
-      }) hosts);
+    nixosConfigurations = builtins.listToAttrs (map mkSystem hosts);
+    homeConfigurations = builtins.listToAttrs (map mkHome hosts);
   };
 }
