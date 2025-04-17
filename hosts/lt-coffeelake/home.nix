@@ -6,5 +6,6 @@
   imports = [
     ../../modules/common/home.nix
     ../../modules/gui/home.nix
+    ../../modules/miniserver/home.nix
   ];
 }
