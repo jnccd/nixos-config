@@ -7,10 +7,13 @@
   # --- Imports ---
 
   imports = [
+    ./hardware-configuration.nix
+
     ../../modules/common/nixos.nix
     ../../modules/gui/nixos
 
-    ./hardware-configuration.nix
+    # For testing
+    ../../modules/miniserver/nixos.nix
   ];
 
   # --- Bootloader ---
