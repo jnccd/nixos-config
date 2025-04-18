@@ -1,6 +1,8 @@
 { pkgs, ... }:
 {
-  mkInternetService = { sessionName, username, script }: {
+  bashEnsureInternet = "until host www.google.de; do sleep 30; done";
+
+  mkScreenService = { sessionName, username, script }: {
     enable = true;
     description = sessionName;
 
