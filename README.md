@@ -40,6 +40,6 @@ You might have created a memory leak thats about to fill up your swapfile :)
 
 Like this 👀
 
-Its basically default breeze with some modifications for more transparency because thats fancy. The idea here was to create a good looking DE that (mostly) doesnt break within the next patch, so I didnt go overboard with any of the modifications. 
+Its basically default Plasma 6 Breeze with some modifications for more transparency because thats fancy. The idea here was to create a good looking DE that (mostly) doesnt break within the next patch, so I didnt go overboard with any of the modifications. 
 
 The background image is from [Alena Aenami](https://www.artstation.com/artwork/n0mwQo). Go check her out, she makes amazing artworks 👀
