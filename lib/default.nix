@@ -1,5 +1,6 @@
 { pkgs, ... }: let 
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
+  bashWaitForever = "while :; do sleep 2073600; done";
 
   mkScreenService = { sessionName, username, script }: {
     "${sessionName}" = {
@@ -16,7 +17,7 @@
             #!${pkgs.runtimeShell}
             PATH=$PATH:/run/current-system/sw/bin
             screen -S ${sessionName} -dm bash -c "${script}";
-            while :; do sleep 2073600; done
+            ${bashWaitForever}
           '';
         ExecStop = pkgs.writeScript "${sessionName}-stop-script" ''
             #!${pkgs.runtimeShell}
@@ -27,5 +28,5 @@
     };
   };
 in {
-  inherit bashEnsureInternet mkScreenService;
+  inherit bashEnsureInternet bashWaitForever mkScreenService;
 }
