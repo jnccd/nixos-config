@@ -18,9 +18,10 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: let
-    username = "dobiko";
     stateVersion = "24.11";
     homeStateVersion = "24.11";
+
+    username = "dobiko";
 
     hosts = [
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; }

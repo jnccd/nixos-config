@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: let 
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
 
   mkScreenService = { sessionName, username, script }: {
@@ -25,4 +24,12 @@
         '';
     };
   };
+
+  registerScreenService = { sessionName, username, script }: {
+    "${sessionName}" = mkScreenService { 
+      inherit sessionName username script;
+    };
+  };
+in {
+  inherit bashEnsureInternet mkScreenService registerScreenService;
 }
