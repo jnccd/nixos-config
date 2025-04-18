@@ -12,15 +12,13 @@ in {
     packages = [];
   };
 
-  systemd.services = lib.custom.mkScreenService { 
-    sessionName = "test-who";
+  systemd.services = lib.custom.mkWrappedScreenService { 
+    sessionName = "test";
     username = runnerUsername;
-    script = pkgs.writeScript "le-ebic-service" ''
-        ${lib.custom.bashEnsureInternet}
-        cd ~ && mkdir runner-test; cd runner-test
-
+    scriptDirName = "test";
+    script = pkgs.writeScript "script" ''
         who
-        ${lib.custom.bashWaitForever}
+        pwd
       '';
   };
 }

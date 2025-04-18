@@ -27,6 +27,17 @@
       };
     };
   };
+  mkWrappedScreenService = { sessionName, username, scriptDirName, script }: mkScreenService { 
+    inherit sessionName username;
+    script = pkgs.writeScript "wrapped-service-script" ''
+      ${bashEnsureInternet}
+      cd ~ && mkdir ${scriptDirName}; cd ${scriptDirName};
+
+      ${script}
+
+      ${bashWaitForever}
+    '';
+    };
 in {
-  inherit bashEnsureInternet bashWaitForever mkScreenService;
+  inherit bashEnsureInternet bashWaitForever mkScreenService mkWrappedScreenService;
 }
