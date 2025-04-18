@@ -34,7 +34,7 @@ You might have created a memory leak thats about to fill up your swapfile :)
 
 [Me when memory leek](https://www.reddit.com/r/196/comments/13z6p1x/hatsune_miku_devouring_her_leek/)
 
-## But what does the it look like?
+## But what does it look like?
 
 ![Screenshot_20250418_122847](https://github.com/user-attachments/assets/208d8c45-3919-49e6-af4b-a38eb07e7f9b)
 
