@@ -29,6 +29,17 @@ But flakes are definitely reproducible which is neat.
 ## Tip
 
 Whenever you change and rebuild a flake, make sure to look at the memory usage of the system. 
+
 You might have created a memory leak thats about to fill up your swapfile :)
 
 [Me when memory leek](https://www.reddit.com/r/196/comments/13z6p1x/hatsune_miku_devouring_her_leek/)
+
+## But what does the Desktop Environment look like?
+
+![Screenshot_20250418_122847](https://github.com/user-attachments/assets/208d8c45-3919-49e6-af4b-a38eb07e7f9b)
+
+Like this 👀
+
+Its basically default breeze with some modifications for more transparency because thats fancy. The idea here was to create a good looking DE that (mostly) doesnt break within the next patch, so I didnt go overboard with any of the modifications. 
+
+The background image is from [Alena Aenami](https://www.artstation.com/artwork/n0mwQo). Go check her out, she makes amazing artworks 👀
