@@ -1,5 +1,5 @@
 # home-manager switch -b backup --flake .
-{ config, pkgs, homeStateVersion, username, ... }: 
+{ config, lib, pkgs, homeStateVersion, username, ... }: 
 {
   # --- Imports ---
 

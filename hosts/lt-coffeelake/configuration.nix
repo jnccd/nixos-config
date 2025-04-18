@@ -1,5 +1,5 @@
 # !Flakeless behaviour! sudo nixos-rebuild switch
-{ config, pkgs, stateVersion, username, ... }: 
+{ config, lib, pkgs, stateVersion, username, ... }: 
 {
   # Memory leak if I use vars :(
   networking.hostName = "lt-coffeelake";

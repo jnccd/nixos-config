@@ -26,6 +26,9 @@
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
     ];
 
+    extendWithCustomLib = system: 
+      nixpkgs.lib.extend (self: super: { custom = import ./lib { pkgs = nixpkgs.legacyPackages.${system}; }; });
+
     mkSystem = host: {
       name = "${host.hostname}";
       value = nixpkgs.lib.nixosSystem {
@@ -33,6 +36,7 @@
         specialArgs = {
           inherit inputs username stateVersion;
           inherit (host) hostname;
+          lib = extendWithCustomLib host.system;
         };
 
         modules = [
@@ -47,6 +51,7 @@
         pkgs = nixpkgs.legacyPackages.${host.system};
         extraSpecialArgs = {
           inherit inputs homeStateVersion username;
+          lib = extendWithCustomLib host.system;
         };
 
         modules = [
