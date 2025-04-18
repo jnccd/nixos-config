@@ -27,5 +27,5 @@
     };
   };
 in {
-  inherit bashEnsureInternet mkScreenService registerScreenService;
+  inherit bashEnsureInternet mkScreenService;
 }
