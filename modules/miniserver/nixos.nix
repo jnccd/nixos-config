@@ -12,7 +12,7 @@ in {
     packages = [];
   };
 
-  systemd.services = lib.custom.registerScreenService { 
+  systemd.services = lib.custom.mkScreenService { 
     sessionName = "test-ping";
     username = runnerUsername;
     script = pkgs.writeScript "le-ebic-service" ''
