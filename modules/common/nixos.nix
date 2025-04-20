@@ -22,6 +22,7 @@
   environment.systemPackages = with pkgs; [
     home-manager
 
+    git
     wget
     htop
     screen
@@ -36,10 +37,6 @@
     dates = "weekly";
     options = "--delete-older-than 30d";
   };
-
-  # --- Programs ---
-
-  programs.git.enable = true;
 
   # --- Locale ---
 
