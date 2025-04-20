@@ -23,6 +23,7 @@
     home-manager
 
     git
+    curl
     wget
     htop
     screen
