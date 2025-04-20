@@ -35,7 +35,7 @@
     inherit sessionName username;
     script = pkgs.writeScript "wrapped-service-script" ''
       ${bashEnsureInternet}
-      cd ~ && mkdir -p runner/${scriptDirName}; cd runner && cd ${scriptDirName};
+      cd ~ && mkdir -p runner/${scriptDirName}; cd runner/${scriptDirName};
 
       ${script}
 
