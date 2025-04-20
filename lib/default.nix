@@ -10,6 +10,10 @@
       wantedBy = [ "multi-user.target" ];
       requires = [ "network-online.target" ];
 
+      environment = {
+        NIX_PATH = "nixpkgs=flake:nixpkgs:/nix/var/nix/profiles/per-user/root/channels";
+      };
+
       serviceConfig = {
         User = username;
 
@@ -31,7 +35,7 @@
     inherit sessionName username;
     script = pkgs.writeScript "wrapped-service-script" ''
       ${bashEnsureInternet}
-      cd ~ && mkdir ${scriptDirName}; cd ${scriptDirName};
+      cd ~ && mkdir -p runner/${scriptDirName}; cd runner && cd ${scriptDirName};
 
       ${script}
 
