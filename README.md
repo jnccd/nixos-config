@@ -1,10 +1,19 @@
 # My NixOS Flake
 
-![image](https://github.com/user-attachments/assets/d01d1363-8a59-4cd7-8c2c-b340982a4fc8)
+<img src="https://github.com/user-attachments/assets/d01d1363-8a59-4cd7-8c2c-b340982a4fc8" alt="Description" width="450ch" height=auto>
 
-I feel like while writing this config I found a million different ways to shoot myself into the foot. People will tell you "But NixOS is reliable and stable". Dont believe their lies. I wrote flakes that livelock with memory leaks. I wrote flakes that literally destroy the entire system. You might think "But NixOS has profiles, you can just roll back". No, my flakes broke all profiles at once :)
-
+Yeah, I destroyed my system completely multiple times while building this. 
 But flakes are definitely reproducible which is neat.
+
+## What does it look like?
+
+![Screenshot_20250418_122847](https://github.com/user-attachments/assets/208d8c45-3919-49e6-af4b-a38eb07e7f9b)
+
+Like this 👀
+
+Its basically default Plasma 6 Breeze with some modifications for more transparency because thats fancy. The idea here was to create a good looking DE that (mostly) doesnt break within the next patch, so I didnt go overboard with any of the modifications. 
+
+The background image is from [Alena Aenami](https://www.artstation.com/artwork/n0mwQo). Go check her out, she makes amazing artworks 👀
 
 ## Installation
 
@@ -33,13 +42,3 @@ Whenever you change and rebuild a flake, make sure to look at the memory usage o
 You might have created a memory leak thats about to fill up your swapfile :)
 
 [Me when memory leek](https://www.reddit.com/r/196/comments/13z6p1x/hatsune_miku_devouring_her_leek/)
-
-## But what does it look like?
-
-![Screenshot_20250418_122847](https://github.com/user-attachments/assets/208d8c45-3919-49e6-af4b-a38eb07e7f9b)
-
-Like this 👀
-
-Its basically default Plasma 6 Breeze with some modifications for more transparency because thats fancy. The idea here was to create a good looking DE that (mostly) doesnt break within the next patch, so I didnt go overboard with any of the modifications. 
-
-The background image is from [Alena Aenami](https://www.artstation.com/artwork/n0mwQo). Go check her out, she makes amazing artworks 👀
