@@ -1,4 +1,4 @@
-{ config, pkgs, homeStateVersion, username, ... }:
+{ config, pkgs, homeStateVersion, mainUsername, ... }:
 {
   # --- Nix ---
 
@@ -7,8 +7,8 @@
   # --- Main User ---
 
   home = {
-    inherit username;
-    homeDirectory = "/home/${username}";
+    inherit mainUsername;
+    homeDirectory = "/home/${mainUsername}";
     stateVersion = homeStateVersion;
   };
 
@@ -18,7 +18,7 @@
     enable = true;
     shellAliases = { 
       owo = "echo uwu"; # I owo into the void and the void uwus back
-    };
+    };mainUsername
   };
 
   programs.git = {

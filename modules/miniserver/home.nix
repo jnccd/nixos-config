@@ -1,4 +1,4 @@
-{ config, lib, pkgs, homeStateVersion, username, ... }:
+{ config, lib, pkgs, homeStateVersion, mainUsername, ... }:
 {
   imports = [
     ./private-module/home.nix

@@ -1,8 +1,8 @@
-{ config, lib, pkgs, stateVersion, username, ... }: let 
+{ config, lib, pkgs, stateVersion, mainUsername, ... }: let 
   runnerUsername = "runner";
 in {
   imports = [ 
-    (import ./private-module/nixos.nix { inherit config lib pkgs stateVersion username runnerUsername; }) 
+    (import ./private-module/nixos.nix { inherit config lib pkgs stateVersion mainUsername runnerUsername; }) 
   ];
 
   # --- Runner User ---

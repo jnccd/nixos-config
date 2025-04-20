@@ -2,7 +2,7 @@
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
 
-  mkScreenService = { sessionName, username, script }: {
+  mkScreenService = { sessionName, mainUsername, script }: {
     "${sessionName}" = {
       enable = true;
       description = sessionName;
@@ -15,7 +15,7 @@
       };
 
       serviceConfig = {
-        User = username;
+        User = mainUsername;
 
         ExecStart = pkgs.writeScript "${sessionName}-start-script" ''
             #!${pkgs.runtimeShell}
@@ -31,8 +31,8 @@
       };
     };
   };
-  mkWrappedScreenService = { sessionName, username, scriptDirName, script }: mkScreenService { 
-    inherit sessionName username;
+  mkWrappedScreenService = { sessionName, mainUsername, scriptDirName, script }: mkScreenService { 
+    inherit sessionName mainUsername;
     script = pkgs.writeScript "wrapped-service-script" ''
       ${bashEnsureInternet}
       cd ~ && mkdir -p runner/${scriptDirName}; cd runner/${scriptDirName};

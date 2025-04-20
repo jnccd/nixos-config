@@ -1,4 +1,4 @@
-{ config, pkgs, stateVersion, username, ... }:
+{ config, pkgs, stateVersion, mainUsername, ... }:
 {
   system.stateVersion = stateVersion;
   
@@ -10,9 +10,9 @@
 
   # --- Main User ---
 
-  users.users.${username} = {
+  users.users.${mainUsername} = {
     isNormalUser = true;
-    description = username;
+    description = mainUsername;
     extraGroups = [ "networkmanager" "input" "wheel" ];
     packages = [];
   };

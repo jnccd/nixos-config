@@ -1,4 +1,4 @@
-{ config, pkgs, homeStateVersion, username, ... }:
+{ config, pkgs, homeStateVersion, mainUsername, ... }:
 {
   # --- Packages ---
 
