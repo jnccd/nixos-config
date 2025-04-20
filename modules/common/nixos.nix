@@ -37,6 +37,10 @@
     options = "--delete-older-than 30d";
   };
 
+  # --- Programs ---
+
+  programs.git.enable = true;
+
   # --- Locale ---
 
   time.timeZone = "Europe/Berlin";
