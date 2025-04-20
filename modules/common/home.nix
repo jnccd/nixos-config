@@ -17,7 +17,7 @@
   programs.bash = {
     enable = true;
     shellAliases = { 
-      rebuild = "sudo nixos-rebuild switch";
+      owo = "echo uwu"; # I owo into the void and the void uwus back
     };
   };
 
