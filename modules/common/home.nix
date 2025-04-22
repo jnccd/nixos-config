@@ -18,7 +18,7 @@
     enable = true;
     shellAliases = { 
       owo = "echo uwu"; # I owo into the void and the void uwus back
-    };mainUsername
+    };
   };
 
   programs.git = {
