@@ -22,7 +22,7 @@
     systemd-boot.enable = false;
     grub.enable = true;
     grub.device = "nodev";
-    grub.useOSProber = true;
+    #grub.useOSProber = true; # Only enable once if something changed
     grub.efiSupport = true;
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
