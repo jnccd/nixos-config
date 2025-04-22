@@ -36,6 +36,7 @@
     script = pkgs.writeScript "wrapped-service-script" ''
       ${bashEnsureInternet}
       cd ~ && mkdir -p runner/${scriptDirName}; cd runner/${scriptDirName};
+      clear;
 
       ${script}
 
