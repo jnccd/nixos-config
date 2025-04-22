@@ -14,8 +14,7 @@
   users.users.${mainUsername} = {
     isNormalUser = true;
     description = mainUsername;
-    extraGroups = [ "networkmanager" "input" "wheel" ];
-    packages = [];
+    extraGroups = [ "networkmanager" "input" "wheel" "nginx" ];
   };
 
   # --- Packages ---
@@ -32,7 +31,7 @@
 
     bash
     nushell
-    
+
     screen
     sops
     age
