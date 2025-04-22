@@ -44,6 +44,7 @@ in {
         pwd
         echo uwu
         cat ${config.sops.secrets.example_key.path}
+        cat ${config.sops.secrets."discord_bot/lighthouse/pass".path}
       '';
   };
 }
