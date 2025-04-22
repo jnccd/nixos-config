@@ -26,6 +26,13 @@ in {
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
+  # --- ACME ---
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "kobidogao@outlook.com";
+  };
+
   # --- Sops-Nix ---
 
   sops.secrets.example_key = {
