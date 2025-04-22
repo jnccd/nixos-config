@@ -25,10 +25,14 @@
     git
     curl
     wget
+
     htop
-    screen
-    nushell
     neofetch
+
+    nushell
+    screen
+    sops
+
     vim
   ];
 
