@@ -8,13 +8,19 @@ in {
   # --- Runner User ---
 
   users.users."${runnerUsername}" = {
-    isNormalUser = true;
     description = runnerUsername;
+
+    home = "/svr/${runnerUsername}/";
+    createHome = true;
+    shell = pkgs.bash;
+
+    isSystemUser = true;
+    group = "${runnerUsername}";
     extraGroups = [ 
       "nginx" # For certs :/
     ];
-    packages = [];
   };
+  users.groups."${runnerUsername}" = {};
 
   # --- Firewall ---
 
