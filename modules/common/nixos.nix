@@ -8,8 +8,9 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # --- Main User ---
+  # --- Users ---
 
+  users.defaultUserShell = pkgs.bash;
   users.users.${mainUsername} = {
     isNormalUser = true;
     description = mainUsername;
@@ -29,7 +30,9 @@
     htop
     neofetch
 
+    bash
     nushell
+    
     screen
     sops
     age

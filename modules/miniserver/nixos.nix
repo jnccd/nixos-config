@@ -12,7 +12,7 @@ in {
 
     home = "/svr/${runnerUsername}/";
     createHome = true;
-    shell = pkgs.bash;
+    useDefaultShell = true;
 
     isSystemUser = true;
     group = "${runnerUsername}";
