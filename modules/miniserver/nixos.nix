@@ -10,7 +10,9 @@ in {
   users.users."${runnerUsername}" = {
     isNormalUser = true;
     description = runnerUsername;
-    extraGroups = [];
+    extraGroups = [ 
+      "nginx" # For certs :/
+    ];
     packages = [];
   };
 
