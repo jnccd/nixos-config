@@ -10,7 +10,7 @@ in {
   users.users."${runnerUsername}" = {
     description = runnerUsername;
 
-    home = "/svr/${runnerUsername}/";
+    home = "/srv/${runnerUsername}/";
     createHome = true;
     useDefaultShell = true;
 
