@@ -3,6 +3,7 @@
 # nix flake update --flake .?submodules=1
 # home-manager switch -b backup --flake .?submodules=1
 # nix-collect-garbage -d
+# sops secrets/secrets.yaml
 # ---
 # sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1
 {
@@ -15,9 +16,11 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: let
+  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs: let
     stateVersion = "24.11";
     homeStateVersion = "24.11";
 
@@ -42,6 +45,7 @@
 
         modules = [
           ./hosts/${host.hostname}/configuration.nix
+          sops-nix.nixosModules.sops
         ];
       };
     };

@@ -54,6 +54,12 @@
 
   services.openssh.enable = true;
 
+  # --- Sops-Nix ---
+
+  sops.defaultSopsFile = ../../secrets/secrets.yaml;
+  sops.age.keyFile = "/home/${mainUsername}/.config/sops/age/keys.txt";
+  sops.age.generateKey = true;
+
   # --- Locale ---
 
   time.timeZone = "Europe/Berlin";

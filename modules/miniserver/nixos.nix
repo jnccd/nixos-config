@@ -18,6 +18,21 @@ in {
 
   networking.firewall.allowedTCPPorts = [ 80 443 ];
 
+  # --- Sops-Nix ---
+
+  sops.secrets.example_key = {
+    owner = runnerUsername;
+  };
+  sops.secrets."discord_bot/discord_token" = {
+    owner = runnerUsername;
+  };
+  sops.secrets."discord_bot/lighthouse/user" = {
+    owner = runnerUsername;
+  };
+  sops.secrets."discord_bot/lighthouse/pass" = {
+    owner = runnerUsername;
+  };
+
   # --- Services ---
 
   systemd.services = lib.custom.mkWrappedScreenService { 
@@ -27,6 +42,8 @@ in {
     script = pkgs.writeScript "script" ''
         who
         pwd
+        echo uwu
+        cat ${config.sops.secrets.example_key.path}
       '';
   };
 }
