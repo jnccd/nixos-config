@@ -42,8 +42,8 @@ in {
     script = pkgs.writeScript "script" ''
         who
         pwd
-        echo uwu
-        cat ${config.sops.secrets.example_key.path}
+        export EXAMPLE_KEY=$(cat ${config.sops.secrets.example_key.path})
+        echo $EXAMPLE_KEY
         cat ${config.sops.secrets."discord_bot/lighthouse/pass".path}
       '';
   };
