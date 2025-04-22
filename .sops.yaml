@@ -1,7 +1,7 @@
 keys:
-  - &lt_coffeelake_age age1p8kwpc7n3w8wlzwghazrh4mnjsd78ngsswtdjlv3n6c4tr8wf5ms4fuh4p
+  - &primary_key age1p8kwpc7n3w8wlzwghazrh4mnjsd78ngsswtdjlv3n6c4tr8wf5ms4fuh4p
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
     - age:
-      - *lt_coffeelake_age
+      - *primary_key
