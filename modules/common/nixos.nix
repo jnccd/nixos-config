@@ -32,6 +32,7 @@
     nushell
     screen
     sops
+    age
 
     vim
   ];
