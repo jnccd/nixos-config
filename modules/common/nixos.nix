@@ -44,6 +44,16 @@
     options = "--delete-older-than 30d";
   };
 
+  # --- Programs ---
+
+  programs.mtr.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+
+  services.openssh.enable = true;
+
   # --- Locale ---
 
   time.timeZone = "Europe/Berlin";

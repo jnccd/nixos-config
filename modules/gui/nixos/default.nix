@@ -37,13 +37,4 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
-  # Some programs need SUID wrappers
-  programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  services.openssh.enable = true;
 }
