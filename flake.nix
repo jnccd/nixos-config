@@ -4,6 +4,7 @@
 # home-manager switch -b backup --flake .?submodules=1
 # nix-collect-garbage -d
 # sops secrets/secrets.yaml
+# sops updatekeys secrets.yaml
 # ---
 # sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1
 {
