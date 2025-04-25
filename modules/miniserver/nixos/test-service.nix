@@ -3,6 +3,7 @@
   # --- Sops-Nix ---
 
   sops.secrets.example_key = {
+    sopsFile = ../../../secrets/lt-coffeelake.yaml;
     owner = globalArgs.defaultSystemUsername;
   };
 

@@ -59,7 +59,7 @@
 
   # --- Sops-Nix ---
 
-  sops.defaultSopsFile = ../../secrets/secrets.yaml;
+  sops.defaultSopsFile = ../../secrets/main.yaml;
   sops.age.keyFile = "/home/${globalArgs.mainUsername}/.config/sops/age/keys.txt";
   sops.age.generateKey = true;
 

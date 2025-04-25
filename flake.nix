@@ -6,9 +6,10 @@
 # ---
 # sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1
 # ---
-# sops secrets/secrets.yaml
-# sops updatekeys secrets.yaml
+# sops secrets/
+# sops updatekeys secrets/
 # nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'
+# git grep "secret" $(git rev-list --all)
 {
   description = "Dobiko Config";
 
