@@ -5,6 +5,9 @@
 
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable
+
+    # Neovim fonts
+    plemoljp-nf
   ];
 
   # --- Programs ---

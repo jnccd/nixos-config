@@ -1,5 +1,8 @@
+[Added Associations]
+text/x-lua=code.desktop;
 
 [Default Applications]
+text/html=vivaldi-stable.desktop
+text/x-lua=code.desktop;
 x-scheme-handler/http=vivaldi-stable.desktop
 x-scheme-handler/https=vivaldi-stable.desktop
-text/html=vivaldi-stable.desktop

@@ -37,7 +37,7 @@
     sops
     age
 
-    vim
+    neovim
   ];
 
   # nix-collect-garbage -d

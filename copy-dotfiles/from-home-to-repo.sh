@@ -104,4 +104,6 @@ cp_to_dotfiles .local/share/kio/servicemenus/openVSCode.desktop
 
 cp_to_dotfiles .nanorc
 
+cpr_to_dotfiles .config/nvim/
+
 cp_to_dotfiles .config/Code/User/settings.json
