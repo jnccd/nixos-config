@@ -1,0 +1,17 @@
+{
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "cSpell.userWords": [
+        "Dont",
+        "livelock",
+        "nixos"
+    ],
+    "files.exclude": {
+        "**/.git": false
+    },
+    "terminal.integrated.commandsToSkipShell": [
+        "-ctrl+k"
+    ],
+    "terminal.integrated.allowChords": false
+}

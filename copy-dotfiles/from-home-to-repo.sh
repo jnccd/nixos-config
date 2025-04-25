@@ -103,3 +103,5 @@ cp_to_dotfiles .local/state/konsolestaterc
 cp_to_dotfiles .local/share/kio/servicemenus/openVSCode.desktop
 
 cp_to_dotfiles .nanorc
+
+cp_to_dotfiles .config/Code/User/settings.json
