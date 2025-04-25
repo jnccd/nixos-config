@@ -13,7 +13,7 @@
     ../../modules/gui/nixos
 
     # For testing
-    ../../modules/miniserver/nixos.nix
+    ../../modules/miniserver/nixos
   ];
 
   # --- Bootloader ---

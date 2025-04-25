@@ -97,4 +97,11 @@
   # --- IO ---
 
   networking.networkmanager.enable = true;
+
+  # --- ACME ---
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "kobidogao@outlook.com";
+  };
 }
