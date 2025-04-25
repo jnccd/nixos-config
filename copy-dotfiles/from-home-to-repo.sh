@@ -71,7 +71,6 @@ cp_to_dotfiles .config/user-dirs.dirs
 cp_to_dotfiles .local/share/user-places.xbel
 cp_to_dotfiles .config/mimeapps.list
 cp_to_dotfiles .config/PlasmaUserFeedback
-cp_to_dotfiles /etc/NetworkManager/system-connections
 cp_to_dotfiles .config/kcminputrc
 cp_to_dotfiles .config/kxkbrc
 cp_to_dotfiles .config/touchpadxlibinputrc
@@ -102,3 +101,5 @@ cpr_to_dotfiles .local/share/konsole/
 cp_to_dotfiles .local/state/konsolestaterc
 
 cp_to_dotfiles .local/share/kio/servicemenus/openVSCode.desktop
+
+cp_to_dotfiles .nanorc
