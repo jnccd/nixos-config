@@ -1,4 +1,4 @@
-{ config, pkgs, stateVersion, mainUsername, ... }:
+{ config, pkgs, stateVersion, globalArgs, ... }:
 {
   programs.steam = {
     enable = true;

@@ -1,4 +1,4 @@
-{ config, pkgs, stateVersion, mainUsername, ... }:
+{ config, pkgs, stateVersion, globalArgs, ... }:
 {
   system.stateVersion = stateVersion;
   
@@ -11,9 +11,9 @@
   # --- Users ---
 
   users.defaultUserShell = pkgs.bash;
-  users.users.${mainUsername} = {
+  users.users.${globalArgs.mainUsername} = {
     isNormalUser = true;
-    description = mainUsername;
+    description = globalArgs.mainUsername;
     extraGroups = [ "networkmanager" "input" "wheel" "nginx" ];
   };
 
@@ -60,7 +60,7 @@
   # --- Sops-Nix ---
 
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
-  sops.age.keyFile = "/home/${mainUsername}/.config/sops/age/keys.txt";
+  sops.age.keyFile = "/home/${globalArgs.mainUsername}/.config/sops/age/keys.txt";
   sops.age.generateKey = true;
 
   # --- Podman ---
@@ -102,6 +102,6 @@
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "kobidogao@outlook.com";
+    defaults.email = globalArgs.email;
   };
 }

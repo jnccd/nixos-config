@@ -1,22 +1,21 @@
-{ config, lib, pkgs, stateVersion, mainUsername, ... }: let 
-  runnerUsername = "runner";
-in {
+{ config, lib, pkgs, stateVersion, globalArgs, ... }: 
+{
   imports = [ 
-    (import ../private-module/nixos { inherit config lib pkgs stateVersion mainUsername runnerUsername; })
-    (import ./test-service.nix { inherit config lib pkgs stateVersion mainUsername runnerUsername; })
+    ../private-module/nixos
+    ./test-service.nix
   ];
 
   # --- Runner User ---
 
-  users.users."${runnerUsername}" = {
-    description = runnerUsername;
+  users.users."${globalArgs.defaultSystemUsername}" = {
+    description = globalArgs.defaultSystemUsername;
 
-    home = "/srv/${runnerUsername}/";
+    home = "/srv/${globalArgs.defaultSystemUsername}/";
     createHome = true;
     useDefaultShell = true;
 
     isSystemUser = true;
-    group = "${runnerUsername}";
+    group = "${globalArgs.defaultSystemUsername}";
   };
-  users.groups."${runnerUsername}" = {};
+  users.groups."${globalArgs.defaultSystemUsername}" = {};
 }

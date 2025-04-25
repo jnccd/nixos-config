@@ -1,4 +1,4 @@
-{ config, pkgs, homeStateVersion, mainUsername, ... }:
+{ config, pkgs, homeStateVersion, globalArgs, ... }:
 {
   # --- Nix ---
 
@@ -7,8 +7,8 @@
   # --- Main User ---
 
   home = {
-    inherit mainUsername;
-    homeDirectory = "/home/${mainUsername}";
+    inherit (globalArgs) mainUsername;
+    homeDirectory = "/home/${globalArgs.mainUsername}";
     stateVersion = homeStateVersion;
   };
 
@@ -23,7 +23,7 @@
 
   programs.git = {
     enable = true;
-    userName  = "jnccd";
-    userEmail = "kobidogao@outlook.com";
+    userName  = globalArgs.githubUsername;
+    userEmail = globalArgs.email;
   };
 }

@@ -27,7 +27,12 @@
     stateVersion = "24.11";
     homeStateVersion = "24.11";
 
-    mainUsername = "dobiko";
+    globalArgs = {
+      mainUsername = "dobiko";
+      defaultSystemUsername = "runner";
+      githubUsername = "jnccd";
+      email = "kobidogao@outlook.com";
+    };
 
     hosts = [
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
@@ -41,7 +46,7 @@
       value = nixpkgs.lib.nixosSystem {
         inherit (host) system;
         specialArgs = {
-          inherit inputs mainUsername stateVersion;
+          inherit inputs stateVersion globalArgs;
           inherit (host) hostname;
           lib = extendWithCustomLib host.system;
         };
@@ -54,11 +59,11 @@
     };
 
     mkHome = host: {
-      name = "${mainUsername}@${host.hostname}";
+      name = "${globalArgs.mainUsername}@${host.hostname}";
       value = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${host.system};
         extraSpecialArgs = {
-          inherit inputs homeStateVersion mainUsername;
+          inherit inputs homeStateVersion globalArgs;
           lib = extendWithCustomLib host.system;
         };
 
