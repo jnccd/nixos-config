@@ -24,10 +24,10 @@
   };
 
   outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs: let
-    stateVersion = "24.11";
-    homeStateVersion = "24.11";
-
     globalArgs = {
+      stateVersion = "24.11";
+      homeStateVersion = "24.11";
+
       mainUsername = "dobiko";
       defaultSystemUsername = "runner";
       githubUsername = "jnccd";
@@ -46,7 +46,7 @@
       value = nixpkgs.lib.nixosSystem {
         inherit (host) system;
         specialArgs = {
-          inherit inputs stateVersion globalArgs;
+          inherit inputs globalArgs;
           inherit (host) hostname;
           lib = extendWithCustomLib host.system;
         };
@@ -63,7 +63,7 @@
       value = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${host.system};
         extraSpecialArgs = {
-          inherit inputs homeStateVersion globalArgs;
+          inherit inputs globalArgs;
           lib = extendWithCustomLib host.system;
         };
 

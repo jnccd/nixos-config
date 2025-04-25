@@ -1,4 +1,4 @@
-{ config, pkgs, homeStateVersion, globalArgs, ... }:
+{ config, pkgs, globalArgs, ... }:
 {
   # --- Packages ---
 

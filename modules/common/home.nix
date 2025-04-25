@@ -1,4 +1,4 @@
-{ config, pkgs, homeStateVersion, globalArgs, ... }:
+{ config, pkgs, globalArgs, ... }:
 {
   # --- Nix ---
 
@@ -9,7 +9,7 @@
   home = {
     inherit (globalArgs) mainUsername;
     homeDirectory = "/home/${globalArgs.mainUsername}";
-    stateVersion = homeStateVersion;
+    stateVersion = globalArgs.homeStateVersion;
   };
 
   # --- Programs ---

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, stateVersion, globalArgs, ... }: 
+{ config, lib, pkgs, globalArgs, ... }: 
 {
   imports = [ 
     ../private-module/nixos

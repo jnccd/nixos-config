@@ -1,6 +1,6 @@
-{ config, pkgs, stateVersion, globalArgs, ... }:
+{ config, pkgs, globalArgs, ... }:
 {
-  system.stateVersion = stateVersion;
+  system.stateVersion = globalArgs.stateVersion;
   
   # --- Nix ---
 
