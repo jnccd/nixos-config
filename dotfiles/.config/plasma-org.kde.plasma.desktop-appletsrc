@@ -93,7 +93,7 @@ immutability=1
 plugin=org.kde.plasma.icontasks
 
 [Containments][2][Applets][5][Configuration][General]
-launchers=preferred://filemanager,applications:org.kde.plasma-systemmonitor.desktop,applications:org.kde.konsole.desktop,applications:vivaldi-stable.desktop,applications:code.desktop
+launchers=preferred://filemanager,applications:org.kde.plasma-systemmonitor.desktop,applications:org.kde.konsole.desktop,applications:vivaldi-stable.desktop
 
 [Containments][2][Applets][6]
 immutability=1
@@ -104,7 +104,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][7][Configuration]
-PreloadWeight=90
+PreloadWeight=95
 SystrayContainmentId=8
 
 [Containments][2][General]
@@ -171,14 +171,14 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][8][Applets][21][Configuration]
-PreloadWeight=51
+PreloadWeight=48
 
 [Containments][8][Applets][22]
 immutability=1
 plugin=org.kde.plasma.brightness
 
 [Containments][8][Applets][22][Configuration]
-PreloadWeight=46
+PreloadWeight=38
 
 [Containments][8][Applets][23]
 immutability=1
