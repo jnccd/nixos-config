@@ -67,6 +67,7 @@
         pkgs = nixpkgs.legacyPackages.${host.system};
         extraSpecialArgs = {
           inherit inputs globalArgs;
+          inherit (host) hostname;
         };
 
         modules = [
