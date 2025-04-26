@@ -67,7 +67,6 @@
         pkgs = nixpkgs.legacyPackages.${host.system};
         extraSpecialArgs = {
           inherit inputs globalArgs;
-          lib = extendWithCustomLib host.system;
         };
 
         modules = [
