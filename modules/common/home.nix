@@ -7,7 +7,7 @@
   # --- Main User ---
 
   home = {
-    inherit (globalArgs) mainUsername;
+    username = globalArgs.mainUsername;
     homeDirectory = "/home/${globalArgs.mainUsername}";
     stateVersion = globalArgs.homeStateVersion;
   };

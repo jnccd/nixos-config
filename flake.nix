@@ -10,6 +10,7 @@
 # sops updatekeys secrets/
 # nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'
 # git grep "secret" $(git rev-list --all)
+# git submodule update --init --recursive
 {
   description = "Dobiko Config";
 
@@ -37,6 +38,7 @@
 
     hosts = [
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
+      { hostname = "pc-ryzen-vm"; system = "x86_64-linux"; }
     ];
 
     extendWithCustomLib = system: 
