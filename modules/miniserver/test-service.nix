@@ -1,9 +1,23 @@
 { config, lib, pkgs, globalArgs, ... }:
 {
+  # --- Runner User ---
+
+  users.users."${globalArgs.defaultSystemUsername}" = {
+    description = globalArgs.defaultSystemUsername;
+
+    home = "/srv/${globalArgs.defaultSystemUsername}/";
+    createHome = true;
+    useDefaultShell = true;
+
+    isSystemUser = true;
+    group = "${globalArgs.defaultSystemUsername}";
+  };
+  users.groups."${globalArgs.defaultSystemUsername}" = {};
+
   # --- Sops-Nix ---
 
   sops.secrets.example_key = {
-    sopsFile = ../../../secrets/lt-coffeelake.yaml;
+    sopsFile = ../../secrets/lt-coffeelake.yaml;
     owner = globalArgs.defaultSystemUsername;
   };
 
