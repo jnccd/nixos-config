@@ -1,4 +1,5 @@
-{ pkgs, ... }: let 
+{ pkgs, ... }: 
+rec {
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
 
@@ -43,6 +44,4 @@
       ${bashWaitForever}
     '';
     };
-in {
-  inherit bashEnsureInternet bashWaitForever mkScreenService mkWrappedScreenService;
 }
