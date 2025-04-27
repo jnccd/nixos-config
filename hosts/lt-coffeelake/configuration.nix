@@ -15,6 +15,10 @@
     ../../modules/miniserver
   ];
 
+  # --- Flags ---
+
+  #mySteam.enabled = true;
+
   # --- Bootloader ---
 
   boot.loader = {
