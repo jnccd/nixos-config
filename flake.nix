@@ -16,6 +16,7 @@
   description = "Dobiko Config";
 
   inputs = {
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
 
     home-manager = {
@@ -26,7 +27,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs: let
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, sops-nix, ... }@inputs: let
     globalArgs = {
       stateVersion = "24.11";
       homeStateVersion = "24.11";
@@ -53,6 +54,7 @@
           inherit inputs globalArgs;
           inherit (host) hostname;
           lib = extendWithCustomLib host.system;
+          pkgs-unstable = import inputs.nixpkgs-unstable { inherit (host) system; };
         };
 
         modules = [
