@@ -68,8 +68,13 @@
       fsType = "9p";
     };
 
+  fileSystems."/mnt/wslg/run/user/1001" =
+    { device = "tmpfs";
+      fsType = "tmpfs";
+    };
+
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/9f060291-8654-4762-911c-c2f9388b94bc"; }
+    [ { device = "/dev/disk/by-uuid/cc317e6f-71c7-47ec-8085-a42e8cb284aa"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
