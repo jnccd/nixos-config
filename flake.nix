@@ -27,7 +27,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs: let
+  outputs = { self, nixpkgs, nixos-wsl, home-manager, sops-nix, ... }@inputs: let
     globalArgs = {
       stateVersion = "24.11";
       homeStateVersion = "24.11";
@@ -60,7 +60,7 @@
         modules = [
           ./hosts/${host.hostname}/configuration.nix
           sops-nix.nixosModules.sops
-        ] ++ (if hasSuffix "-wsl" host.hostname then [ nixos-wsl.nixosModules.default ] else [ ]);
+        ] ++ (if nixpkgs.lib.strings.hasSuffix "-wsl" host.hostname then [ nixos-wsl.nixosModules.default ] else [ ]);
       };
     };
 
