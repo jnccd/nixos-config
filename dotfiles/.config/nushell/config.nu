@@ -1,3 +1,5 @@
+$env.config.show_banner = false
+
 $env.PROMPT_INDICATOR = ""
 $env.PROMPT_MULTILINE_INDICATOR = ":::"
 
@@ -24,3 +26,13 @@ $env.PROMPT_COMMAND = {
 
     $"($user_color)($user)@($host)($reset) ($nix_shell)($dir_color)($cwd)($reset)> "
 }
+
+$env.config.keybindings = [
+	{
+        name: windowns_cmd_ctrl_backspace_support
+        modifier: control
+        keycode: char_h
+        mode: [emacs, vi_insert, vi_normal]
+        event: {edit: CutBigWordLeft }
+    }
+]
