@@ -31,29 +31,7 @@
       fsType = "ext4";
     };
 
-  fileSystems."/mnt/wslg" =
-    { device = "none";
-      fsType = "tmpfs";
-    };
-
-  fileSystems."/mnt/wslg/distro" =
-    { device = "";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
   fileSystems."/usr/lib/wsl/lib" =
-    { device = "none";
-      fsType = "overlay";
-    };
-
-  fileSystems."/tmp/.X11-unix" =
-    { device = "/mnt/wslg/.X11-unix";
-      fsType = "none";
-      options = [ "bind" ];
-    };
-
-  fileSystems."/mnt/wslg/doc" =
     { device = "none";
       fsType = "overlay";
     };
@@ -66,11 +44,6 @@
   fileSystems."/mnt/d" =
     { device = "D:\134";
       fsType = "9p";
-    };
-
-  fileSystems."/mnt/wslg/run/user/1001" =
-    { device = "tmpfs";
-      fsType = "tmpfs";
     };
 
   swapDevices =
