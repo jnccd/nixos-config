@@ -18,7 +18,7 @@ $env.PROMPT_COMMAND = {
     )
 
     let user_color = if $is_root { ansi red_bold } else { ansi green_bold }
-    let dir_color = ansi cyan_bold
+    let dir_color = ansi white
     let reset = ansi reset
     let host = ($env.HOSTNAME? | default (hostname))
 

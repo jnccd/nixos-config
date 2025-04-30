@@ -108,4 +108,5 @@ cpr_to_dotfiles .config/nvim/
 
 cp_to_dotfiles .config/Code/User/settings.json
 
-cpr_to_dotfiles .config/nushell/
+cp_to_dotfiles .config/nushell/config.nu
+cp_to_dotfiles .config/nushell/env.nu
