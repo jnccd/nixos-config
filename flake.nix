@@ -40,6 +40,7 @@
     hosts = [
       { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
       { hostname = "pc-ryzen-vm"; system = "x86_64-linux"; }
+      { hostname = "pc-ryzen-wsl"; system = "x86_64-linux"; }
     ];
 
     extendWithCustomLib = system: 
