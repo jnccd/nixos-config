@@ -14,5 +14,5 @@
   # --- WSL ---
 
   wsl.enable = true;
-  wsl.defaultUser = "dobiko";
+  wsl.defaultUser = globalArgs.mainUsername;
 }
