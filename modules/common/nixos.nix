@@ -1,10 +1,9 @@
-{ config, pkgs, globalArgs, ... }:
-{
+{ config, pkgs, globalArgs, ... }: {
   system.stateVersion = globalArgs.stateVersion;
-  
+
   # --- Nix ---
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -23,7 +22,6 @@
 
   environment.systemPackages = with pkgs; [
     home-manager
-    nixfmt-classic
 
     git
     curl
@@ -41,6 +39,8 @@
     age
 
     neovim
+    nixfmt-classic
+    nil # LSP for nix lang
   ];
 
   # nix-collect-garbage -d
@@ -63,7 +63,8 @@
   # --- Sops-Nix ---
 
   sops.defaultSopsFile = ../../secrets/main.yaml;
-  sops.age.keyFile = "/home/${globalArgs.mainUsername}/.config/sops/age/keys.txt";
+  sops.age.keyFile =
+    "/home/${globalArgs.mainUsername}/.config/sops/age/keys.txt";
   sops.age.generateKey = true;
 
   # --- Podman ---
