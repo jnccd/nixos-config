@@ -8,6 +8,8 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  programs.nix-ld.enable = true;
+
   # --- Users ---
 
   users.defaultUserShell = pkgs.bash;
@@ -21,6 +23,7 @@
 
   environment.systemPackages = with pkgs; [
     home-manager
+    nixfmt-classic
 
     git
     curl
