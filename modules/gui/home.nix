@@ -3,7 +3,7 @@
   # --- Packages ---
 
   home.packages = with pkgs; [
-    libsForQt5.filelight
+    kdePackages.filelight
     kdePackages.kate
     gparted
 
