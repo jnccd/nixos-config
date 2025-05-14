@@ -11,12 +11,12 @@
     thunderbird
     anki
 
-    vivaldi.overrideAttrs
+    (vivaldi.overrideAttrs
       (oldAttrs: {
         dontWrapQtApps = false;
         dontPatchELF = true;
         nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.kdePackages.wrapQtAppsHook];
-      })
+      }))
     vivaldi-ffmpeg-codecs
   ];
 
@@ -30,7 +30,7 @@
       bbenoist.nix
       jnoortheen.nix-ide
       arrterian.nix-env-selector
-      shipitsmarter.sops-edit
+      #shipitsmarter.sops-edit
 
       streetsidesoftware.code-spell-checker
 
