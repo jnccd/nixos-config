@@ -29,9 +29,10 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
-  # --- Hardware Time ---
+  # --- Misc ---
 
   time.hardwareClockInLocalTime = true;
+  hardware.enableRedistributableFirmware = true;
 
   # --- Bootloader ---
 
