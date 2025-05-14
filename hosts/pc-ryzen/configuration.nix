@@ -29,6 +29,10 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  # --- Hardware Time ---
+
+  time.hardwareClockInLocalTime = true;
+
   # --- Bootloader ---
 
   boot.loader = {
