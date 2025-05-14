@@ -10,9 +10,6 @@
 
     ../../modules/common/nixos.nix
     ../../modules/gui/nixos
-
-    # For testing
-    ../../modules/miniserver
   ];
 
   # --- Flags ---
