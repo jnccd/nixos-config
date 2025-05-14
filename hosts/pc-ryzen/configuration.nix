@@ -16,10 +16,6 @@
 
   #mySteam.enabled = true;
 
-  environment.systemPackages = with pkgs; [
-    gparted
-  ];
-
   # --- NVidia ---
 
   services.xserver.videoDrivers = ["nvidia"];
