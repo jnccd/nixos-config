@@ -43,5 +43,7 @@
     grub.efiSupport = true;
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
+
+    grub.default = "2";
   };
 }
