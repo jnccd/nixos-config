@@ -30,6 +30,7 @@
       bbenoist.nix
       jnoortheen.nix-ide
       arrterian.nix-env-selector
+      shipitsmarter.sops-edit
 
       streetsidesoftware.code-spell-checker
 
