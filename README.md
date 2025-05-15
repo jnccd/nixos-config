@@ -22,7 +22,7 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 3. Edit the initial config to get git and add the desired hostname in networking.hostname, also add `nix.settings.experimental-features = ["nix-command" "flakes"];` so you can use flakes later
 4. `sudo nixos-rebuild switch`
 5. Reboot
-6. Generate a new ssh key and register it to your github/gitlab
+6. [Generate a new ssh key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and register it to your github/gitlab
 7. Clone the nixos-config repo via ssh
 8. In the flake.nix, add the new host in the hosts array
 9. In the hosts folder, add a folder for the given hostname and within it the `hardware-configuration.nix` from the initial config
