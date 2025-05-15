@@ -17,9 +17,12 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 
 ## Installation
 
+> [!WARNING]  
+> Since I am always chaning the config this is pretty much out of date all the time :)
+
 1. Use the nixos iso installer to get the basic system
 2. `sudo nixos-generate-config`
-3. Edit the initial config to get git and add the desired hostname in networking.hostname, also add `nix.settings.experimental-features = ["nix-command" "flakes"];` so you can use flakes later
+3. Edit the initial config to get git and add the desired hostname in networking.hostname
 4. `sudo nixos-rebuild switch`
 5. Reboot
 6. [Generate a new ssh key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and register it to your github/gitlab
