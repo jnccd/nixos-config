@@ -1,4 +1,3 @@
-# !Flakeless behaviour! sudo nixos-rebuild switch
 { config, lib, pkgs, globalArgs, hostname, ... }: 
 {
   networking.hostName = hostname;
@@ -11,10 +10,6 @@
     ../../modules/common/nixos.nix
     ../../modules/gui/nixos
   ];
-
-  # --- Flags ---
-
-  #mySteam.enabled = true;
 
   # --- Bootloader ---
 

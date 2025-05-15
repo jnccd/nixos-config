@@ -1,4 +1,3 @@
-# !Flakeless behaviour! sudo nixos-rebuild switch
 { config, lib, pkgs, globalArgs, hostname, ... }: 
 {
   networking.hostName = hostname;
@@ -14,7 +13,7 @@
 
   # --- Flags ---
 
-  #mySteam.enabled = true;
+  mySteam.enabled = true;
 
   # --- NVidia ---
 

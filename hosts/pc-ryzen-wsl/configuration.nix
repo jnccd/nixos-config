@@ -1,4 +1,3 @@
-# !Flakeless behaviour! sudo nixos-rebuild switch
 { config, lib, pkgs, globalArgs, hostname, ... }: 
 {
   networking.hostName = hostname;
