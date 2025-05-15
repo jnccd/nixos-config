@@ -9,6 +9,7 @@
 # sops secrets/
 # sops updatekeys secrets/
 # nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'
+# nix-shell -p ssh-to-age --run "ssh-to-age -private-key -i ~/.ssh/id_ed25519 > ~/.config/sops/age/keys.txt"
 # ---
 # git grep "secret" $(git rev-list --all)
 # git submodule update --init --recursive
