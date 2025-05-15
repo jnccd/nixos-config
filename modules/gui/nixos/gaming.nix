@@ -1,18 +1,22 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 {
-  options.mySteam.enabled = mkOption {
+  options.gaming.enabled = mkOption {
     type = types.bool;
     default = false;
-    description = "Enabled?";
+    description = "Only enable if you are a T R U E EBIC gamer!!";
   };
 
   config = {
-    programs.steam = mkIf config.mySteam.enabled {
+    programs.steam = mkIf config.gaming.enabled {
       enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
     };
+
+    environment.systemPackages = [
+      pkgs.dolphin-emu
+    ];
   };
 }

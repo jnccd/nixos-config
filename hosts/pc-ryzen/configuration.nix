@@ -11,9 +11,9 @@
     ../../modules/gui/nixos
   ];
 
-  # --- Flags ---
+  # --- Custom Module Settings ---
 
-  mySteam.enabled = true;
+  gaming.enabled = true;
 
   # --- NVidia ---
 
