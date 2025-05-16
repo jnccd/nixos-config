@@ -7,7 +7,7 @@
     owner = globalArgs.defaultSystemUsername;
   };
 
-  # --- Services ---
+  # --- Service ---
 
   systemd.services = lib.custom.mkWrappedScreenService { 
     sessionName = "test";
