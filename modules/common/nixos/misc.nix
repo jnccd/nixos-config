@@ -24,6 +24,15 @@
     };
   };
 
+  # --- Global Aliases ---
+
+  environment.shellAliases = {
+    owo = "echo uwu"; # I owo into the void and the void uwus back
+
+    nix-rb = "sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1";
+    nix-gc = "nix-collect-garbage -d";
+  };
+
   # --- Locale ---
 
   time.timeZone = "Europe/Berlin";
