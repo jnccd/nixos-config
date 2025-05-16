@@ -1,7 +1,7 @@
 keys:
   - &primary_key age1p8kwpc7n3w8wlzwghazrh4mnjsd78ngsswtdjlv3n6c4tr8wf5ms4fuh4p
   - &lt_coffeelake age159k7kchrtxc3k4j46lvtw03pctlx540ywdc0hvjre0c00qggruqslw6798
-  - &sv_minis age18saqptrrhrzvum3hmwqyr3kdsn7dkz0t5tyrks4xn8guejffvetszj2sjh
+  - &sv_minis age17ge8q06hfwntt7f95e83ktm9nqfrhd4v6tmzgvlgppgqwvlhvgqswg938t
   - &pc_ryzen_wsl age1ms0hsul6nmc2trhs8tg650drrv6ul6cjgzawcgx6czkmd8pzn38s5w8ds2
 creation_rules:
   - path_regex: secrets/main.yaml$
