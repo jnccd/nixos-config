@@ -5,7 +5,7 @@
       bbenoist.nix
       jnoortheen.nix-ide
       arrterian.nix-env-selector
-      #shipitsmarter.sops-edit
+      signageos.signageos-vscode-sops
 
       streetsidesoftware.code-spell-checker
 
