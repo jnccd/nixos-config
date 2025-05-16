@@ -11,8 +11,3 @@ creation_rules:
       - *lt_coffeelake
       - *sv_minis
       - *pc_ryzen_wsl
-  - path_regex: secrets/lt-coffeelake.yaml$
-    key_groups:
-    - age:
-      - *primary_key
-      - *lt_coffeelake
