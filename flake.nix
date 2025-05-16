@@ -15,6 +15,8 @@
 # git grep "secret" $(git rev-list --all)
 # git submodule update --init --recursive
 # git submodule update --recursive --remote
+# ---
+# { config, lib, pkgs, globalArgs, ... }:
 {
   description = "Dobiko Config";
 
