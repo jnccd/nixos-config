@@ -31,6 +31,8 @@
     nix-rb =
       "sudo nixos-rebuild switch --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1 && home-manager switch -b backup --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1";
     nix-gc = "nix-collect-garbage -d";
+
+    git-pull = "git pull && git submodule update --recursive --remote";
   };
 
   # --- Locale ---
