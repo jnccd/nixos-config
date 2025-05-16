@@ -16,6 +16,8 @@
     isNormalUser = true;
     description = globalArgs.mainUsername;
     extraGroups = [ "networkmanager" "input" "wheel" "nginx" ];
+    subUidRanges = [ { startUid = 100000; count = 65536; } ];
+    subGidRanges = [ { startGid = 100000; count = 65536; } ];
   };
 
   # --- Packages ---
