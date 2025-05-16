@@ -7,11 +7,10 @@
   # --- Packages ---
 
   environment.systemPackages = with pkgs; [
+    firefox
     alsa-utils
     sddm-astronaut
-    
-    # Neovim fonts
-    plemoljp-nf
+    plemoljp-nf # Neovim fonts
   ];
 
   # --- Programs ---
