@@ -27,7 +27,7 @@
     settings = {
       Users.HideUsers = (lib.lists.foldl (a: b: a + "," + b) "" 
           ((builtins.genList (x: "nixbld" + (builtins.toString x)) 33) 
-            ++ [ "runner" ]));
+            ++ [ globalArgs.defaultSystemUsername ]));
     };
     theme = "sddm-astronaut-theme";
   };

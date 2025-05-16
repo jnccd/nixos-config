@@ -15,7 +15,7 @@ with lib;
       localNetworkGameTransfers.openFirewall = true; # Open ports in the firewall for Steam Local Network Game Transfers
     };
 
-    environment.systemPackages = [
+    environment.systemPackages = mkIf config.gaming.enabled [
       pkgs.dolphin-emu
     ];
   };
