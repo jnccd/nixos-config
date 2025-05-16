@@ -16,7 +16,6 @@
 
     isSystemUser = true;
     group = "${globalArgs.defaultSystemUsername}";
-    subUidRanges = [ { startUid = 165536; count = 65536; } ];
   };
   users.groups."${globalArgs.defaultSystemUsername}" = {};
 }
