@@ -1,5 +1,4 @@
-{ config, lib, pkgs, globalArgs, hostname, ... }: 
-{
+{ config, lib, pkgs, globalArgs, hostname, ... }: {
   networking.hostName = hostname;
 
   # --- Imports ---
@@ -17,7 +16,7 @@
 
   # --- NVidia ---
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;

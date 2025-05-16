@@ -1,7 +1,7 @@
-{ config, lib, pkgs, globalArgs, ... }: 
-{
-  imports = [ 
+{ config, lib, pkgs, globalArgs, ... }: {
+  imports = [
     ./private-module
     ./test-service.nix
+
   ];
 }

@@ -1,5 +1,4 @@
-{ config, pkgs, globalArgs, ... }:
-{
+{ config, pkgs, globalArgs, ... }: {
   home.packages = with pkgs; [
     kdePackages.filelight
     kdePackages.kate
@@ -9,12 +8,12 @@
     thunderbird
     anki
 
-    (vivaldi.overrideAttrs
-      (oldAttrs: {
-        dontWrapQtApps = false;
-        dontPatchELF = true;
-        nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.kdePackages.wrapQtAppsHook];
-      }))
+    (vivaldi.overrideAttrs (oldAttrs: {
+      dontWrapQtApps = false;
+      dontPatchELF = true;
+      nativeBuildInputs = oldAttrs.nativeBuildInputs
+        ++ [ pkgs.kdePackages.wrapQtAppsHook ];
+    }))
     vivaldi-ffmpeg-codecs
   ];
 }

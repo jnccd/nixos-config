@@ -1,5 +1,4 @@
-{ config, lib, pkgs, globalArgs, hostname, ... }: 
-{
+{ config, lib, pkgs, globalArgs, hostname, ... }: {
   networking.hostName = hostname;
 
   # --- Imports ---
@@ -12,7 +11,7 @@
   ];
 
   # --- Bootloader ---
-  
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 }

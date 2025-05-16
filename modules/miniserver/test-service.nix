@@ -1,5 +1,4 @@
-{ config, lib, pkgs, globalArgs, ... }:
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   # --- Sops-Nix ---
 
   sops.secrets.example_key = {
@@ -9,15 +8,15 @@
 
   # --- Service ---
 
-  systemd.services = lib.custom.mkWrappedScreenService { 
+  systemd.services = lib.custom.mkWrappedScreenService {
     sessionName = "test";
     username = globalArgs.defaultSystemUsername;
     scriptDirName = "test";
     script = pkgs.writeScript "script" ''
-        who
-        pwd
-        export EXAMPLE_KEY=$(cat ${config.sops.secrets.example_key.path})
-        echo $EXAMPLE_KEY
-      '';
+      who
+      pwd
+      export EXAMPLE_KEY=$(cat ${config.sops.secrets.example_key.path})
+      echo $EXAMPLE_KEY
+    '';
   };
 }

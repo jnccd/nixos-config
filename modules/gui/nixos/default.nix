@@ -1,7 +1,7 @@
-{ config, lib, pkgs, globalArgs, ... }:
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   imports = [
     ./gaming.nix
+
   ];
 
   # --- Packages ---
@@ -24,9 +24,9 @@
   services.displayManager.sddm = {
     enable = true;
     settings = {
-      Users.HideUsers = (lib.lists.foldl (a: b: a + "," + b) "" 
-          ((builtins.genList (x: "nixbld" + (builtins.toString x)) 33) 
-            ++ [ globalArgs.defaultSystemUsername ]));
+      Users.HideUsers = (lib.lists.foldl (a: b: a + "," + b) ""
+        ((builtins.genList (x: "nixbld" + (builtins.toString x)) 33)
+          ++ [ globalArgs.defaultSystemUsername ]));
     };
     theme = "sddm-astronaut-theme";
   };

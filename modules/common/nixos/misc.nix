@@ -1,7 +1,6 @@
-{ config, lib, pkgs, globalArgs, ... }:
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   system.stateVersion = globalArgs.stateVersion;
-  
+
   # --- Sops-Nix ---
 
   sops.defaultSopsFile = ../../secrets/main.yaml;
@@ -29,7 +28,8 @@
   environment.shellAliases = {
     owo = "echo uwu"; # I owo into the void and the void uwus back
 
-    nix-rb = "sudo nixos-rebuild switch --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1 && home-manager switch -b backup --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1";
+    nix-rb =
+      "sudo nixos-rebuild switch --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1 && home-manager switch -b backup --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1";
     nix-gc = "nix-collect-garbage -d";
   };
 

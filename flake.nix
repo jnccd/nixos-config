@@ -38,61 +38,80 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-wsl, home-manager, sops-nix, ... }@inputs: let
-    globalArgs = {
-      stateVersion = "24.11";
-      homeStateVersion = "24.11";
+  outputs = { self, nixpkgs, nixos-wsl, home-manager, sops-nix, ... }@inputs:
+    let
+      globalArgs = {
+        stateVersion = "24.11";
+        homeStateVersion = "24.11";
 
-      mainUsername = "dobiko";
-      defaultSystemUsername = "runner";
-      githubUsername = "jnccd";
-      email = "kobidogao@outlook.com";
-    };
-
-    hosts = [
-      { hostname = "lt-coffeelake"; system = "x86_64-linux"; }
-      { hostname = "pc-ryzen"; system = "x86_64-linux"; }
-      { hostname = "pc-ryzen-vm"; system = "x86_64-linux"; }
-      { hostname = "pc-ryzen-wsl"; system = "x86_64-linux"; }
-      { hostname = "sv-minis"; system = "x86_64-linux"; }
-    ];
-
-    extendWithCustomLib = system: 
-      nixpkgs.lib.extend (self: super: { custom = import ./lib { pkgs = nixpkgs.legacyPackages.${system}; }; });
-
-    mkSystem = host: {
-      name = "${host.hostname}";
-      value = nixpkgs.lib.nixosSystem {
-        inherit (host) system;
-        specialArgs = {
-          inherit inputs globalArgs;
-          inherit (host) hostname;
-          lib = extendWithCustomLib host.system;
-        };
-
-        modules = [
-          ./hosts/${host.hostname}/configuration.nix
-          sops-nix.nixosModules.sops
-        ] ++ (if nixpkgs.lib.strings.hasSuffix "-wsl" host.hostname then [ nixos-wsl.nixosModules.default ] else [ ]);
+        mainUsername = "dobiko";
+        defaultSystemUsername = "runner";
+        githubUsername = "jnccd";
+        email = "kobidogao@outlook.com";
       };
-    };
 
-    mkHome = host: {
-      name = "${globalArgs.mainUsername}@${host.hostname}";
-      value = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${host.system};
-        extraSpecialArgs = {
-          inherit inputs globalArgs;
-          inherit (host) hostname;
+      hosts = [
+        {
+          hostname = "lt-coffeelake";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "pc-ryzen";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "pc-ryzen-vm";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "pc-ryzen-wsl";
+          system = "x86_64-linux";
+        }
+        {
+          hostname = "sv-minis";
+          system = "x86_64-linux";
+        }
+      ];
+
+      extendWithCustomLib = system:
+        nixpkgs.lib.extend (self: super: {
+          custom = import ./lib { pkgs = nixpkgs.legacyPackages.${system}; };
+        });
+
+      mkSystem = host: {
+        name = "${host.hostname}";
+        value = nixpkgs.lib.nixosSystem {
+          inherit (host) system;
+          specialArgs = {
+            inherit inputs globalArgs;
+            inherit (host) hostname;
+            lib = extendWithCustomLib host.system;
+          };
+
+          modules = [
+            ./hosts/${host.hostname}/configuration.nix
+            sops-nix.nixosModules.sops
+          ] ++ (if nixpkgs.lib.strings.hasSuffix "-wsl" host.hostname then
+            [ nixos-wsl.nixosModules.default ]
+          else
+            [ ]);
         };
-
-        modules = [
-          ./hosts/${host.hostname}/home.nix
-        ];
       };
+
+      mkHome = host: {
+        name = "${globalArgs.mainUsername}@${host.hostname}";
+        value = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${host.system};
+          extraSpecialArgs = {
+            inherit inputs globalArgs;
+            inherit (host) hostname;
+          };
+
+          modules = [ ./hosts/${host.hostname}/home.nix ];
+        };
+      };
+    in {
+      nixosConfigurations = builtins.listToAttrs (map mkSystem hosts);
+      homeConfigurations = builtins.listToAttrs (map mkHome hosts);
     };
-  in {
-    nixosConfigurations = builtins.listToAttrs (map mkSystem hosts);
-    homeConfigurations = builtins.listToAttrs (map mkHome hosts);
-  };
 }

@@ -1,5 +1,4 @@
-{ config, pkgs, globalArgs, ... }:
-{
+{ config, pkgs, globalArgs, ... }: {
   programs.vscode = {
     enable = true;
     extensions = with pkgs.vscode-extensions; [

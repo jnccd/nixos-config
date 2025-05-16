@@ -11,44 +11,43 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/lib/modules/5.15.167.4-microsoft-standard-WSL2" =
-    { device = "none";
-      fsType = "overlay";
-    };
+  fileSystems."/lib/modules/5.15.167.4-microsoft-standard-WSL2" = {
+    device = "none";
+    fsType = "overlay";
+  };
 
-  fileSystems."/mnt/wsl" =
-    { device = "none";
-      fsType = "tmpfs";
-    };
+  fileSystems."/mnt/wsl" = {
+    device = "none";
+    fsType = "tmpfs";
+  };
 
-  fileSystems."/usr/lib/wsl/drivers" =
-    { device = "drivers";
-      fsType = "9p";
-    };
+  fileSystems."/usr/lib/wsl/drivers" = {
+    device = "drivers";
+    fsType = "9p";
+  };
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/b0f10c81-aa05-4c57-bfc5-ec2b18785725";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/b0f10c81-aa05-4c57-bfc5-ec2b18785725";
+    fsType = "ext4";
+  };
 
-  fileSystems."/usr/lib/wsl/lib" =
-    { device = "none";
-      fsType = "overlay";
-    };
+  fileSystems."/usr/lib/wsl/lib" = {
+    device = "none";
+    fsType = "overlay";
+  };
 
-  fileSystems."/mnt/c" =
-    { device = "C:\134";
-      fsType = "9p";
-    };
+  fileSystems."/mnt/c" = {
+    device = "C:134";
+    fsType = "9p";
+  };
 
-  fileSystems."/mnt/d" =
-    { device = "D:\134";
-      fsType = "9p";
-    };
+  fileSystems."/mnt/d" = {
+    device = "D:134";
+    fsType = "9p";
+  };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/cc317e6f-71c7-47ec-8085-a42e8cb284aa"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/cc317e6f-71c7-47ec-8085-a42e8cb284aa"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

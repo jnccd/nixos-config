@@ -1,5 +1,4 @@
-{ config, pkgs, globalArgs, ... }:
-{
+{ config, pkgs, globalArgs, ... }: {
   # --- Nix ---
 
   nixpkgs.config.allowUnfree = true;
@@ -16,7 +15,7 @@
 
   programs.git = {
     enable = true;
-    userName  = globalArgs.githubUsername;
+    userName = globalArgs.githubUsername;
     userEmail = globalArgs.email;
   };
 }

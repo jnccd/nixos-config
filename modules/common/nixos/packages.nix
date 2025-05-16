@@ -1,5 +1,4 @@
-{ config, lib, pkgs, globalArgs, ... }:
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   environment.systemPackages = with pkgs; [
     home-manager
 
