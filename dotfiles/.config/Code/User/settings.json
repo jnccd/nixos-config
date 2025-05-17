@@ -28,7 +28,6 @@
         "-ctrl+k"
     ],
     "terminal.integrated.allowChords": false,
-    "workbench.colorTheme": "Default Dark+",
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nil",
     "nix.serverSettings": {
