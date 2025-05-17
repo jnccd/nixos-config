@@ -5,8 +5,7 @@
     git
     curl
     wget
-    ((pkgs.ffmpeg-full.override { withUnfree = true; }).overrideAttrs
-      (_: { doCheck = false; }))
+    ffmpeg-full
 
     htop
     neofetch
