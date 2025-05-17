@@ -11,7 +11,8 @@ Show Url Nav Bar=true
 Search History=/
 
 [MainWindow]
-1536x864 screen: Window-Maximized=true
+1536x864 screen: Height=575
+1536x864 screen: Width=723
 
 [filetree]
 editShade=183,220,246
@@ -23,3 +24,26 @@ showFullPathOnRoots=false
 showToolbar=true
 sortRole=0
 viewShade=211,190,222
+
+[lspclient]
+AllowedServerCommandLines=/run/current-system/sw/bin/nil
+AutoHover=true
+AutoImport=true
+BlockedServerCommandLines=
+CompletionDocumentation=true
+CompletionParens=true
+Diagnostics=true
+FormatOnSave=false
+HighlightGoto=true
+IncrementalSync=false
+InlayHints=false
+Messages=true
+ReferencesDeclaration=true
+SemanticHighlighting=true
+ServerConfiguration=
+SignatureHelp=true
+SymbolDetails=false
+SymbolExpand=true
+SymbolSort=false
+SymbolTree=true
+TypeFormatting=false

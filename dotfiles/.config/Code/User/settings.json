@@ -7,11 +7,14 @@
         "livelock",
         "nixos"
     ],
-    "files.exclude": {
-        "**/.git": false
-    },
     "terminal.integrated.commandsToSkipShell": [
         "-ctrl+k"
     ],
-    "terminal.integrated.allowChords": false
+    "terminal.integrated.allowChords": false,
+    "nix.enableLanguageServer": true,
+    "nix.formatterPath": "nixfmt",
+    "nix.serverPath": "nil",
+    "nix.serverSettings": {
+        "nil": {},
+    }
 }

@@ -13,9 +13,10 @@ MoveResize=89
 [Plugins]
 blurEnabled=true
 contrastEnabled=false
-diminactiveEnabled=true
 fullscreenEnabled=false
+kwin4_effect_geometry_changeEnabled=true
 maximizeEnabled=false
+mousemarkEnabled=true
 translucencyEnabled=true
 
 [Tiling]
