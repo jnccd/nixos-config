@@ -2,19 +2,53 @@
     "git.enableSmartCommit": true,
     "git.confirmSync": false,
     "git.autofetch": true,
+    "csharp.experimental.debug.hotReload": true,
+    "csharp.debug.hotReloadVerbosity": "detailed",
+    "cSpell.customDictionaries": {},
+    "cSpell.maxNumberOfProblems": 500,
+    "cSpell.maxDuplicateProblems": 25,
+    "cSpell.numSuggestions": 24,
+    "cSpell.dictionaryDefinitions": [],
+    "cSpell.language": "en,de",
     "cSpell.userWords": [
         "Dont",
         "livelock",
         "nixos"
     ],
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "diffEditor.ignoreTrimWhitespace": false,
+    "terminal.integrated.persistentSessionScrollback": 1000,
+    "terminal.integrated.scrollback": 100000,
     "terminal.integrated.commandsToSkipShell": [
         "-ctrl+k"
     ],
     "terminal.integrated.allowChords": false,
+    "workbench.colorTheme": "Default Dark+",
     "nix.enableLanguageServer": true,
-    "nix.formatterPath": "nixfmt",
     "nix.serverPath": "nil",
     "nix.serverSettings": {
-        "nil": {},
-    }
+        "nil": {
+            "diagnostics": {
+                "ignored": [
+                    "unused_binding"
+                ]
+            },
+            "formatting": {
+                "command": [
+                    "nixfmt"
+                ]
+            },
+            "nix": {
+                "flake": {
+                    "autoEvalInputs": true
+                }
+            }
+        },
+    },
+    "nix.formatterPath": "nixfmt",
 }
