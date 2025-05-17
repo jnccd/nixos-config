@@ -3,6 +3,7 @@
     firefox
     vlc
     loupe
+    gthumb
 
     alsa-utils
     sddm-astronaut
