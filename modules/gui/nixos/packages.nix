@@ -2,8 +2,6 @@
   environment.systemPackages = with pkgs; [
     firefox
     vlc
-    loupe
-    gthumb
 
     alsa-utils
     sddm-astronaut
