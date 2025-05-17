@@ -3,8 +3,11 @@
     firefox
     vlc
 
-    alsa-utils
+    plasma-panel-colorizer
     sddm-astronaut
+
+    alsa-utils
+
     plemoljp-nf # Neovim fonts
   ];
 }
