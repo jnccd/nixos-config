@@ -33,6 +33,7 @@
     nix-gc = "nix-collect-garbage -d";
 
     git-pull = "git pull && git submodule update --recursive --remote";
+    "cd.." = "cd ..";
   };
 
   # --- Locale ---
