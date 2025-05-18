@@ -6,6 +6,7 @@
 # ---
 # sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1
 # ---
+# sops -e -i secrets/
 # sops secrets/
 # sops updatekeys secrets/
 # nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'
