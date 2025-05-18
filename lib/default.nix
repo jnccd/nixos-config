@@ -2,13 +2,13 @@
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
 
-  mkScreenService = { sessionName, username, script }: {
+  mkScreenService = { sessionName, username, script, requirements ? [ ] }: {
     "${sessionName}" = {
       enable = true;
       description = sessionName;
 
       wantedBy = [ "multi-user.target" ];
-      requires = [ "network-online.target" ];
+      requires = [ "network-online.target" ] ++ requirements;
 
       environment = {
         NIX_PATH =
@@ -32,9 +32,10 @@
       };
     };
   };
-  mkWrappedScreenService = { sessionName, username, scriptDirName, script }:
+  mkWrappedScreenService =
+    { sessionName, username, scriptDirName, script, requirements ? [ ] }:
     mkScreenService {
-      inherit sessionName username;
+      inherit sessionName username requirements;
       script = pkgs.writeScript "wrapped-service-script" ''
         ${bashEnsureInternet}
         cd ~ && mkdir -p screen-runs/${scriptDirName}; cd screen-runs/${scriptDirName};
