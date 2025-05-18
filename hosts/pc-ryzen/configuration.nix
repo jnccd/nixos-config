@@ -8,6 +8,7 @@
 
     ../../modules/common/nixos
     ../../modules/gui/nixos
+    ../../modules/dev
   ];
 
   # --- Custom Module Settings ---
