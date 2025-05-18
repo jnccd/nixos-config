@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd $SCRIPT_DIR
+
 mk_and_cp() {
     mkdir -p $(dirname $2)
     cp --dereference $1 $2
@@ -10,11 +13,11 @@ mk_and_cpr() {
 }
 
 cp_to_dotfiles() {
-    mk_and_cp ~/$1 "./dotfiles/$1"
+    mk_and_cp ~/$1 "../dotfiles/$1"
 }
 cpr_to_dotfiles() {
-    mk_and_cpr ~/$1 "./dotfiles/$1"
-    find ./dotfiles/ -name "*.backup" -type f -delete
+    mk_and_cpr ~/$1 "../dotfiles/$1"
+    find ../dotfiles/ -name "*.backup" -type f -delete
 }
 
 # KDE Plasma 6
