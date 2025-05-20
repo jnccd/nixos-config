@@ -17,26 +17,27 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 
 ## Installation
 
-> [!WARNING]  
+> [!WARNING]
 > Since I am always changing the config this is pretty much out of date all the time :)
+
+> [!WARNING]
+> Since parts of this config are private youll have to substitute some parts of the config to make it work
 
 1. Use the nixos iso installer to get the basic system
 2. `sudo nixos-generate-config`
 3. Edit the initial config to get git and add the desired hostname in networking.hostname
 4. `sudo nixos-rebuild switch`
 5. Reboot
-6. [Generate a new ssh key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and register it to your github/gitlab
+6. [Generate a new ssh key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and register it to your github/gitlab account
 7. Clone the nixos-config repo via ssh
 8. In the flake.nix, add the new host in the hosts array
 9. In the hosts folder, add a folder for the given hostname and within it the `hardware-configuration.nix` from the initial config
 10. Populate the hostname folder with the configuration.nix and home.nix from another host to init
 11. `sudo nixos-rebuild switch --install-bootloader --flake .` <- if your computer just fucking dies during this step you fucked up and have to start from the beginning again :)
-12. `home-manager switch --flake .`
-13. `bash copy-dotfiles/from-repo-to-home.sh`
-14. Reboot for good measure
-15. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
-16. I dont know how to sync KDE Plasma widgets using nix yet, so install the missing ones (and log out / in to reload the desktop environment)
-17. Done, enjoy :)
+12. Reboot for good measure
+13. `nix-rb`
+14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
+15. Done, enjoy :)
 
 ## Tip
 
