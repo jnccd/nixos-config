@@ -18,7 +18,7 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 ## Installation
 
 > [!WARNING]  
-> Since I am always chaning the config this is pretty much out of date all the time :)
+> Since I am always changing the config this is pretty much out of date all the time :)
 
 1. Use the nixos iso installer to get the basic system
 2. `sudo nixos-generate-config`
