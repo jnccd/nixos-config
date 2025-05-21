@@ -5,6 +5,7 @@
     git
     curl
     wget
+    lynx
     ffmpeg-full
 
     htop
