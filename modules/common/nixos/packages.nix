@@ -2,24 +2,30 @@
   environment.systemPackages = with pkgs; [
     home-manager
 
+    # Networking
     git
     curl
     wget
     lynx
 
+    # Terminals
+    bash
+    nushell
+
+    # System Info
     htop
     neofetch
 
-    bash
-    nushell
-    screen
-
+    # Security
     sops
     age
 
+    # Coding
     neovim
     nixfmt-classic
     nil # LSP for nix lang
+
+    screen
 
     ffmpeg-full
   ];
