@@ -6,15 +6,14 @@ with lib; {
     description = "Only enable if you are a T R U E EBIC gamer!!";
   };
 
-  config = {
-    programs.steam = mkIf config.gaming.enabled {
+  config = mkIf config.gaming.enabled {
+    programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
     };
 
-    environment.systemPackages =
-      mkIf config.gaming.enabled [ pkgs.dolphin-emu ];
+    environment.systemPackages = [ pkgs.dolphin-emu ];
   };
 }
