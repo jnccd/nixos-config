@@ -4,6 +4,7 @@ in {
   environment.shellAliases = {
     owo = "echo uwu"; # I owo into the void and the void uwus back
     "cd.." = "cd ..";
+
     git-pull =
       "git pull && git submodule foreach 'git checkout main || git checkout -b main origin/main && git pull origin main'";
     git-pull-nixconf = pkgs.writeScript "git-pull-nixconf" ''
