@@ -7,6 +7,7 @@
 
     nix-rb =
       "sudo nixos-rebuild switch --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1 && home-manager switch -b backup --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1 && bash /home/${globalArgs.mainUsername}/git/nixos-config/copy-dotfiles/from-repo-to-home.sh";
+    nix-prb = "git-pull && nix-rb";
     nix-gc = "nix-collect-garbage -d";
   };
 }
