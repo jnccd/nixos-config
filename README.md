@@ -1,4 +1,4 @@
-# <img src="https://github.com/user-attachments/assets/d46f6ade-c539-47c6-a7a5-b98c7b4e5559" alt="Diagram" height="40" style="vertical-align:middle;"> My NixOS Flake 
+# <img src="https://github.com/user-attachments/assets/d46f6ade-c539-47c6-a7a5-b98c7b4e5559" alt="Diagram" height="40em" style="vertical-align:middle;"> My NixOS Flake 
 
 <img src="https://github.com/user-attachments/assets/d01d1363-8a59-4cd7-8c2c-b340982a4fc8" alt="Description" width="450ch" height=auto>
 
@@ -49,7 +49,7 @@ You might have assigned a variable at the wrong place and created an infinite tr
 
 ## Inspiration
 
-I mainly learned Nix from Ampersand's and Vimjoyer's YouTube videos as well as these repos:
+I mainly learned Nix from [Ampersand's](https://www.youtube.com/watch?v=nLwbNhSxLd4) and [Vimjoyer's](https://www.youtube.com/@vimjoyer) YouTube videos as well as these repos:
 
 https://github.com/Andrey0189/nixos-config-reborn
 
