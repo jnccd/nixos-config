@@ -6,7 +6,7 @@ in {
     "cd.." = "cd ..";
 
     git-pull =
-      "git pull && git submodule foreach 'git checkout main && git pull origin main'";
+      "git pull && git submodule foreach 'git checkout main && git pull'";
     git-pull-nixconf =
       "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
 
