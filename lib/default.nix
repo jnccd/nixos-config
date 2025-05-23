@@ -2,40 +2,42 @@
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
 
-  mkScreenService = { sessionName, username, script, requirements ? [ ] }: {
-    "${sessionName}" = {
-      enable = true;
-      description = sessionName;
+  mkScreenService =
+    { sessionName, username, script, requires ? [ ], after ? [ ] }: {
+      "${sessionName}" = {
+        enable = true;
+        description = sessionName;
 
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "network-online.target" ] ++ requirements;
+        wantedBy = [ "multi-user.target" ];
+        requires = [ "network-online.target" ] ++ requires;
+        after = after;
 
-      environment = {
-        NIX_PATH =
-          "nixpkgs=flake:nixpkgs:/nix/var/nix/profiles/per-user/root/channels";
-      };
+        environment = {
+          NIX_PATH =
+            "nixpkgs=flake:nixpkgs:/nix/var/nix/profiles/per-user/root/channels";
+        };
 
-      serviceConfig = {
-        User = username;
+        serviceConfig = {
+          User = username;
 
-        ExecStart = pkgs.writeScript "${sessionName}-start-script" ''
-          #!${pkgs.runtimeShell}
-          PATH=$PATH:/run/current-system/sw/bin
-          screen -S ${sessionName} -dm bash -c "${script}";
-          ${bashWaitForever}
-        '';
-        ExecStop = pkgs.writeScript "${sessionName}-stop-script" ''
-          #!${pkgs.runtimeShell}
-          PATH=$PATH:/run/current-system/sw/bin
-          screen -XS ${sessionName} quit
-        '';
+          ExecStart = pkgs.writeScript "${sessionName}-start-script" ''
+            #!${pkgs.runtimeShell}
+            PATH=$PATH:/run/current-system/sw/bin
+            screen -S ${sessionName} -dm bash -c "${script}";
+            ${bashWaitForever}
+          '';
+          ExecStop = pkgs.writeScript "${sessionName}-stop-script" ''
+            #!${pkgs.runtimeShell}
+            PATH=$PATH:/run/current-system/sw/bin
+            screen -XS ${sessionName} quit
+          '';
+        };
       };
     };
-  };
-  mkWrappedScreenService =
-    { sessionName, username, scriptDirName, script, requirements ? [ ] }:
+  mkWrappedScreenService = { sessionName, username, scriptDirName, script
+    , requires ? [ ], after ? [ ] }:
     mkScreenService {
-      inherit sessionName username requirements;
+      inherit sessionName username requires after;
       script = pkgs.writeScript "wrapped-service-script" ''
         ${bashEnsureInternet}
         cd ~ && mkdir -p screen-runs/${scriptDirName}; cd screen-runs/${scriptDirName};
