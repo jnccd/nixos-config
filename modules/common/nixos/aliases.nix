@@ -12,7 +12,7 @@ in {
 
     nix-rb =
       "sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
-    nix-prb = "sudo pwd && git-pull-nixconf && nix-rb";
+    nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
   };
 }
