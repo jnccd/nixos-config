@@ -1,4 +1,4 @@
-# My NixOS Flake
+# <img src="https://github.com/user-attachments/assets/d46f6ade-c539-47c6-a7a5-b98c7b4e5559" alt="Diagram" height="40" style="vertical-align:middle;"> My NixOS Flake 
 
 <img src="https://github.com/user-attachments/assets/d01d1363-8a59-4cd7-8c2c-b340982a4fc8" alt="Description" width="450ch" height=auto>
 
@@ -46,3 +46,13 @@ Whenever you change and rebuild a flake, make sure to look at the memory usage o
 You might have assigned a variable at the wrong place and created an infinite tree thats about to fill up your swapfile :)
 
 [Me when memory leek](https://www.reddit.com/r/196/comments/13z6p1x/hatsune_miku_devouring_her_leek/)
+
+## Inspiration
+
+I mainly learned Nix from Ampersand's and Vimjoyer's YouTube videos as well as these repos:
+
+https://github.com/Andrey0189/nixos-config-reborn
+
+https://github.com/EmergentMind/nix-config
+
+https://github.com/Baitinq/nixos-config
