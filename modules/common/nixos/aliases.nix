@@ -4,6 +4,7 @@ in {
   environment.shellAliases = {
     owo = "echo uwu"; # I owo into the void and the void uwus back
     "cd.." = "cd ..";
+    csharp-code = "export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 && code .";
 
     git-pull =
       "git pull && git submodule foreach 'git checkout main && git pull'";
