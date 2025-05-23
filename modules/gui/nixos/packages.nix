@@ -30,7 +30,6 @@
 
       # Coding
       dotnet-sdk
-      dotnet-sdk_6
       dotnet-ef
 
       plemoljp-nf # Neovim fonts
