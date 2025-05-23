@@ -22,6 +22,7 @@
       # Tools
       gparted
       alsa-utils
+      pgadmin4-desktopmode
 
       # Productivity
       thunderbird

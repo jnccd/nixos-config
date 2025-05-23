@@ -1,10 +1,11 @@
 { config, lib, pkgs, globalArgs, ... }: {
   imports = [
-    ./packages.nix
-    ./programs.nix
-
     ./misc.nix
     ./nix.nix
+    ./packages.nix
+    ./postgres.nix
+    ./programs.nix
     ./users.nix
+
   ];
 }
