@@ -1,41 +1,6 @@
 { config, lib, pkgs, globalArgs, ... }: {
   system.stateVersion = globalArgs.stateVersion;
 
-  # --- Sops-Nix ---
-
-  sops.defaultSopsFile = ../../../secrets/main.yaml;
-  sops.age.keyFile =
-    "/home/${globalArgs.mainUsername}/.config/sops/age/keys.txt";
-  sops.age.generateKey = true;
-
-  # --- Podman ---
-
-  virtualisation = {
-    containers.enable = true;
-    podman = {
-      enable = true;
-
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-    };
-  };
-
-  # --- Global Aliases ---
-
-  environment.shellAliases = {
-    owo = "echo uwu"; # I owo into the void and the void uwus back
-    "cd.." = "cd ..";
-    git-pull =
-      "git pull && git submodule foreach 'git checkout main || git checkout -b main origin/main && git pull origin main'";
-
-    nix-rb =
-      "sudo nixos-rebuild switch --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1 && home-manager switch -b backup --flake /home/${globalArgs.mainUsername}/git/nixos-config?submodules=1 && bash /home/${globalArgs.mainUsername}/git/nixos-config/copy-dotfiles/from-repo-to-home.sh";
-    nix-gc = "nix-collect-garbage -d";
-  };
-
   # --- Locale ---
 
   time.timeZone = "Europe/Berlin";
