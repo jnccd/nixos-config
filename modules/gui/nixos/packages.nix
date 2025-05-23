@@ -28,10 +28,6 @@
       thunderbird
       anki
 
-      # Coding
-      dotnet-sdk
-      dotnet-ef
-
       plemoljp-nf # Neovim fonts
     ] ++ (with kdePackages; [ filelight kate ]);
 }
