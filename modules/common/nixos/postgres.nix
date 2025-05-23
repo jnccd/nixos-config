@@ -16,7 +16,6 @@
       ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
         IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${globalArgs.mainUsername}') THEN
           CREATE ROLE ${globalArgs.mainUsername} LOGIN PASSWORD '$psql_pass' CREATEDB INHERIT;
-          
         END IF;
 
         IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${globalArgs.defaultSystemUsername}') THEN
