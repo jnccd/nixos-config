@@ -4,6 +4,8 @@
     "git.autofetch": true,
     "csharp.experimental.debug.hotReload": true,
     "csharp.debug.hotReloadVerbosity": "detailed",
+    "dotnetAcquisitionExtension.sharedExistingDotnetPath": "~/.nix-profile/bin/dotnet",
+    "dotnetAcquisitionExtension.allowInvalidPaths": true,
     "cSpell.customDictionaries": {},
     "cSpell.maxNumberOfProblems": 500,
     "cSpell.maxDuplicateProblems": 25,
