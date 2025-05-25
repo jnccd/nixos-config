@@ -1,3 +1,3 @@
 { config, lib, pkgs, globalArgs, ... }: {
-  imports = lib.custom.importAllLocal ./.;
+  imports = lib.custom.listAllLocalImportables ./.;
 }

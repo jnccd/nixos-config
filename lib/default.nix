@@ -49,7 +49,7 @@
       '';
     };
 
-  importAllLocal = path:
+  listAllLocalImportables = path:
     builtins.map (f: (path + "/${f}")) (builtins.attrNames
       (lib.attrsets.filterAttrs (path: _type:
         (_type == "directory") # include directories
