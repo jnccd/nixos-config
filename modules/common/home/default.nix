@@ -1,5 +1,4 @@
 { config, pkgs, globalArgs, ... }: {
-
   # --- Nix ---
 
   nixpkgs.config.allowUnfree = true;

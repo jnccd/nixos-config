@@ -1,5 +1,4 @@
 { config, pkgs, globalArgs, ... }: {
-
   # --- Programs ---
 
   home.packages = with pkgs; [ dotnet-sdk dotnet-ef ]; # For C# dev
