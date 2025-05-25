@@ -10,6 +10,9 @@
       arrterian.nix-env-selector
       signageos.signageos-vscode-sops
 
+      pkief.material-icon-theme
+      esbenp.prettier-vscode
+
       streetsidesoftware.code-spell-checker
 
       ms-dotnettools.csdevkit
