@@ -1,7 +1,3 @@
 { config, lib, pkgs, globalArgs, ... }: {
-  imports = [
-    ./private-module
-    ./test-service.nix
-
-  ];
+  imports = [ ./private-module ] ++ lib.custom.importAllLocal ./.;
 }

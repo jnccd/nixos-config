@@ -76,7 +76,10 @@
 
       extendWithCustomLib = system:
         nixpkgs.lib.extend (self: super: {
-          custom = import ./lib { pkgs = nixpkgs.legacyPackages.${system}; };
+          custom = import ./lib {
+            inherit (nixpkgs) lib;
+            pkgs = nixpkgs.legacyPackages.${system};
+          };
         });
 
       mkSystem = host: {

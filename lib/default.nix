@@ -1,4 +1,4 @@
-{ pkgs, ... }: rec {
+{ pkgs, lib, ... }: rec {
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
 
@@ -48,4 +48,12 @@
         ${bashWaitForever}
       '';
     };
+
+  importAllLocal = path:
+    builtins.map (f: (path + "/${f}")) (builtins.attrNames
+      (lib.attrsets.filterAttrs (path: _type:
+        (_type == "directory") # include directories
+        || ((path != "default.nix") # ignore default.nix
+          && (lib.strings.hasSuffix ".nix" path) # include .nix files
+        )) (builtins.readDir path)));
 }
