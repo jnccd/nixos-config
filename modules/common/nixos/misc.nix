@@ -1,6 +1,10 @@
 { config, lib, pkgs, globalArgs, ... }: {
   system.stateVersion = globalArgs.stateVersion;
 
+  # --- Clear tmp files ---
+
+  boot.tmp.cleanOnBoot = true;
+
   # --- Locale ---
 
   time.timeZone = "Europe/Berlin";
