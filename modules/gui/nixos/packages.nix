@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  environment.systemPackages = (with pkgs; [
+  environment.systemPackages = with pkgs; [
     # Base
     plasma-panel-colorizer
     kdePackages.qtmultimedia # For sddm theme
@@ -35,5 +35,5 @@
     anki
 
     plemoljp-nf # Neovim fonts
-  ]);
+  ];
 }
