@@ -22,14 +22,14 @@
   description = "Dobiko Config";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -41,9 +41,9 @@
 
   outputs = { self, nixpkgs, nixos-wsl, home-manager, sops-nix, ... }@inputs:
     let
-      globalArgs = {
-        stateVersion = "24.11";
-        homeStateVersion = "24.11";
+      globalArgs = rec {
+        stateVersion = "25.05";
+        homeStateVersion = stateVersion;
 
         mainUsername = "dobiko";
         defaultSystemUsername = "runner";

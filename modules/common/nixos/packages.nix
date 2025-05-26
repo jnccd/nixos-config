@@ -24,6 +24,9 @@
     neovim
     nixfmt-classic
     nil # LSP for nix lang
+    # Db Upgrade
+    postgresql_16
+    postgresql
 
     screen
 

@@ -3,7 +3,10 @@
   sops.secrets."postgres/pass" = { owner = "postgres"; };
 
   # - Services -
-  services.postgresql.enable = true;
+  services.postgresql = {
+    enable = true;
+    package = pkgs.postgresql_16;
+  };
   systemd.services = lib.custom.mkWrappedScreenService {
     sessionName = "psql-init";
     username = "postgres";
