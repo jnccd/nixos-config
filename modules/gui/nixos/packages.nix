@@ -1,9 +1,14 @@
 { config, lib, pkgs, ... }: {
-  environment.systemPackages = with pkgs;
+  environment.systemPackages = (with pkgs;
     [
       # Base
       plasma-panel-colorizer
-      sddm-astronaut
+      (sddm-astronaut.override {
+        embeddedTheme = "purple_leaves";
+        themeConfig = {
+          FormPosition="left";
+        };
+      })
 
       # Browser
       firefox
@@ -29,5 +34,9 @@
       anki
 
       plemoljp-nf # Neovim fonts
-    ] ++ (with kdePackages; [ filelight kate ]);
+    ]) ++ (with pkgs.kdePackages; [
+      qtmultimedia # For sddm theme
+      filelight 
+      kate 
+    ]);
 }
