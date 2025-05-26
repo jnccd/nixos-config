@@ -6,7 +6,7 @@
     enable = true;
     package = pkgs.vscode.fhs;
 
-    extensions = with pkgs.vscode-extensions; [
+    profiles.default.extensions = with pkgs.vscode-extensions; [
       bbenoist.nix
       jnoortheen.nix-ide
       arrterian.nix-env-selector
