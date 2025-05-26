@@ -27,6 +27,7 @@
     pgadmin4-desktopmode
 
     # Productivity
+    libreoffice-qt6-fresh
     thunderbird
     anki
 
