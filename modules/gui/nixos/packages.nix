@@ -1,33 +1,39 @@
 { config, lib, pkgs, ... }: {
-  environment.systemPackages = with pkgs;
-    [
-      # Base
-      plasma-panel-colorizer
-      sddm-astronaut
+  environment.systemPackages = with pkgs; [
+    # Base
+    plasma-panel-colorizer
+    kdePackages.qtmultimedia # For sddm theme
+    (sddm-astronaut.override {
+      embeddedTheme = "purple_leaves";
+      themeConfig = { FormPosition = "left"; };
+    })
 
-      # Browser
-      firefox
-      (vivaldi.overrideAttrs (oldAttrs: {
-        dontWrapQtApps = false;
-        dontPatchELF = true;
-        nativeBuildInputs = oldAttrs.nativeBuildInputs
-          ++ [ pkgs.kdePackages.wrapQtAppsHook ];
-      }))
-      vivaldi-ffmpeg-codecs
+    # Browser
+    firefox
+    (vivaldi.overrideAttrs (oldAttrs: {
+      dontWrapQtApps = false;
+      dontPatchELF = true;
+      nativeBuildInputs = oldAttrs.nativeBuildInputs
+        ++ [ kdePackages.wrapQtAppsHook ];
+    }))
+    vivaldi-ffmpeg-codecs
 
-      # Multimedia
-      vlc
-      gimp
+    # Multimedia
+    vlc
+    gimp
 
-      # Tools
-      gparted
-      alsa-utils
-      pgadmin4-desktopmode
+    # Tools
+    gparted
+    alsa-utils
+    pgadmin4-desktopmode
+    kdePackages.filelight
+    kdePackages.kate
 
-      # Productivity
-      thunderbird
-      anki
+    # Productivity
+    libreoffice-qt6-fresh
+    thunderbird
+    anki
 
-      plemoljp-nf # Neovim fonts
-    ] ++ (with kdePackages; [ filelight kate ]);
+    plemoljp-nf # Neovim fonts
+  ];
 }

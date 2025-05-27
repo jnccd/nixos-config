@@ -8,7 +8,6 @@ Places Icons Static Size=22
 
 [MainWindow]
 MenuBar=Disabled
-ToolBarsMovable=Disabled
 
 [Notification Messages]
 warnAboutRisksBeforeActingAsAdmin=false

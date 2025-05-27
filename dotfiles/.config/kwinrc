@@ -25,13 +25,19 @@ padding=4
 [Tiling][1c624b6b-fbd3-5af5-93a9-4a7d55ba7893]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Tiling][5bf20859-5a6f-5672-84b6-f6d52cb3a22c]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
+[Tiling][dadcbf7d-c667-57c3-8703-d02d167e5638]
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Windows]
 BorderSnapZone=5
 DelayFocusInterval=100
 WindowSnapZone=3
 
 [Xwayland]
-Scale=1.25
+Scale=2
 
 [org.kde.kdecoration2]
 library=org.kde.breeze
