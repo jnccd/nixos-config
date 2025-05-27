@@ -2,6 +2,8 @@
 memory/physical/used=61,174,233
 
 [Face-94410238879984][SensorColors]
+network/eno1/ipv4address=61,174,233
+network/eno1/ipv6address=233,120,61
 network/wlo1/ipv4address=61,174,233
 network/wlo1/ipv6address=233,120,61
 
@@ -19,5 +21,7 @@ os/system/hostname=61,174,233
 os/system/prettyName=154,61,233
 
 [Face-94410280144624][SensorColors]
+network/eno1/download=61,174,233
+network/eno1/upload=233,120,61
 network/wlo1/download=61,174,233
 network/wlo1/upload=233,120,61
