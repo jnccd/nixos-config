@@ -75,7 +75,6 @@ cp_to_dotfiles .local/share/user-places.xbel
 cp_to_dotfiles .config/mimeapps.list
 cp_to_dotfiles .config/PlasmaUserFeedback
 cp_to_dotfiles .config/kcminputrc
-cp_to_dotfiles .config/kxkbrc
 cp_to_dotfiles .config/touchpadxlibinputrc
 cp_to_dotfiles .config/kgammarc
 cp_to_dotfiles .config/powermanagementprofilesrc
