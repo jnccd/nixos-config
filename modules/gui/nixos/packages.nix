@@ -17,6 +17,7 @@
         ++ [ kdePackages.wrapQtAppsHook ];
     }))
     vivaldi-ffmpeg-codecs
+    kdePackages.plasma-browser-integration
 
     # Multimedia
     vlc
