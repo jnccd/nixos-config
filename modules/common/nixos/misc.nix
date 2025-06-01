@@ -1,8 +1,9 @@
 { config, lib, pkgs, globalArgs, ... }: {
   system.stateVersion = globalArgs.stateVersion;
 
-  # --- Clear tmp files ---
+  # --- Tmp files ---
 
+  # Podman shits itself if it encouters its own old tmpfiles
   boot.tmp.cleanOnBoot = true;
 
   # --- Locale ---
