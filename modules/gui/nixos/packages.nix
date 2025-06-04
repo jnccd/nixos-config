@@ -22,6 +22,7 @@
     # Multimedia
     vlc
     gimp
+    inkscape-with-extensions
 
     # Tools
     gparted
