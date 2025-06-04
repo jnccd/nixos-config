@@ -11,3 +11,6 @@ MenuBar=Disabled
 
 [Notification Messages]
 warnAboutRisksBeforeActingAsAdmin=false
+
+[Search]
+What=Content

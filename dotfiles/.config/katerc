@@ -7,12 +7,11 @@ Show Status Bar=true
 Show Tab Bar=true
 Show Url Nav Bar=true
 
-[KTextEditor::Search]
-Search History=/
-
 [MainWindow]
 1536x864 screen: Height=575
 1536x864 screen: Width=723
+2 screens: Height=835
+2 screens: Width=1018
 
 [filetree]
 editShade=183,220,246

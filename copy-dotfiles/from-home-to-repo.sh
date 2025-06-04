@@ -51,12 +51,9 @@ cp_to_dotfiles .config/kactivitymanagerdrc
 cp_to_dotfiles .config/kactivitymanagerd-switcher
 cp_to_dotfiles .config/kactivitymanagerd-statsrc
 cp_to_dotfiles .config/kactivitymanagerd-pluginsrc
-cp_to_dotfiles .config/kglobalshortcutsrc
 cp_to_dotfiles .config/plasma-org.kde.plasma.desktop-appletsrc
 cp_to_dotfiles .config/kwinrulesrc
-cp_to_dotfiles .config/kglobalshortcutsrc
 cp_to_dotfiles .config/khotkeysrc
-cp_to_dotfiles .config/kglobalshortcutsrc
 cp_to_dotfiles .config/kded5rc
 cp_to_dotfiles .config/ksmserverrc
 cp_to_dotfiles .config/krunnerrc
@@ -96,6 +93,7 @@ cp_to_dotfiles .config/krusaderrc
 cp_to_dotfiles .config/spectaclerc
 cp_to_dotfiles .config/systemmonitorrc
 cp_to_dotfiles .config/systemsettingsrc
+cp_to_dotfiles .config/plasmaparc
 
 # Konsole
 cp_to_dotfiles .config/konsolerc
