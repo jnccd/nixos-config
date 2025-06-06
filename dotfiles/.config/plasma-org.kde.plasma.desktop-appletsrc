@@ -95,6 +95,7 @@ plugin=org.kde.plasma.icontasks
 
 [Containments][2][Applets][5][Configuration][General]
 launchers=preferred://filemanager,applications:org.kde.plasma-systemmonitor.desktop,applications:org.kde.konsole.desktop,applications:vivaldi-stable.desktop
+taskHoverEffect=false
 
 [Containments][2][Applets][6]
 immutability=1
@@ -152,6 +153,7 @@ DialogWidth=720
 
 [Containments][30][Applets][33][Configuration][General]
 launchers=preferred://filemanager,applications:org.kde.plasma-systemmonitor.desktop,applications:org.kde.konsole.desktop,preferred://browser,applications:code-url-handler.desktop
+taskHoverEffect=false
 
 [Containments][30][Applets][34]
 immutability=1
