@@ -1,3 +1,5 @@
+plasmoid.configuration.taskHoverEffect=false
+
 [ActionPlugins][0]
 RightButton;NoModifier=org.kde.contextmenu
 

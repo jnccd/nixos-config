@@ -2,9 +2,8 @@
   environment.systemPackages = with pkgs; [
     # KDE
     plasma-panel-colorizer
-    kdePackages.filelight
-    kdePackages.kate
-    kdePackages.kcalc
+    kdePackages.kdbusaddons
+    kdePackages.kpackage
     # SDDM
     kdePackages.sddm-kcm
     kdePackages.qtmultimedia # For sddm theme
@@ -35,6 +34,9 @@
     alsa-utils
     pgadmin4-desktopmode
     hardinfo2
+    kdePackages.filelight
+    kdePackages.kate
+    kdePackages.kcalc
 
     # Productivity
     libreoffice-qt6-fresh
