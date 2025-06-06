@@ -1,7 +1,13 @@
 { config, lib, pkgs, ... }: {
   environment.systemPackages = with pkgs; [
-    # Base
+    # KDE
     plasma-panel-colorizer
+    kdePackages.discover
+    kdePackages.filelight
+    kdePackages.kate
+    kdePackages.kcalc
+    # SDDM
+    kdePackages.sddm-kcm
     kdePackages.qtmultimedia # For sddm theme
     (sddm-astronaut.override {
       embeddedTheme = "purple_leaves";
@@ -26,10 +32,10 @@
 
     # Tools
     gparted
+    wayland-utils
     alsa-utils
     pgadmin4-desktopmode
-    kdePackages.filelight
-    kdePackages.kate
+    hardinfo2
 
     # Productivity
     libreoffice-qt6-fresh
