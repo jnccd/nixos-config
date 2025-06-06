@@ -2,7 +2,6 @@
   environment.systemPackages = with pkgs; [
     # KDE
     plasma-panel-colorizer
-    kdePackages.discover
     kdePackages.filelight
     kdePackages.kate
     kdePackages.kcalc
