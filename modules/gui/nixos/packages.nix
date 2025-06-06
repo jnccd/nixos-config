@@ -27,6 +27,10 @@
     vlc
     gimp
     inkscape-with-extensions
+    kdePackages.kdenlive
+    blender
+    yt-dlp
+    ffmpeg-full
 
     # Tools
     gparted
