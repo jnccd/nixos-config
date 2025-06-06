@@ -27,6 +27,7 @@
     vlc
     gimp
     inkscape-with-extensions
+    kdePackages.dragon
     kdePackages.kdenlive
     blender
     yt-dlp
