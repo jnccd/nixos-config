@@ -21,7 +21,7 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 > Since I am always changing the config this is pretty much out of date all the time :)
 
 > [!WARNING]
-> Since parts of this config are private you`ll have to substitute some parts of the config to make it work. Notably, the dotfiles also reference my main username.
+> Since parts of this config are private you`ll have to substitute some imports in the config to make it work. Notably, the dotfiles also reference my main username.
 
 1. Use the nixos iso installer to get the basic system
 2. `sudo nixos-generate-config`
