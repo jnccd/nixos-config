@@ -1,0 +1,25 @@
+{
+  "KPlugin": {
+    "Authors": [
+      {
+        "Email": "kobidogao@yahoo.com",
+        "Name": "Me"
+      }
+    ],
+    "Id": "windowsy-breeze-dark",
+    "Name": "Windowsy Breeze Dark",
+    "Description": "Custom version of Breeze Dark with modified taskbar icons.",
+    "Version": "1.0",
+    "Website": "",
+    "License": "LGPLv3+",
+    "EnabledByDefault": true
+  },
+  "X-Plasma-API": "5.0",
+  "X-Plasma-MainScript": "",
+  "X-KDE-PluginInfo-Name": "windowsy-breeze-dark",
+  "X-KDE-PluginInfo-Author": "Your Name",
+  "X-KDE-PluginInfo-License": "LGPLv3+",
+  "X-KDE-PluginInfo-Version": "1.0",
+  "X-KDE-PluginInfo-Category": "Plasma Theme",
+  "X-KDE-PluginInfo-EnabledByDefault": true
+}
