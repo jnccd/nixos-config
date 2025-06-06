@@ -2,7 +2,7 @@
 
 <img src="https://github.com/user-attachments/assets/d01d1363-8a59-4cd7-8c2c-b340982a4fc8" alt="Description" width="450ch" height=auto>
 
-Yeah, I destroyed my system completely multiple times while building this.
+Yeah, I destroyed my system completely multiple times while building this, so I am not sure about the claims of update atomicity.
 But flakes are definitely reproducible which is neat.
 
 ## What does it look like?
@@ -33,7 +33,7 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 8. In the flake.nix, add the new host in the hosts array
 9. In the hosts folder, add a folder for the given hostname and within it the `hardware-configuration.nix` from the initial config
 10. Populate the hostname folder with the configuration.nix and home.nix from another host to init
-11. `sudo nixos-rebuild switch --install-bootloader --flake .` <- if your computer just fucking dies during this step you fucked up and have to start from the beginning again :)
+11. `sudo nixos-rebuild switch --install-bootloader --flake .`
 12. Reboot for good measure
 13. `nix-rb`
 14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
