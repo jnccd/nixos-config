@@ -6,9 +6,6 @@ ViewPropsTimestamp=2025,1,24,16,43,24.62
 Places Icons Auto-resize=false
 Places Icons Static Size=22
 
-[MainWindow]
-MenuBar=Disabled
-
 [Notification Messages]
 warnAboutRisksBeforeActingAsAdmin=false
 

@@ -3,5 +3,5 @@ Autolock=false
 Timeout=0
 
 [Greeter][Wallpaper][org.kde.image][General]
-Image=/nix/store/svxfwi6scfly40vwy5g1707nbm81sfyx-plasma-workspace-wallpapers-6.2.5/share/wallpapers/Path/
-PreviewImage=/nix/store/svxfwi6scfly40vwy5g1707nbm81sfyx-plasma-workspace-wallpapers-6.2.5/share/wallpapers/Path/
+Image=/home/dobiko/.lockscreen-image
+PreviewImage=/home/dobiko/.lockscreen-image

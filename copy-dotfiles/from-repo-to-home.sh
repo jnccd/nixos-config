@@ -6,4 +6,5 @@ cd $SCRIPT_DIR
 cp -r ../dotfiles/.config/ ~
 cp -r ../dotfiles/.local/ ~
 cp ../dotfiles/.background-image ~
+cp ../dotfiles/.lockscreen-image ~
 cp ../dotfiles/.nanorc ~
