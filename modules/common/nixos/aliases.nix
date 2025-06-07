@@ -4,6 +4,14 @@ in {
   environment.shellAliases = {
     owo = "echo uwu"; # I owo into the void and the void uwus back
     "cd.." = "cd ..";
+    scrn-ls = ''
+      sudo bash -c '
+        for home in $(cut -d: -f6 /etc/passwd | grep -v '/var/empty'); do 
+          if [ -d $home/.screen ] && [ -x $home/.screen ]; then
+            cd $home/.screen && echo $home && ls; 
+          fi; 
+        done'
+    '';
 
     git-pull =
       "git pull && git submodule foreach 'git checkout main && git pull'";
