@@ -27,6 +27,9 @@
     # Db Upgrade
     postgresql_16
     postgresql
+    # Dotnet dev and ef core deploy
+    dotnet-sdk
+    dotnet-ef
 
     screen
 
