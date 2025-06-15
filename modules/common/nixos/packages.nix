@@ -7,6 +7,7 @@
     curl
     wget
     lynx
+    dig
 
     # Terminals
     bash
