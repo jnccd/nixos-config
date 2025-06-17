@@ -1,5 +1,5 @@
 { config, lib, pkgs, globalArgs, ... }:
-let runnerName = globalArgs.defaultSystemUsername ++ "-test";
+let runnerName = globalArgs.defaultSystemUsername + "-test";
 in {
   # - User -
 
