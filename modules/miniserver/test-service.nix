@@ -1,16 +1,26 @@
-{ config, lib, pkgs, globalArgs, ... }: {
-  # --- Sops-Nix ---
+{ config, lib, pkgs, globalArgs, ... }:
+let runnerName = globalArgs.defaultSystemUsername ++ "-test";
+in {
+  # - User -
+
+  userMngmnt.additionalUsers = [{
+    name = runnerName;
+    isAdmin = false;
+    isSystem = true;
+  }];
+
+  # - Sops-Nix -
 
   sops.secrets.example_key = {
     sopsFile = ../../secrets/main.yaml;
-    owner = globalArgs.defaultSystemUsername;
+    owner = runnerName;
   };
 
-  # --- Service ---
+  # - Service -
 
   systemd.services = lib.custom.mkWrappedScreenService {
     sessionName = "test";
-    username = globalArgs.defaultSystemUsername;
+    username = runnerName;
     scriptDirName = "test";
     script = pkgs.writeScript "script" ''
       who
