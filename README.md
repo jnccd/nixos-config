@@ -7,11 +7,11 @@ But flakes are definitely reproducible which is neat.
 
 ## What does it look like?
 
-![Screenshot_20250418_122847](https://github.com/user-attachments/assets/208d8c45-3919-49e6-af4b-a38eb07e7f9b)
+![image](https://github.com/user-attachments/assets/f27e7c6c-7951-4b4b-8881-6233fd7b9502)
 
 Like this 👀
 
-Its basically default Plasma 6 Breeze with some modifications for more transparency because thats fancy. The idea here was to create a good looking DE that (mostly) doesnt break within the next patch, so I didnt go overboard with any of the modifications.
+Its basically default Plasma 6 Breeze with some light fancy modifications. The idea here was to create a good looking DE that (mostly) doesnt break within the next patch, so I didnt go overboard with any of the modifications.
 
 The background image is from [Alena Aenami](https://www.artstation.com/artwork/n0mwQo). Go check her out, she makes amazing artworks 👀
 
