@@ -1,12 +1,6 @@
 { config, lib, pkgs, globalArgs, hostname, ... }: {
   networking.hostName = hostname;
 
-  # userMngmnt.additionalUsers = [{
-  #   name = "steve";
-  #   isAdmin = false;
-  #   isSystem = false;
-  # }];
-
   # --- Imports ---
 
   imports = [
