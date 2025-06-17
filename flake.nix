@@ -46,9 +46,10 @@
         homeStateVersion = stateVersion;
 
         mainUsername = "dobiko";
-        defaultSystemUsername = "runner";
         githubUsername = "jnccd";
         email = "kobidogao@outlook.com";
+
+        defaultSystemUsername = "runner";
       };
 
       hosts = [
