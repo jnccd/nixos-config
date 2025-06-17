@@ -7,7 +7,7 @@ But flakes are definitely reproducible which is neat.
 
 ## What does it look like?
 
-![image](https://github.com/user-attachments/assets/f27e7c6c-7951-4b4b-8881-6233fd7b9502)
+![image](https://github.com/user-attachments/assets/7dbbe417-5878-45d9-be5f-b9e11d94240a)
 
 Like this 👀
 
