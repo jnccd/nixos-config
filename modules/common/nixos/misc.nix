@@ -3,7 +3,6 @@
 
   # --- Tmp files ---
 
-  # Podman shits itself if it encounters its own old tempfiles
   boot.tmp.cleanOnBoot = true;
 
   # --- Locale ---
