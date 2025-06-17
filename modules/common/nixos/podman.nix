@@ -1,4 +1,6 @@
 { config, lib, pkgs, globalArgs, ... }: {
+  systemd.tmpfiles.rules = [ "R! /tmp/storage-run-*" ];
+
   virtualisation = {
     containers.enable = true;
     podman = {
