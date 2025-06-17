@@ -1,12 +1,11 @@
-{ config, lib, pkgs, ... }:
-with lib; {
-  options.gaming.enabled = mkOption {
-    type = types.bool;
+{ config, lib, pkgs, ... }: {
+  options.gaming.enabled = lib.mkOption {
+    type = lib.types.bool;
     default = false;
     description = "Only enable if you are a T R U E EBIC gamer!!";
   };
 
-  config = mkIf config.gaming.enabled {
+  config = lib.mkIf config.gaming.enabled {
     programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;
