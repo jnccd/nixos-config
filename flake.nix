@@ -42,7 +42,7 @@
           };
         });
 
-      # Define NixOS system set
+      # Define NixOS system config set for a host
       mkSystem = host: {
         name = "${host.hostname}";
         value = nixpkgs.lib.nixosSystem {
@@ -63,7 +63,7 @@
         };
       };
 
-      # Define HomeManager set
+      # Define HomeManager config set for a host
       mkHome = host: {
         name = "${globalArgs.mainUsername}@${host.hostname}";
         value = home-manager.lib.homeManagerConfiguration {
