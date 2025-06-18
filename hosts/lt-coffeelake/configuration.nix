@@ -6,8 +6,8 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/common/nixos
-    ../../modules/gui/nixos
+    ../../modules/common
+    ../../modules/gui
     ../../modules/dev
   ];
 

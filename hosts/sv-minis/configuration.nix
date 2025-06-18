@@ -6,7 +6,7 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/common/nixos
+    ../../modules/common
     ../../modules/miniserver
   ];
 

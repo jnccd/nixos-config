@@ -11,10 +11,7 @@ in {
 
   # - Sops-Nix -
 
-  sops.secrets.example_key = {
-    sopsFile = ../../secrets/main.yaml;
-    owner = runnerName;
-  };
+  sops.secrets.example_key = { owner = runnerName; };
 
   # - Service -
 

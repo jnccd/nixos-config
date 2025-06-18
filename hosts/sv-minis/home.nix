@@ -1,6 +1,6 @@
 { config, lib, pkgs, globalArgs, ... }: {
   imports = [
-    ../../modules/common/home
+    ../../modules/common-home
 
   ];
 }
