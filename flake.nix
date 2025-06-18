@@ -32,6 +32,7 @@
         defaultSystemUsername = "runner";
       };
 
+      # Load hosts
       hostsDir = ./hosts;
       entries = builtins.readDir hostsDir;
       hostNames = builtins.attrNames
@@ -41,6 +42,7 @@
         system = builtins.readFile (hostsDir + "/${hostname}/system");
       }) hostNames;
 
+      # Load custom lib
       extendWithCustomLib = system:
         nixpkgs.lib.extend (self: super: {
           custom = import ./lib {
@@ -49,6 +51,7 @@
           };
         });
 
+      # Define NixOS system set
       mkSystem = host: {
         name = "${host.hostname}";
         value = nixpkgs.lib.nixosSystem {
@@ -69,6 +72,7 @@
         };
       };
 
+      # Define HomeManager set
       mkHome = host: {
         name = "${globalArgs.mainUsername}@${host.hostname}";
         value = home-manager.lib.homeManagerConfiguration {
