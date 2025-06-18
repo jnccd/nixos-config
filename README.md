@@ -30,14 +30,13 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 5. Reboot
 6. [Generate a new ssh key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) and register it to your github/gitlab account
 7. Clone the nixos-config repo via ssh into `~/git/nixos-config` (yes the path is important)
-8. In the flake.nix, add the new host in the hosts array
-9. In the hosts folder, add a folder for the given hostname and within it the `hardware-configuration.nix` from the initial config
-10. Populate the hostname folder with the configuration.nix and home.nix from another host to init
-11. `sudo nixos-rebuild switch --install-bootloader --flake .`
-12. Reboot for good measure
-13. `nix-rb`
-14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
-15. Done, enjoy :)
+8. In the hosts folder, add a folder for the given hostname and within it the `hardware-configuration.nix` from the initial config
+9. Populate the hostname folder with `system`, `configuration.nix` and `home.nix` files from another host and adapt them as necessary
+10. `sudo nixos-rebuild switch --install-bootloader --flake .`
+11. Reboot for good measure
+12. `nix-rb`
+13. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
+14. Done, enjoy :)
 
 ## Tip
 
