@@ -35,30 +35,11 @@
       hostsDir = ./hosts;
       entries = builtins.readDir hostsDir;
       hostNames = builtins.attrNames
-        (builtins.filterAttrs (name: type: type == "directory") entries);
-
-      hosts = [
-        {
-          hostname = "lt-coffeelake";
-          system = "x86_64-linux";
-        }
-        {
-          hostname = "pc-ryzen";
-          system = "x86_64-linux";
-        }
-        {
-          hostname = "pc-ryzen-vm";
-          system = "x86_64-linux";
-        }
-        {
-          hostname = "pc-ryzen-wsl";
-          system = "x86_64-linux";
-        }
-        {
-          hostname = "sv-minis";
-          system = "x86_64-linux";
-        }
-      ];
+        (nixpkgs.lib.filterAttrs (name: type: type == "directory") entries);
+      hosts = map (hostname: {
+        inherit hostname;
+        system = builtins.readFile (hostsDir + "/${hostname}/system");
+      }) hostNames;
 
       extendWithCustomLib = system:
         nixpkgs.lib.extend (self: super: {
