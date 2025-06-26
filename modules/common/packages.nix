@@ -25,6 +25,7 @@
     neovim
     nixfmt-classic
     nil # LSP for nix lang
+    python313
     # Db Upgrade
     postgresql_16
     postgresql

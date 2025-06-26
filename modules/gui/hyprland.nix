@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, globalArgs, ... }: {
   options.hyprland.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -20,5 +20,14 @@
       brightnessctl
       pamixer
     ];
+
+    systemd.services = lib.custom.mkWrappedScreenService {
+      sessionName = "setup-hyprland";
+      username = globalArgs.mainUsername;
+      scriptDirName = "setup-hyprland";
+      script = pkgs.writeScript "script" ''
+        pip install requests
+      '';
+    };
   };
 }
