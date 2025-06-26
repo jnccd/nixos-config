@@ -25,13 +25,15 @@
     neovim
     nixfmt-classic
     nil # LSP for nix lang
-    python313
     # Db Upgrade
     postgresql_16
     postgresql
     # Dotnet dev and ef core deploy
     dotnet-sdk
     dotnet-ef
+    # Global python
+    python313
+    python313Packages.pip
 
     zip
     unzip
