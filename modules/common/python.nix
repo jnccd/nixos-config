@@ -1,8 +1,11 @@
 { config, lib, pkgs, globalArgs, ... }: {
-  environment.systemPackages = ([ pkgs.python313 ])
-    ++ (with pkgs.python313Packages;
-      [
-        requests # For hyprland waybar script
+  environment.systemPackages = with pkgs;
+    [
+      (python3.withPackages (ps:
+        with ps; [
+          requests
+          numpy
 
-      ]);
+        ]))
+    ];
 }
