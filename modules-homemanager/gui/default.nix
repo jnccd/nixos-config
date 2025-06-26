@@ -1,4 +1,6 @@
 { config, pkgs, globalArgs, ... }: {
+  imports = [ ./hyprland ];
+
   # --- Programs ---
 
   home.packages = with pkgs; [ dotnet-sdk dotnet-ef ]; # For C# dev
