@@ -13,6 +13,6 @@
       localNetworkGameTransfers.openFirewall = true;
     };
 
-    environment.systemPackages = [ pkgs.dolphin-emu ];
+    environment.systemPackages = with pkgs; [ dolphin-emu shadps4 ];
   };
 }
