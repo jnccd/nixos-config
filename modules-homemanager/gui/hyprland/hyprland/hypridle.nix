@@ -1,4 +1,4 @@
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   services.hypridle = {
     enable = true;
     settings = {

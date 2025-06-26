@@ -1,4 +1,4 @@
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   programs.wofi = {
     enable = true;
     settings = {

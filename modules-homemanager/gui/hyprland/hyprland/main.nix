@@ -1,4 +1,4 @@
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = true;
@@ -13,7 +13,7 @@
         "XDG_SCREENSHOTS_DIR,$HOME/screens"
       ];
 
-      monitor = ",1920x1080@60,auto,1";
+      monitor = ",preferred,auto,1.0";
       "$mainMod" = "SUPER";
       "$terminal" = "alacritty";
       "$fileManager" = "$terminal -e sh -c 'ranger'";
@@ -46,18 +46,12 @@
         active_opacity = 1.0;
         inactive_opacity = 1.0;
 
-        shadow = {
-          enabled = false;
-        };
+        shadow = { enabled = false; };
 
-        blur = {
-          enabled = false;
-        };
+        blur = { enabled = false; };
       };
 
-      animations = {
-        enabled = false;
-      };
+      animations = { enabled = false; };
 
       input = {
         kb_layout = "us,ru,il";
@@ -67,7 +61,7 @@
       gestures = {
         workspace_swipe = true;
         workspace_swipe_invert = false;
-        workspace_swipe_forever	= true;
+        workspace_swipe_forever = true;
       };
 
       dwindle = {
@@ -111,10 +105,7 @@
         "nofocus, class:^(xwaylandvideobridge)$"
       ];
 
-      workspace = [
-        "w[tv1], gapsout:0, gapsin:0"
-        "f[1], gapsout:0, gapsin:0"
-      ];
+      workspace = [ "w[tv1], gapsout:0, gapsin:0" "f[1], gapsout:0, gapsin:0" ];
     };
   };
 }

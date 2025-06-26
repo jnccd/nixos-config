@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, globalArgs, ... }:
 let
   booksDir = "$HOME/Downloads/books";
   booksScript = pkgs.writeScriptBin "open_books" ''
@@ -85,10 +85,8 @@ in {
     ];
 
     # Move/resize windows with mainMod + LMB/RMB and dragging
-    bindm = [
-      "$mainMod, mouse:272, movewindow"
-      "$mainMod, mouse:273, resizewindow"
-    ];
+    bindm =
+      [ "$mainMod, mouse:272, movewindow" "$mainMod, mouse:273, resizewindow" ];
 
     # Laptop multimedia keys for volume and LCD brightness
     bindel = [

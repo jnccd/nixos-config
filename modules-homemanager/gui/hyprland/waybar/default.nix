@@ -1,4 +1,4 @@
-{
+{ config, lib, pkgs, globalArgs, ... }: {
   programs.waybar = {
     enable = true;
     style = ./style.css;
@@ -7,9 +7,16 @@
         layer = "top";
         position = "top";
         height = 30;
-        modules-left = ["hyprland/workspaces"];
-        modules-center = ["hyprland/window"];
-        modules-right = ["hyprland/language" "custom/weather" "pulseaudio" "battery" "clock" "tray"];
+        modules-left = [ "hyprland/workspaces" ];
+        modules-center = [ "hyprland/window" ];
+        modules-right = [
+          "hyprland/language"
+          "custom/weather"
+          "pulseaudio"
+          "battery"
+          "clock"
+          "tray"
+        ];
         "hyprland/workspaces" = {
           disable-scroll = true;
           show-special = true;
@@ -29,9 +36,7 @@
             "magic" = "";
           };
 
-          persistent-workspaces = {
-            "*" = 9;
-          };
+          persistent-workspaces = { "*" = 9; };
         };
 
         "hyprland/language" = {
@@ -60,7 +65,7 @@
             "phone" = "";
             "portable" = "";
             "car" = "";
-            "default" = ["" ""];
+            "default" = [ "" "" ];
           };
           on-click = "pavucontrol";
         };
@@ -73,7 +78,7 @@
           format = "{icon} {capacity}%";
           format-charging = " {capacity}%";
           format-alt = "{time} {icon}";
-          format-icons = ["" "" "" "" ""];
+          format-icons = [ "" "" "" "" "" ];
         };
 
         "clock" = {

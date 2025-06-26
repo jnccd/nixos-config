@@ -1,4 +1,4 @@
-{ config, pkgs, globalArgs, ... }: {
+{ config, lib, pkgs, globalArgs, ... }: {
   imports = [ ./hyprland ];
 
   # --- Programs ---
