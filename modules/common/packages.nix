@@ -32,6 +32,9 @@
     dotnet-sdk
     dotnet-ef
 
+    zip
+    unzip
+
     screen
 
     ffmpeg-full
