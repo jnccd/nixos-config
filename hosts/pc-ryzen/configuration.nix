@@ -14,6 +14,7 @@
   # --- Custom Module Settings ---
 
   gaming.enabled = true;
+  hyprland.enabled = true;
 
   # --- NVidia ---
 
