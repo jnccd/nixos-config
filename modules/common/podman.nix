@@ -1,6 +1,4 @@
 { config, lib, pkgs, globalArgs, ... }: {
-  systemd.tmpfiles.rules = [ "R! /tmp/storage-run-*" ];
-
   virtualisation = {
     containers.enable = true;
     podman = {
@@ -13,4 +11,7 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
+
+  # Without this, podman containers can refuse to start after reboot
+  systemd.tmpfiles.rules = [ "R! /tmp/storage-run-*" ];
 }
