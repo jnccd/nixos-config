@@ -2,7 +2,7 @@
   environment.systemPackages = ([ pkgs.python313 ])
     ++ (with pkgs.python313Packages;
       [
-        requests
+        requests # For hyprland waybar script
 
       ]);
 }
