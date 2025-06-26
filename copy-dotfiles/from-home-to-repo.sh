@@ -112,3 +112,6 @@ cp_to_dotfiles .config/Code/Preferences
 
 cp_to_dotfiles .config/nushell/config.nu
 cp_to_dotfiles .config/nushell/env.nu
+
+cpr_to_dotfiles .config/hypr/
+cpr_to_dotfiles .config/waybar/
