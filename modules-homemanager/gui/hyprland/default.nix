@@ -5,7 +5,11 @@
     description = "hyper land AWAU!";
   };
 
-  config = lib.mkIf config.hyprland.enabled {
-    imports = [ ./hyprland ./swaync ./waybar ./wofi ./alacritty.nix ];
-  };
+  imports = lib.optionals config.hyprland.enabled [
+    ./hyprland
+    ./swaync
+    ./waybar
+    ./wofi
+    ./alacritty.nix
+  ];
 }
