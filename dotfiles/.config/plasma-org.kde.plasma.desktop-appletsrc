@@ -25,7 +25,7 @@ DialogWidth=720
 positions={"1920x1080":[]}
 
 [Containments][1][Wallpaper][org.kde.image][General]
-Image=/home/dobiko/.background-image
+Image=/etc/global-dotfiles/.background-image
 
 [Containments][2]
 activityId=
@@ -302,7 +302,7 @@ DialogWidth=2048
 positions={"2048x1152":[]}
 
 [Containments][56][Wallpaper][org.kde.image][General]
-Image=/home/dobiko/.background-image
+Image=/etc/global-dotfiles/.background-image
 
 [Containments][8]
 activityId=
