@@ -1,5 +1,5 @@
 { config, lib, pkgs, globalArgs, ... }: {
-  imports = [
+  imports = lib.mkOptionals false [
     ./hyprland
     ./swaync
     ./waybar
