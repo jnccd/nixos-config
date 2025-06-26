@@ -20,14 +20,5 @@
       brightnessctl
       pamixer
     ];
-
-    systemd.services = lib.custom.mkWrappedScreenService {
-      sessionName = "setup-hyprland";
-      username = globalArgs.mainUsername;
-      scriptDirName = "setup-hyprland";
-      script = pkgs.writeScript "script" ''
-        pip install requests
-      '';
-    };
   };
 }
