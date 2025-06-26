@@ -31,9 +31,6 @@
     # Dotnet dev and ef core deploy
     dotnet-sdk
     dotnet-ef
-    # Global python
-    python313
-    python313Packages.pip
 
     zip
     unzip
