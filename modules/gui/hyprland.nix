@@ -7,7 +7,6 @@
 
   config = lib.mkIf config.hyprland.enabled {
     programs.hyprland.enable = true;
-    programs.waybar.enable = true;
 
     environment.systemPackages = with pkgs; [
       hyprland
@@ -15,6 +14,7 @@
       rofi-wayland
       alacritty
       kitty
+      xfce.thunar
       swww
       pavucontrol
       brightnessctl
