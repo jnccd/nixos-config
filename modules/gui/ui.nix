@@ -7,7 +7,7 @@
   environment.etc."global-dotfiles/.lockscreen-image".source =
     ../../dotfiles/.lockscreen-image;
   environment.etc."global-dotfiles/.login-image".source =
-    ../../dotfiles/.lockscreen-image;
+    ../../dotfiles/.login-image;
 
   # - sddm -
 
