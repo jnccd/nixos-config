@@ -9,7 +9,10 @@
     kdePackages.qtmultimedia # For sddm theme
     (sddm-astronaut.override {
       embeddedTheme = "purple_leaves";
-      themeConfig = { FormPosition = "left"; };
+      themeConfig = {
+        FormPosition = "left";
+        Background = "/etc/global-dotfiles/.login-image";
+      };
     })
 
     # Browser

@@ -1,5 +1,15 @@
 { config, lib, pkgs, globalArgs, ... }: {
   services.xserver.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
+  environment.etc."global-dotfiles/.background-image".source =
+    ../../dotfiles/.background-image;
+  environment.etc."global-dotfiles/.lockscreen-image".source =
+    ../../dotfiles/.lockscreen-image;
+  environment.etc."global-dotfiles/.login-image".source =
+    ../../dotfiles/.lockscreen-image;
+
+  # - sddm -
 
   services.displayManager.sddm = {
     enable = true;
@@ -10,10 +20,4 @@
     };
     theme = "sddm-astronaut-theme";
   };
-  services.desktopManager.plasma6.enable = true;
-
-  environment.etc."global-dotfiles/.background-image".source =
-    ../../dotfiles/.background-image;
-  environment.etc."global-dotfiles/.lockscreen-image".source =
-    ../../dotfiles/.lockscreen-image;
 }
