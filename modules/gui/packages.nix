@@ -10,8 +10,10 @@
     (sddm-astronaut.override {
       embeddedTheme = "purple_leaves";
       themeConfig = {
-        FormPosition = "left";
+        FormPosition = "right";
         Background = "/etc/global-dotfiles/.login-image";
+        DateTextColor = "#b7cef1";
+        FormBackgroundColor = "#121b2b";
       };
     })
 
