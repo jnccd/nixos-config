@@ -19,7 +19,7 @@ in {
       "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
 
     nix-rb =
-      "sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
+      "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
   };
