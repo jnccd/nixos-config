@@ -3,5 +3,5 @@ Autolock=false
 Timeout=0
 
 [Greeter][Wallpaper][org.kde.image][General]
-Image=/etc/global-dotfiles/.lockscreen-image
-PreviewImage=/etc/global-dotfiles/.lockscreen-image
+Image=/etc/global-dotfiles/.lockscreen-image.jpeg
+PreviewImage=/etc/global-dotfiles/.lockscreen-image.jpeg

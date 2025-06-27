@@ -21,7 +21,6 @@ cpr_to_dotfiles() {
 }
 
 # KDE Plasma 6
-cp_to_dotfiles .background-image
 # based on: https://github.com/shalva97/kde-configuration-files
 cp_to_dotfiles .config/plasma-org.kde.plasma.desktop-appletsrc
 cp_to_dotfiles .config/kdeglobals

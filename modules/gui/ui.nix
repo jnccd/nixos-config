@@ -2,12 +2,12 @@
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-  environment.etc."global-dotfiles/.background-image".source =
-    ../../dotfiles/.background-image;
-  environment.etc."global-dotfiles/.lockscreen-image".source =
-    ../../dotfiles/.lockscreen-image;
-  environment.etc."global-dotfiles/.login-image".source =
-    ../../dotfiles/.login-image;
+  environment.etc."global-dotfiles/.background-image.jpeg".source =
+    ../../dotfiles/.background-image.jpeg;
+  environment.etc."global-dotfiles/.lockscreen-image.jpeg".source =
+    ../../dotfiles/.lockscreen-image.jpeg;
+  environment.etc."global-dotfiles/.login-image.jpeg".source =
+    ../../dotfiles/.login-image.jpeg;
 
   # - sddm -
 
