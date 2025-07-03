@@ -1,7 +1,7 @@
 exit 0 # Dont execute this
 
 # Standard Nix Header
-#{ config, lib, pkgs, globalArgs, ... }:
+#{ inputs, config, lib, pkgs, globalArgs, ... }: {
 
 sudo nixos-rebuild switch --flake .?submodules=1
 sudo nixos-rebuild switch --install-bootloader --flake .?submodules=1
