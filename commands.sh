@@ -21,3 +21,5 @@ cat ~/.ssh/id_ed25519.pub | ssh dobiko@minis "mkdir -p ~/.ssh && cat >> ~/.ssh/a
 git grep "secret" $(git rev-list --all)
 git submodule update --init --recursive
 git submodule update --recursive --remote
+
+nix build .?submodules=1#aws
