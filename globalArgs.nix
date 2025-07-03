@@ -7,6 +7,4 @@ rec {
   email = "kobidogao@outlook.com";
 
   defaultSystemUsername = "runner";
-
-  nixosConfigPath = "/home/${mainUsername}/git/nixos-config";
 }

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, globalArgs, ... }:
+{ inputs, config, lib, pkgs, globalArgs, ... }:
 let runnerName = globalArgs.defaultSystemUsername + "-test";
 in {
   # - User -
@@ -12,7 +12,7 @@ in {
   # - Sops-Nix -
 
   sops.secrets.example_key = {
-    sopsFile = ../../secrets/miniserver.yaml;
+    sopsFile = "${inputs.self}/secrets/miniserver.yaml";
     owner = runnerName;
   };
 
