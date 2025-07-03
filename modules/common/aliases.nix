@@ -16,7 +16,7 @@ in {
     git-pull =
       "git pull && git submodule foreach 'git checkout main && git pull'";
     git-pull-nixconf =
-      "oldPwd=$(pwd) && cd ${globalArgs.nixosConfigPath} && git-pull && cd $oldPwd";
+      "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
 
     nix-rb =
       "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
