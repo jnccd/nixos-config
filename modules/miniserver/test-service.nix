@@ -12,7 +12,7 @@ in {
   # - Sops-Nix -
 
   sops.secrets.example_key = {
-    sopsFile = ../../secrets/miniserver.yaml;
+    sopsFile = "${globalArgs.nixosConfigPath}/secrets/miniserver.yaml";
     owner = runnerName;
   };
 

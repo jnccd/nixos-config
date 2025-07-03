@@ -1,6 +1,4 @@
-{ config, lib, pkgs, globalArgs, ... }:
-let nixosConfigPath = "/home/${globalArgs.mainUsername}/git/nixos-config";
-in {
+{ config, lib, pkgs, globalArgs, ... }: {
   environment.shellAliases = {
     owo = "echo uwu"; # I owo into the void and the void uwus back
     "cd.." = "cd ..";
@@ -16,10 +14,10 @@ in {
     git-pull =
       "git pull && git submodule foreach 'git checkout main && git pull'";
     git-pull-nixconf =
-      "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
+      "oldPwd=$(pwd) && cd ${globalArgs.nixosConfigPath} && git-pull && cd $oldPwd";
 
     nix-rb =
-      "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
+      "bash ${globalArgs.nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${globalArgs.nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${globalArgs.nixosConfigPath}?submodules=1 && bash ${globalArgs.nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
   };
