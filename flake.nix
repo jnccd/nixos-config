@@ -86,7 +86,7 @@
 
       # Define package config set for aws builds (and maybe more in the future)
       awsPackage = let
-        system = "x86_64-linux";
+        system = builtins.readFile ("${hostsDir}/${hostname}/system");
         hostname = "pk-aws";
       in {
         aws = nixos-generators.nixosGenerate {
