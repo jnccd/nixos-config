@@ -28,6 +28,7 @@
     neovim
     nixfmt-classic
     nil # LSP for nix lang
+    nix-prefetch-git
 
     zip
     unzip
