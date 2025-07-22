@@ -16,6 +16,7 @@
     # System Info
     htop
     neofetch
+    glances
 
     # Security
     sops
