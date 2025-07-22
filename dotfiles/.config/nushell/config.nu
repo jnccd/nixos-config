@@ -6,7 +6,7 @@ $env.PROMPT_MULTILINE_INDICATOR = ":::"
 $env.PROMPT_COMMAND = {
     let user = $env.USER
     let is_root = ($user == "root")
-    let cwd = match (do --ignore-shell-errors { $env.PWD | path relative-to $nu.home-path }) {
+    let cwd = match (do { $env.PWD | path relative-to $nu.home-path }) {
         null => $env.PWD
         '' => '~'
         $relative_pwd => ([~ $relative_pwd] | path join)
