@@ -10,6 +10,10 @@
     ../../modules/miniserver
   ];
 
+  # --- Custom Module Settings ---
+
+  dobikoConf.ffmpeg.enabled = false;
+
   # --- Bootloader ---
 
   boot.loader = {
