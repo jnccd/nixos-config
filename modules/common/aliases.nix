@@ -22,5 +22,8 @@ in {
       "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
+    nix-li = ''
+      nix path-info -r /run/current-system | xargs -n1 du -s | sort -n | awk '{ printf "%s	%s
+      ", $1/1024 "M", $2 }' '';
   };
 }
