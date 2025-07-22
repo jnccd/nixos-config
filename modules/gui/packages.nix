@@ -39,11 +39,12 @@
     ffmpeg-full
 
     # Tools
+    hardinfo2
+    mission-center
     gparted
     wayland-utils
     alsa-utils
     pgadmin4-desktopmode
-    hardinfo2
     kdePackages.filelight
     kdePackages.kate
     kdePackages.kcalc
