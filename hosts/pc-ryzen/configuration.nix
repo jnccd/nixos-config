@@ -8,7 +8,7 @@
 
     ../../modules/common
     ../../modules/gui
-    ../../modules/dev
+    ../../modules/nix-dev
   ];
 
   # --- Custom Module Settings ---

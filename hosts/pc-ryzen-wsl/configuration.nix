@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
 
     ../../modules/common
-    ../../modules/dev
+    ../../modules/nix-dev
   ];
 
   # --- WSL ---
