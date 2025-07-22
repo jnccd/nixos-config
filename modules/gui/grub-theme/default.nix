@@ -1,5 +1,6 @@
-{ config, lib, pkgs, globalArgs, ... }: {
-  boot.loader.grub.theme = "${import ./crossgrub.nix { inherit pkgs lib; }}";
-  boot.loader.grub.splashImage =
-    "${import ./crossgrub.nix { inherit pkgs lib; }}/background.png";
+{ config, lib, pkgs, globalArgs, ... }:
+let crossgrub = import ./crossgrub.nix { inherit pkgs lib; };
+in {
+  boot.loader.grub.theme = "${crossgrub}";
+  boot.loader.grub.splashImage = "${crossgrub}/background.png";
 }
