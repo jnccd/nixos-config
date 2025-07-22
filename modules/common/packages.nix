@@ -18,6 +18,7 @@
     neofetch
     glances
     powerjoular
+    nix-tree
 
     # Security
     sops
