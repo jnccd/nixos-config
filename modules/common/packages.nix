@@ -17,6 +17,7 @@
     htop
     neofetch
     glances
+    powerjoular
 
     # Security
     sops
