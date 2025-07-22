@@ -3,10 +3,10 @@ pkgs.stdenv.mkDerivation {
   pname = "crossgrub";
   version = "1.0.0";
   src = pkgs.fetchFromGitHub {
-    owner = "krypciak";
+    owner = "jnccd";
     repo = "crossgrub";
-    tag = "1.0.0";
-    hash = "sha256-TDgi9e2/aHngdzFCkx0ykZedP3v4IFKiYJGTcWUo+rk=";
+    rev = "deef3cc1b920432d11c43555ee43b3f156df27d5";
+    hash = "sha256-jEXmCH6WPlOo8DUT7OR69KLhuyIIosgoyLAYRpjYiMI=";
   };
 
   dontBuild = true;
