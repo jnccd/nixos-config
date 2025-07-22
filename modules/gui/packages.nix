@@ -36,7 +36,6 @@
     kdePackages.kdenlive
     blender
     yt-dlp
-    ffmpeg-full
 
     # Tools
     hardinfo2

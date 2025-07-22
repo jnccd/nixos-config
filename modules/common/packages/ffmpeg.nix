@@ -2,7 +2,7 @@
   options.dobikoConf.ffmpeg.enabled = lib.mkOption {
     type = lib.types.bool;
     default = true;
-    description = "Enables ffmpeg";
+    description = "Enables ffmpeg packages";
   };
 
   config = lib.mkIf config.dobikoConf.ffmpeg.enabled {
