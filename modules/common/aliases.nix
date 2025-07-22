@@ -23,7 +23,6 @@ in {
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
     nix-li = ''
-      nix path-info -r /run/current-system | xargs -n1 du -s | sort -n | awk '{ printf "%s	%s
-      ", $1/1024 "M", $2 }' '';
+      nix path-info -r /run/current-system | xargs -n1 du -s | sort -n | awk '{ printf "%s\t%s\n", $1/1024 "M", $2 }' '';
   };
 }
