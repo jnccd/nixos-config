@@ -13,7 +13,7 @@
 
   # --- Custom Module Settings ---
 
-  gaming.enabled = true;
+  dobikoConf.gaming.enabled = true;
 
   # --- NVidia ---
 

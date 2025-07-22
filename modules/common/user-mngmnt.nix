@@ -39,14 +39,14 @@ let
     value = { };
   };
 in {
-  options.userMngmnt.additionalUsers = lib.mkOption {
+  options.dobikoConf.userMngmnt.additionalUsers = lib.mkOption {
     type = lib.types.listOf lib.types.attrs;
     default = [ ];
     description = "The users to add to the system";
   };
 
   config = let
-    usersToDefine = config.userMngmnt.additionalUsers ++ [
+    usersToDefine = config.dobikoConf.userMngmnt.additionalUsers ++ [
       {
         name = globalArgs.mainUsername;
         isAdmin = true;

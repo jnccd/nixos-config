@@ -3,7 +3,7 @@ let runnerName = globalArgs.defaultSystemUsername + "-test";
 in {
   # - User -
 
-  userMngmnt.additionalUsers = [{
+  dobikoConf.userMngmnt.additionalUsers = [{
     name = runnerName;
     isAdmin = false;
     isSystem = true;
