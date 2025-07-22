@@ -32,6 +32,6 @@
     zip
     unzip
 
-    screen
+    screen # I use this extensively for services
   ];
 }
