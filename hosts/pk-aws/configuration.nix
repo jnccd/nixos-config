@@ -8,6 +8,11 @@
 
   ];
 
+  # --- Custom Module Settings ---
+
+  dobikoConf.ffmpeg.enabled = false;
+  dobikoConf.dotnet.enabled = false;
+
   # --- .vhd options ---
 
   virtualisation.diskSize = 8192;
