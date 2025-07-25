@@ -15,7 +15,8 @@
     "cSpell.userWords": [
         "Dont",
         "livelock",
-        "nixos"
+        "nixos",
+        "lockscreen"
     ],
     "editor.wordWrap": "on",
     "editor.formatOnSave": true,
@@ -29,6 +30,7 @@
     "terminal.integrated.commandsToSkipShell": [
         "-ctrl+k"
     ],
+    "terminal.integrated.fontFamily": "JetBrains Mono, Fira Code, monospace",
     "terminal.integrated.allowChords": false,
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nil",
