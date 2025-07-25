@@ -1,13 +1,13 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{ inputs, config, lib, pkgs, globalArgs, ... }: {
   services.xserver.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   environment.etc."global-dotfiles/.background-image.jpeg".source =
-    ../../dotfiles/.background-image.jpeg;
+    "${inputs.self}/dotfiles/.background-image.jpeg";
   environment.etc."global-dotfiles/.lockscreen-image.jpeg".source =
-    ../../dotfiles/.lockscreen-image.jpeg;
+    "${inputs.self}/dotfiles/.lockscreen-image.jpeg";
   environment.etc."global-dotfiles/.login-image.jpeg".source =
-    ../../dotfiles/.login-image.jpeg;
+    "${inputs.self}/dotfiles/.login-image.jpeg";
 
   # - sddm -
 
