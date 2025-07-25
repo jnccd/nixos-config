@@ -4,7 +4,7 @@
   # --- Imports ---
 
   imports = [
-    ../../modules/common
+    ../../modules/generic/common
 
   ];
 

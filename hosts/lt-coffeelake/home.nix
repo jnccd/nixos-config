@@ -1,7 +1,7 @@
 { config, lib, pkgs, globalArgs, ... }: {
   imports = [
-    ../../modules-homemanager/common
-    ../../modules-homemanager/gui
+    ../../modules/homemanager/common
+    ../../modules/homemanager/gui
 
   ];
 }

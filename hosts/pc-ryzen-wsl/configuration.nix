@@ -6,8 +6,8 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/common
-    ../../modules/nix-dev
+    ../../modules/generic/common
+    ../../modules/generic/nix-dev
   ];
 
   # --- WSL ---

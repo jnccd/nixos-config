@@ -6,8 +6,8 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/common
-    ../../modules/miniserver
+    ../../modules/generic/common
+    ../../modules/machine/miniserver
   ];
 
   # --- Custom Module Settings ---

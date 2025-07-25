@@ -6,9 +6,7 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/common
-    ../../modules/gui
-    ../../modules/nix-dev
+    ../../modules/generic
   ];
 
   # --- Bootloader ---
