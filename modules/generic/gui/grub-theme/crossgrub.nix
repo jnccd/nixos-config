@@ -5,8 +5,8 @@ pkgs.stdenv.mkDerivation {
   src = pkgs.fetchFromGitHub {
     owner = "jnccd";
     repo = "crossgrub";
-    rev = "deef3cc1b920432d11c43555ee43b3f156df27d5";
-    hash = "sha256-jEXmCH6WPlOo8DUT7OR69KLhuyIIosgoyLAYRpjYiMI=";
+    rev = "1bac404598a3bd105c36ed02cb79895779a471bb";
+    hash = "sha256-TBekdpKmvPlUIdAUbkLfFJXZH8oGufVeMELosHw4tC0=";
   };
 
   dontBuild = true;
