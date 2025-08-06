@@ -19,6 +19,7 @@
 
       ms-dotnettools.csdevkit
       ms-python.python
+      dbaeumer.vscode-eslint # typescript
 
       ms-vscode-remote.remote-ssh
     ];
