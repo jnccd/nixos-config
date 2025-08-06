@@ -1,6 +1,7 @@
 { config, lib, pkgs, globalArgs, ... }: {
   # --- Programs ---
 
+  home.packages = with pkgs; [ dotnet-sdk dotnet-ef ]; # For C# dev kit
   programs.vscode = {
     enable = true;
     package = pkgs.vscode.fhs;
