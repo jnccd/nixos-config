@@ -22,12 +22,8 @@
 
     # Browser
     firefox
-    (vivaldi.overrideAttrs (oldAttrs: {
-      dontWrapQtApps = false;
-      dontPatchELF = true;
-      nativeBuildInputs = oldAttrs.nativeBuildInputs
-        ++ [ kdePackages.wrapQtAppsHook ];
-    }))
+    (vivaldi.overrideAttrs
+      (oldAttrs: { vivaldi-ffmpeg-codecs = vivaldi-ffmpeg-codecs; }))
     vivaldi-ffmpeg-codecs
     kdePackages.plasma-browser-integration
 
