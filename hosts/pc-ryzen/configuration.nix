@@ -11,27 +11,8 @@
 
   # --- Custom Module Settings ---
 
+  dobikoConf.nvidia.enabled = true;
   dobikoConf.gaming.enabled = true;
-
-  # --- NVidia ---
-
-  hardware.graphics = { enable = true; };
-
-  services.xserver.videoDrivers = [ "nvidia" ];
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
-
-  environment.systemPackages = with pkgs; [
-    nvtopPackages.nvidia
-    cudaPackages.cuda_nvml_dev
-  ];
 
   # --- Misc ---
 
