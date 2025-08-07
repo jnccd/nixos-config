@@ -19,6 +19,7 @@
       ms-python.python
       dbaeumer.vscode-eslint
       rust-lang.rust-analyzer
+      tamasfe.even-better-toml
       fill-labs.dependi
 
       ms-vscode-remote.remote-ssh
