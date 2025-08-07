@@ -1,7 +1,6 @@
 { config, lib, pkgs, globalArgs, ... }: {
   # --- Programs ---
 
-  home.packages = with pkgs; [ dotnet-sdk_9 ]; # For C# dev kit
   programs.vscode = {
     enable = true;
     package = pkgs.vscode.fhs;
@@ -17,11 +16,10 @@
 
       streetsidesoftware.code-spell-checker
 
-      ms-dotnettools.csdevkit
       ms-python.python
-      dbaeumer.vscode-eslint # typescript
+      dbaeumer.vscode-eslint
 
       ms-vscode-remote.remote-ssh
-    ];
+    ]; # [ ms-dotnettools.csdevkit ] have to be installed manually
   };
 }

@@ -30,6 +30,7 @@
     nil # LSP for nix lang
     nix-prefetch-git
     nix-prefetch-docker
+    pnpm
 
     zip
     unzip
