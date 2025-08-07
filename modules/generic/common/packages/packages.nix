@@ -4,10 +4,6 @@
 
     # Networking
     git
-    curl
-    wget
-    lynx
-    dig
 
     # Terminals
     bash
@@ -16,9 +12,7 @@
     # System Info
     htop
     btop
-    neofetch
     glances
-    powerjoular
     nix-tree
 
     # Security

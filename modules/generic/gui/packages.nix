@@ -2,10 +2,7 @@
   environment.systemPackages = with pkgs; [
     # KDE
     plasma-panel-colorizer
-    kdePackages.kdbusaddons
-    kdePackages.kpackage
     # SDDM
-    kdePackages.sddm-kcm
     kdePackages.qtmultimedia # For sddm theme
     (sddm-astronaut.override {
       embeddedTheme = "purple_leaves";
@@ -37,11 +34,6 @@
     yt-dlp
 
     # Tools
-    hardinfo2
-    mission-center
-    gparted
-    wayland-utils
-    alsa-utils
     pgadmin4-desktopmode
     kdePackages.filelight
     kdePackages.kate
