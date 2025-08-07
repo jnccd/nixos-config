@@ -15,6 +15,7 @@
 
     # System Info
     htop
+    btop
     neofetch
     glances
     powerjoular
