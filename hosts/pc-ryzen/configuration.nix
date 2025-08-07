@@ -28,6 +28,11 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  environment.systemPackages = with pkgs; [
+    nvtopPackages.nvidia
+    cudaPackages.cuda_nvml_dev
+  ];
+
   # --- Misc ---
 
   time.hardwareClockInLocalTime = true;
