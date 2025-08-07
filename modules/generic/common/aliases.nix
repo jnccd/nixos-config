@@ -18,10 +18,13 @@ in {
     git-pull-nixconf =
       "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
 
+    # Home only rebuild
     nix-hrb =
       "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
+    # Rebuild
     nix-rb =
       "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
+    # Pull and rebuild
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
     nix-li = ''
