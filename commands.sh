@@ -7,9 +7,11 @@ nix repl --expr 'with import <nixpkgs> {}; pkgs'
 
 sudo nixos-rebuild switch --flake .?submodules=1
 sudo nixos-rebuild switch --install-bootloader --flake .?submodules=1
-nix flake update --flake .?submodules=1
 home-manager switch -b backup --flake .?submodules=1
 nix-collect-garbage -d
+
+nix flake update --flake .?submodules=1
+nix flake update nixpkgs --override-input nixpkgs github:NixOS/nixpkgs/ce01daebf8489ba97bd1609d185ea276efdeb121 && git commit -am "Update flake" && git push
 
 sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1
 
