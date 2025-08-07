@@ -18,6 +18,8 @@
 
       ms-python.python
       dbaeumer.vscode-eslint
+      rust-lang.rust-analyzer
+      fill-labs.dependi
 
       ms-vscode-remote.remote-ssh
     ]; # [ ms-dotnettools.csdevkit ] have to be installed manually
