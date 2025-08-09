@@ -21,6 +21,7 @@
       rust-lang.rust-analyzer
       tamasfe.even-better-toml
       fill-labs.dependi
+      ms-dotnettools.dotnet-interactive-vscode
 
       ms-vscode-remote.remote-ssh
     ]; # [ ms-dotnettools.csdevkit ] have to be installed manually
