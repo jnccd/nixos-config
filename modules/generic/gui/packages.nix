@@ -11,7 +11,6 @@
         Background = "/etc/global-dotfiles/.login-image.jpeg";
         DateTextColor = "#b7cef1";
         FormBackgroundColor = "#121b2b";
-        LoginButtonBackgroundColor = "#6e87b8";
         BlurMax = "48";
         Blur = "0.4";
       };
