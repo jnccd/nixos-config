@@ -9,7 +9,7 @@
     services.cron = {
       enable = true;
       systemCronJobs =
-        [ "0 5 * * *      ${globalArgs.mainUsername}    shutdown -t 180" ];
+        [ "0 23 * * *      ${globalArgs.mainUsername}    shutdown -t 180" ];
     };
   };
 }
