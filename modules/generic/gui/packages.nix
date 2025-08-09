@@ -3,6 +3,7 @@
     # KDE
     plasma-panel-colorizer
     # SDDM
+    kdePackages.sddm-kcm
     kdePackages.qtmultimedia # For sddm theme
     (sddm-astronaut.override {
       embeddedTheme = "purple_leaves";

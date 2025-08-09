@@ -13,6 +13,7 @@
 
   # - sddm -
 
+  # Its best to apply the KDE theme manually to SDDM in: System Settings → Startup and Shutdown → Login Screen (SDDM) → Apply Plasma Settings...
   services.displayManager.sddm = {
     enable = true;
     settings = {
