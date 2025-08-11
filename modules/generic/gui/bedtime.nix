@@ -7,7 +7,7 @@
 
   config = lib.mkIf config.dobikoConf.bedtime.enabled {
     services.cron = let
-      delayMin = 3;
+      delayMin = "3";
       bedtimeTime = "0 23";
     in {
       enable = true;
