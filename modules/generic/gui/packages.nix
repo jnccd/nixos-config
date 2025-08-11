@@ -3,7 +3,7 @@
     # KDE
     plasma-panel-colorizer
     # SDDM
-    kdePackages.kdialog
+    kdePackages.kdialog # For bedtime
     kdePackages.sddm-kcm # For sddm screen sync
     kdePackages.qtmultimedia # For sddm theme
     (sddm-astronaut.override {
