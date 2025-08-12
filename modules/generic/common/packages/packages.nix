@@ -1,34 +1,45 @@
 { config, lib, pkgs, globalArgs, ... }: {
-  environment.systemPackages = with pkgs; [
-    home-manager
+  options.dobikoConf.nonEssentialCommonPkgs.enabled = lib.mkOption {
+    type = lib.types.bool;
+    default = true;
+    description = "Enables nonEssentialCommonPkgs";
+  };
 
-    # Networking
-    git
+  config = {
+    environment.systemPackages = with pkgs;
+      [
+        home-manager
 
-    # Terminals
-    bash
-    nushell
+        # Networking
+        git
 
-    # System Info
-    htop
-    btop
-    glances
-    nix-tree
+        # Terminals
+        bash
 
-    # Security
-    sops
-    age
+        screen # I use this extensively for services
+      ] ++ (if config.dobikoConf.nonEssentialCommonPkgs.enabled then [
+        nushell
 
-    # Coding
-    neovim
-    nixfmt-classic
-    nil # LSP for nix lang
-    nix-prefetch-git
-    nix-prefetch-docker
+        # System Info
+        htop
+        btop
+        glances
+        nix-tree
 
-    zip
-    unzip
+        # Security
+        sops
+        age
 
-    screen # I use this extensively for services
-  ];
+        # Coding
+        neovim
+        nixfmt-classic
+        nil # LSP for nix lang
+        nix-prefetch-git
+        nix-prefetch-docker
+
+        zip
+        unzip
+      ] else
+        [ ]);
+  };
 }
