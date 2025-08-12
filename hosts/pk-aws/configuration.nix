@@ -10,8 +10,11 @@
 
   # --- Custom Module Settings ---
 
+  dobikoConf.nonEssentialCommonPkgs.enabled = false;
   dobikoConf.ffmpeg.enabled = false;
   dobikoConf.dotnet.enabled = false;
+  dobikoConf.podman.enabled = false;
+  dobikoConf.postgres.enabled = false;
 
   # --- .vhd options ---
 
