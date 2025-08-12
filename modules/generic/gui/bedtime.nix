@@ -6,15 +6,17 @@
   };
 
   config = lib.mkIf config.dobikoConf.bedtime.enabled {
+    environment.systemPackages = with pkgs; [ kdePackages.kdialog ];
+
     services.cron = let
       delayMin = "3";
       bedtimeTime = "0 23";
     in {
       enable = true;
       systemCronJobs = [
-        "${bedtimeTime} * * *      root    shutdown +${delayMin}"
+        "${bedtimeTime} * * *      root    shutdown +${delayMin} >> /tmp/cron.log"
         ''
-          ${bedtimeTime} * * *      ${globalArgs.mainUsername}    kdialog --passivepopup "Bedtime in ${delayMin} minutes." 10''
+          ${bedtimeTime} * * *      ${globalArgs.mainUsername}    kdialog --passivepopup "Bedtime in ${delayMin} minutes." 10 >> /tmp/cron.log''
       ];
     };
   };
