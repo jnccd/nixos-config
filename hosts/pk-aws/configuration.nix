@@ -12,9 +12,10 @@
 
   dobikoConf.nonEssentialCommonPkgs.enabled = false;
   dobikoConf.ffmpeg.enabled = false;
-  dobikoConf.dotnet.enabled = false;
   dobikoConf.podman.enabled = false;
   dobikoConf.postgres.enabled = false;
+  dobikoConf.dotnet.enabled = false;
+  dobikoConf.python.enabled = false;
 
   # --- .vhd options ---
 
