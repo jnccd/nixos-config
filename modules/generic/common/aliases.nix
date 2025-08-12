@@ -36,5 +36,8 @@ in {
     (pkgs.writeShellScriptBin "nix-sz" ''
       nix path-info -rsSh "$(which "$1")"
     '')
+    (pkgs.writeShellScriptBin "scrn-kill" ''
+      screen -X -S $1 quit
+    '')
   ];
 }
