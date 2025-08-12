@@ -27,14 +27,12 @@ in {
     # Pull and rebuild
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
-    nix-li = ''
-      nix path-info -r /run/current-system | xargs -n1 du -s | sort -n | awk '{ printf "%s\t%s\n", $1/1024 "M", $2 }' '';
     nix-tr = "nix-tree /run/current-system";
   };
 
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "nix-sz" ''
-      nix path-info -rsSh "$(which "$1")"
+      nix path-info -rsSh nixpkgs#$1 | awk '{print $1 "\t" $2 $3 "\t" $4 $5 }' | sort -h -k3 | column -t
     '')
     (pkgs.writeShellScriptBin "scrn-kill" ''
       screen -X -S $1 quit
