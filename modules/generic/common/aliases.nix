@@ -31,4 +31,10 @@ in {
       nix path-info -r /run/current-system | xargs -n1 du -s | sort -n | awk '{ printf "%s\t%s\n", $1/1024 "M", $2 }' '';
     nix-tr = "nix-tree /run/current-system";
   };
+
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "nix-sz" ''
+      nix path-info -rsSh "$(which "$1")"
+    '')
+  ];
 }
