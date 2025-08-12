@@ -1,18 +1,4 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
-  services.xserver.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
-  # - images -
-
-  environment.etc."global-dotfiles/.background-image.jpeg".source =
-    "${inputs.self}/dotfiles/.background-image.jpeg";
-  environment.etc."global-dotfiles/.lockscreen-image.jpeg".source =
-    "${inputs.self}/dotfiles/.lockscreen-image.jpeg";
-  environment.etc."global-dotfiles/.login-image.jpeg".source =
-    "${inputs.self}/dotfiles/.login-image.jpeg";
-
-  # - sddm -
-
   # Its best to apply the KDE theme manually to SDDM in: System Settings → Startup and Shutdown → Login Screen (SDDM) → Apply Plasma Settings...
   services.displayManager.sddm = {
     enable = true;
@@ -44,30 +30,4 @@
       fi
     done
   '';
-
-  # - plymouth -
-
-  boot = {
-    plymouth = {
-      enable = true;
-      theme = "motion";
-      themePackages = with pkgs;
-        [
-          (adi1090x-plymouth-themes.override {
-            selected_themes = [ "motion" ];
-          })
-        ];
-    };
-
-    # Enable "Silent boot"
-    consoleLogLevel = 3;
-    initrd.verbose = false;
-    kernelParams = [
-      "quiet"
-      "splash"
-      "boot.shell_on_fail"
-      "udev.log_priority=3"
-      "rd.systemd.show_status=auto"
-    ];
-  };
 }
