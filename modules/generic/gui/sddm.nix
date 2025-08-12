@@ -1,4 +1,20 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
+  environment.systemPackages = with pkgs; [
+    kdePackages.sddm-kcm # For sddm/kde screen sync
+    kdePackages.qtmultimedia # For theme
+    (sddm-astronaut.override {
+      embeddedTheme = "purple_leaves";
+      themeConfig = {
+        FormPosition = "right";
+        Background = "/etc/global-dotfiles/.login-image.jpeg";
+        DateTextColor = "#b7cef1";
+        FormBackgroundColor = "#121b2b";
+        BlurMax = "48";
+        Blur = "0.4";
+      };
+    })
+  ];
+
   # Its best to apply the KDE theme manually to SDDM in: System Settings → Startup and Shutdown → Login Screen (SDDM) → Apply Plasma Settings...
   services.displayManager.sddm = {
     enable = true;

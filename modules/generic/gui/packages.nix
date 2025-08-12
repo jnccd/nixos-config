@@ -2,20 +2,6 @@
   environment.systemPackages = with pkgs; [
     # KDE
     plasma-panel-colorizer
-    # SDDM
-    kdePackages.sddm-kcm # For sddm screen sync
-    kdePackages.qtmultimedia # For sddm theme
-    (sddm-astronaut.override {
-      embeddedTheme = "purple_leaves";
-      themeConfig = {
-        FormPosition = "right";
-        Background = "/etc/global-dotfiles/.login-image.jpeg";
-        DateTextColor = "#b7cef1";
-        FormBackgroundColor = "#121b2b";
-        BlurMax = "48";
-        Blur = "0.4";
-      };
-    })
 
     # Browser
     firefox
