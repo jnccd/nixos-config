@@ -9,6 +9,10 @@
     ../../modules/generic
   ];
 
+  # --- Custom Module Settings ---
+
+  dobikoConf.xcfe.enabled = true;
+
   # --- Bootloader ---
 
   boot.loader = {

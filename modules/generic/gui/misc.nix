@@ -1,7 +1,4 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
-  services.xserver.enable = true;
-  services.desktopManager.plasma6.enable = true;
-
   # - images -
 
   environment.etc."global-dotfiles/.background-image.jpeg".source =
