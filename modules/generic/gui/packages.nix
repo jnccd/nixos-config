@@ -24,6 +24,7 @@
         blender
         yt-dlp
         obs-studio
+        krita
 
         # Tools
         pgadmin4-desktopmode
