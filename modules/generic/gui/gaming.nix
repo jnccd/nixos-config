@@ -16,7 +16,7 @@
     environment.systemPackages = with pkgs; [
       dolphin-emu
       shadps4
-      lutris
+      lutris-unwrapped
 
     ];
   };
