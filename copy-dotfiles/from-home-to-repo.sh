@@ -99,6 +99,12 @@ cp_to_dotfiles .config/konsolerc
 cpr_to_dotfiles .local/share/konsole/
 cp_to_dotfiles .local/state/konsolestaterc
 
+# XFCE
+cp_to_dotfiles .config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
+cp_to_dotfiles .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+cp_to_dotfiles .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+cp_to_dotfiles .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+
 cp_to_dotfiles .local/share/kio/servicemenus/openVSCode.desktop
 
 cp_to_dotfiles .nanorc

@@ -11,7 +11,7 @@
 
   # --- Custom Module Settings ---
 
-  dobikoConf.xcfe.enabled = true;
+  dobikoConf.xfce.enabled = true;
 
   # --- Bootloader ---
 
