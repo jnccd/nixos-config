@@ -9,7 +9,7 @@
     services.xserver.enable = true;
     services.desktopManager.plasma6.enable = true;
 
-    environment.systemPackages = with pkgs.xfce; [
+    environment.systemPackages = with pkgs; [
       plasma-panel-colorizer
       kdePackages.plasma-browser-integration
 
