@@ -23,6 +23,7 @@
         kdePackages.kdenlive
         blender
         yt-dlp
+        obs-studio
 
         # Tools
         pgadmin4-desktopmode
