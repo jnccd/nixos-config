@@ -24,9 +24,9 @@ Active=true
 Mode=Times
 NightTemperature=3200
 DayTemperature=6500
-MorningBeginFixed=06:00
-EveningBeginFixed=21:45
-TransitionTime=60
+MorningBeginFixed=0600
+EveningBeginFixed=2145
+TransitionTime=15
 
 [Tiling]
 padding=4
