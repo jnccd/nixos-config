@@ -19,6 +19,15 @@ maximizeEnabled=false
 mousemarkEnabled=true
 translucencyEnabled=true
 
+[NightColor]
+Active=true
+Mode=Times
+NightTemperature=3200
+DayTemperature=6500
+MorningBeginFixed=06:00
+EveningBeginFixed=21:45
+TransitionTime=60
+
 [Tiling]
 padding=4
 
