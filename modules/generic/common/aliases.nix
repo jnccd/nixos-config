@@ -18,6 +18,8 @@ in {
     git-pull-nixconf =
       "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
 
+    flake-upd = "nix flake update --flake .?submodules=1";
+
     # Home only rebuild
     nix-hrb =
       "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
