@@ -26,6 +26,13 @@ require("lazy").setup({
   { "hrsh7th/nvim-cmp" },
   { "hrsh7th/cmp-nvim-lsp" },
   { "L3MON4D3/LuaSnip" },
+  { "neovim/nvim-lspconfig" },
+  "mfussenegger/nvim-dap",
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "nvim-neotest/nvim-nio" },
+  },
+  { "rcarriga/nvim-dap-ui" },
 
   -- UI enhancements
   { "nvim-lualine/lualine.nvim" },
@@ -52,6 +59,68 @@ require("mason").setup()
 -- LSP setup
 local lspconfig = require("lspconfig")
 lspconfig.lua_ls.setup({}) -- Example: Lua language server
+-- C# stuff
+local dap, dapui = require("dap"), require("dapui")
+
+dapui.setup({
+  layouts = {
+    {
+      elements = {
+        "scopes",
+        "breakpoints",
+        "stacks",
+        "watches",
+      },
+      size = 40,   -- width in columns
+      position = "right",  -- left, right, top, bottom
+    },
+    {
+      elements = {
+        "repl",
+        "console",
+      },
+      size = 5,  -- height in lines
+      position = "bottom",
+    },
+  },
+})
+
+dap.adapters.coreclr = {
+  type = 'executable',
+  command = vim.fn.exepath('netcoredbg'),
+  args = { '--interpreter=vscode' },
+}
+
+dap.configurations.cs = {
+  {
+    type = 'coreclr',
+    name = 'Launch .NET App',
+    request = 'launch',
+    program = function()
+      return vim.fn.input('Path to dll: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+  },
+}
+
+-- Toggle breakpoint on current line
+vim.keymap.set('n', '<F9>', dap.toggle_breakpoint, {})
+
+-- Conditional breakpoint
+vim.keymap.set('n', '<Leader>b', function()
+  dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
+end, {})
+
+-- Start debugging
+vim.keymap.set('n', '<F5>', dap.continue, {})
+
+-- Step over / into / out
+vim.keymap.set('n', '<F10>', dap.step_over, {})
+vim.keymap.set('n', '<F11>', dap.step_into, {})
+vim.keymap.set('n', '<F12>', dap.step_out, {})
+
+-- Open DAP UI
+vim.keymap.set('n', '<F4>', dapui.toggle, {})
+-- /C# stuff
 
 -- Completion setup
 local cmp = require("cmp")

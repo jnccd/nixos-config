@@ -10,6 +10,10 @@
       dotnet-sdk
       dotnet-ef
 
+      # For Neovim
+      omnisharp-roslyn
+      netcoredbg
+
     ];
   };
 }
