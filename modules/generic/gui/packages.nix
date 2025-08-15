@@ -1,29 +1,41 @@
 { config, lib, pkgs, ... }: {
-  environment.systemPackages = with pkgs; [
-    # Browser
-    firefox
-    (vivaldi.overrideAttrs
-      (oldAttrs: { vivaldi-ffmpeg-codecs = vivaldi-ffmpeg-codecs; }))
-    vivaldi-ffmpeg-codecs
+  options.dobikoConf.nonEssentialGuiPkgs.enabled = lib.mkOption {
+    type = lib.types.bool;
+    default = true;
+    description = "Enables nonEssentialGuiPkgs";
+  };
 
-    # Multimedia
-    vlc
-    gimp
-    inkscape-with-extensions
-    kdePackages.kdenlive
-    blender
-    yt-dlp
+  config = {
+    environment.systemPackages = with pkgs;
+      [
+        # Browser
+        firefox
+        (vivaldi.overrideAttrs
+          (oldAttrs: { vivaldi-ffmpeg-codecs = vivaldi-ffmpeg-codecs; }))
+        vivaldi-ffmpeg-codecs
 
-    # Tools
-    pgadmin4-desktopmode
-    kdePackages.filelight
-    kdePackages.kcalc
+        # Multimedia
+        vlc
+      ] ++ (if config.dobikoConf.nonEssentialGuiPkgs.enabled then [
+        # Multimedia
+        gimp
+        inkscape-with-extensions
+        kdePackages.kdenlive
+        blender
+        yt-dlp
 
-    # Productivity
-    libreoffice-qt6-fresh
-    thunderbird
-    anki
+        # Tools
+        pgadmin4-desktopmode
+        kdePackages.filelight
+        kdePackages.kcalc
 
-    plemoljp-nf # Neovim fonts
-  ];
+        # Productivity
+        libreoffice-qt6-fresh
+        thunderbird
+        anki
+
+        plemoljp-nf # Neovim fonts
+      ] else
+        [ ]);
+  };
 }
