@@ -8,8 +8,6 @@
   config = {
     environment.systemPackages = with pkgs;
       [
-        input-remapper
-
         # Browser
         firefox
         (vivaldi.overrideAttrs
@@ -33,6 +31,7 @@
         pgadmin4-desktopmode
         kdePackages.filelight
         kdePackages.kcalc
+        input-remapper
 
         # Productivity
         libreoffice-qt6-fresh
