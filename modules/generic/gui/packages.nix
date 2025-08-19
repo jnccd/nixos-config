@@ -8,6 +8,8 @@
   config = {
     environment.systemPackages = with pkgs;
       [
+        input-remapper
+
         # Browser
         firefox
         (vivaldi.overrideAttrs

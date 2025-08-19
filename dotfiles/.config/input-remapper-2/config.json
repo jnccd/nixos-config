@@ -1,0 +1,6 @@
+{
+    "version": "2.1.1",
+    "autoload": {
+        "Logitech G502 HERO Gaming Mouse": "new preset"
+    }
+}

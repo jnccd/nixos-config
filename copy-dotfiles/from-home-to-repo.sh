@@ -111,6 +111,8 @@ cp_to_dotfiles .nanorc
 
 cpr_to_dotfiles .config/nvim/
 
+cpr_to_dotfiles .config/input-remapper-2/
+
 cp_to_dotfiles .config/Code/User/settings.json
 cpr_to_dotfiles .config/Code/User/profiles/
 cp_to_dotfiles .config/Code/Preferences

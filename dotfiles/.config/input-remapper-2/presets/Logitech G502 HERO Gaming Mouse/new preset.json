@@ -1,0 +1,15 @@
+[
+    {
+        "input_combination": [
+            {
+                "type": 1,
+                "code": 189,
+                "origin_hash": "79545f98c7e1124f1b8802682c3cc796"
+            }
+        ],
+        "target_uinput": "keyboard",
+        "output_symbol": "KEY_LEFTMETA+Shift_L+KEY_PRINT",
+        "name": "",
+        "mapping_type": "key_macro"
+    }
+]
