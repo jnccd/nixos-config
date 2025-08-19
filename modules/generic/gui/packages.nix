@@ -25,6 +25,7 @@
         yt-dlp
         obs-studio
         krita
+        libresprite
 
         # Tools
         pgadmin4-desktopmode
