@@ -9,6 +9,8 @@ let
       isNormalUser = !user.isSystem;
       isSystemUser = user.isSystem;
 
+      uid = lib.mkIf (user.uid != null) user.uid;
+
       group = user.name;
       extraGroups = if user.isAdmin then [
         "networkmanager"
@@ -36,7 +38,7 @@ let
 
   mkGroup = index: user: {
     name = user.name;
-    value = { };
+    value = { gid = lib.mkIf (user.gid != null) user.gid; };
   };
 in {
   options.dobikoConf.userMngmnt.additionalUsers = lib.mkOption {
@@ -51,11 +53,15 @@ in {
         name = globalArgs.mainUsername;
         isAdmin = true;
         isSystem = false;
+        uid = 1000;
+        gid = 1000;
       }
       {
         name = globalArgs.defaultSystemUsername;
         isAdmin = false;
         isSystem = true;
+        uid = 900;
+        gid = 900;
       }
     ];
   in {
