@@ -4,3 +4,6 @@
 [submodule "secrets"]
 	path = secrets
 	url = git@github.com:jnccd/nixos-config-secrets.git
+[submodule "modules/generic/common/private-module"]
+	path = modules/generic/common/private-module
+	url = git@github.com:jnccd/nixos-config-common-private-module.git

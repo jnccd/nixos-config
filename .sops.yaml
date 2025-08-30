@@ -8,15 +8,21 @@ keys:
 creation_rules:
   - path_regex: secrets/main.yaml$
     key_groups:
-    - age:
-      - *primary_key
-      - *lt_coffeelake
-      - *sv_minis
-      - *pc_ryzen
-      - *pc_ryzen_vm
-      - *pc_ryzen_wsl
+      - age:
+          - *primary_key
+          - *lt_coffeelake
+          - *sv_minis
+          - *pc_ryzen
+          - *pc_ryzen_vm
+          - *pc_ryzen_wsl
   - path_regex: secrets/miniserver.yaml$
     key_groups:
-    - age:
-      - *primary_key
-      - *sv_minis
+      - age:
+          - *primary_key
+          - *sv_minis
+  - path_regex: secrets/nas.yaml$
+    key_groups:
+      - age:
+          - *primary_key
+          - *lt_coffeelake
+          - *pc_ryzen
