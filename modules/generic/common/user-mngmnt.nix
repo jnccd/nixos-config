@@ -9,7 +9,7 @@ let
       isNormalUser = !user.isSystem;
       isSystemUser = user.isSystem;
 
-      uid = lib.mkIf (user.uid != null) user.uid;
+      uid = lib.mkIf (user ? uid) user.uid;
 
       group = user.name;
       extraGroups = if user.isAdmin then [
@@ -38,7 +38,7 @@ let
 
   mkGroup = index: user: {
     name = user.name;
-    value = { gid = lib.mkIf (user.gid != null) user.gid; };
+    value = { gid = lib.mkIf (user ? gid) user.gid; };
   };
 in {
   options.dobikoConf.userMngmnt.additionalUsers = lib.mkOption {
