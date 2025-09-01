@@ -14,7 +14,7 @@ in {
     '';
 
     git-pull =
-      "git submodule update --init --recursive && git checkout main && git pull && git submodule foreach 'git checkout main && git pull'";
+      "git checkout main && git pull && git submodule update --init --recursive && git submodule foreach 'git checkout main && git pull'";
     git-pull-nixconf =
       "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
 
