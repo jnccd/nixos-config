@@ -33,6 +33,9 @@
     ],
     "terminal.integrated.fontFamily": "JetBrains Mono, Fira Code, monospace",
     "terminal.integrated.allowChords": false,
+    "rust-analyzer.cargo.buildScripts.enable": false, // Hopefully optimize rust-analyzer RAM usage
+    "rust-analyzer.procMacro.enable": false,
+    "rust-analyzer.lru.capacity": 512,
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nil",
     "nix.serverSettings": {
