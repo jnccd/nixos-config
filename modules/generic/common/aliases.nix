@@ -25,7 +25,7 @@ in {
       "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
     # Rebuild
     nix-rb =
-      "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 --install-bootloader && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
+      "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
     # Pull and rebuild
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
