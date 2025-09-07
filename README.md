@@ -46,6 +46,8 @@ Should a third party (usually windows) destroy your bootloader, then Nixos makes
 4. `sudo nixos-rebuild switch --flake /home/<your-user-name>/git/nixos-config?submodules=1#<your-host-name> --install-bootloader`
 5. Done, it should boot as normal
 
+If you want to build the bootloader into a new partition, dont forget to update the uuid in `hardware-configuration.nix`.
+
 ## Tip
 
 Whenever you change and rebuild a flake, make sure to look at the memory usage of the system.
