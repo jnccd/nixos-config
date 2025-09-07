@@ -40,6 +40,7 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 Should a third party (usually windows) destroy your bootloader, then Nixos makes it fairly simle to restore it.
 1. Boot into a NixOS installer USB Stick
 2. `sudo mount /dev/<your-root-partition> /mnt`
+
    `sudo mount /dev/<your-broken-boot-partition> /mnt/boot`
 3. `sudo nixos-enter`
 4. `sudo nixos-rebuild switch --flake /home/<your-user-name>/git/nixos-config?submodules=1#<your-host-name> --install-bootloader`
