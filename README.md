@@ -1,10 +1,5 @@
 # <img src="https://github.com/user-attachments/assets/d46f6ade-c539-47c6-a7a5-b98c7b4e5559" alt="Diagram" height="40em" style="vertical-align:middle;"> My NixOS Flake
 
-<img src="https://github.com/user-attachments/assets/d01d1363-8a59-4cd7-8c2c-b340982a4fc8" alt="Description" width="450ch" height=auto>
-
-Yeah, I destroyed my system completely multiple times while building this, so I am not sure about the claims of update atomicity.
-But flakes are definitely reproducible which is neat.
-
 ## What does it look like?
 
 ![image](https://github.com/user-attachments/assets/7dbbe417-5878-45d9-be5f-b9e11d94240a)
@@ -47,14 +42,6 @@ Should a third party (usually windows) destroy your bootloader, then Nixos makes
 5. Done, it should boot as normal
 
 If you want to build the bootloader into a new partition, dont forget to update the uuid in `hardware-configuration.nix`.
-
-## Tip
-
-Whenever you change and rebuild a flake, make sure to look at the memory usage of the system.
-
-You might have assigned a variable at the wrong place and created an infinite tree thats about to fill up your swapfile :)
-
-[Me when memory leek](https://www.reddit.com/r/196/comments/13z6p1x/hatsune_miku_devouring_her_leek/)
 
 ## Inspiration
 
