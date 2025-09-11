@@ -36,6 +36,8 @@ video/x-theora=vlc.desktop;
 video/x-theora+ogg=vlc.desktop;
 x-scheme-handler/geo=google-maps-geo-handler.desktop;
 x-scheme-handler/mailto=thunderbird.desktop;
+application/x-desktop=org.kde.kate.desktop;
+application/xml=org.kde.kate.desktop;org.xfce.mousepad.desktop;okularApplication_txt.desktop;org.kde.kwrite.desktop;
 
 [Default Applications]
 application/pdf=vivaldi-stable.desktop;

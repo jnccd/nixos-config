@@ -10,6 +10,19 @@
           <property name="last-image" type="string" value="/etc/global-dotfiles/.background-image.jpeg"/>
         </property>
       </property>
+      <property name="monitorHDMI-1" type="empty">
+        <property name="workspace0" type="empty">
+          <property name="last-image" type="string" value="/etc/global-dotfiles/.background-image.jpeg"/>
+          <property name="backdrop-cycle-enable" type="bool" value="false"/>
+          <property name="color-style" type="int" value="3"/>
+        </property>
+      </property>
     </property>
+    <property name="single-workspace-mode" type="bool" value="true"/>
+    <property name="single-workspace-number" type="int" value="0"/>
+  </property>
+  <property name="last" type="empty">
+    <property name="window-width" type="int" value="949"/>
+    <property name="window-height" type="int" value="553"/>
   </property>
 </channel>
