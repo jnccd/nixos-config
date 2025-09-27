@@ -13,6 +13,7 @@
 
   dobikoConf.xfce.enabled = true;
   dobikoConf.mountNas.enabled = true;
+  dobikoConf.windscribe.enabled = true;
 
   # --- Bootloader ---
 
