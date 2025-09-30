@@ -12,6 +12,8 @@ in {
           fi; 
         done'
     '';
+    py-shell =
+      "nix-shell -p python3 virtualenv --command '[ -d /tmp/py-shell-venv ] || virtualenv /tmp/py-shell-venv; source /tmp/py-shell-venv/bin/activate; exec bash' ";
 
     git-pull =
       "git checkout main && git pull && git submodule update --init --recursive && git submodule foreach 'git checkout main && git pull'";
@@ -35,9 +37,9 @@ in {
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "nix-sz" ''
       nix path-info -rsSh nixpkgs#$1 | awk '{print $1 "\t" $2 $3 "\t" $4 $5 }' | sort -h -k3 | column -t
-    '')
+    '') # Get the closure filesize of a installed nix package
     (pkgs.writeShellScriptBin "scrn-kill" ''
       screen -X -S $1 quit
-    '')
+    '') # Kill a screen instance
   ];
 }
