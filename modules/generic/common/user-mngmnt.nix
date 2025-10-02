@@ -17,6 +17,8 @@ let
         "input"
         "wheel"
         "nginx"
+        "scanner"
+        "lp"
       ] else
         [ ];
 

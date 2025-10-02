@@ -1,6 +1,4 @@
 { config, lib, pkgs, ... }: {
-  services.printing.enable = true;
-
   security.rtkit.enable = true;
   services.pulseaudio.enable = false;
   services.pipewire = {
