@@ -1,19 +1,29 @@
 { config, lib, pkgs, ... }: {
-  services.printing.enable = true;
-  hardware.sane.enable = true;
-  hardware.sane.extraBackends = [ pkgs.brscan4 pkgs.brscan5 pkgs.sane-airscan ];
-  hardware.sane.brscan4 = {
+  # Print
+  services.printing = {
     enable = true;
-    netDevices = {
-      home = {
-        model = "MFC-J6520DW";
-        ip = "192.168.188.22";
-      };
-    };
+    browsing = true;
+    defaultShared = true;
+    drivers = with pkgs; [
+      cups-filters
+      gutenprint
+      brgenml1lpr
+      brgenml1cupswrapper
+    ];
   };
-  services.udev.packages = [ pkgs.sane-airscan ];
-  #services.ipp-usb.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+  services.ipp-usb.enable = true;
+  # Sometimes it is necessary to use: sudo cupsenable <printer_name>; sudo cupsaccept <printer_name>
 
+  # Scan
+  hardware.sane.enable = true;
+  hardware.sane.extraBackends = with pkgs; [ brscan4 sane-airscan ];
+  hardware.sane.brscan4.enable = true;
+  services.udev.packages = [ pkgs.sane-airscan ];
   environment.systemPackages = with pkgs; [
     brscan4
     sane-backends
