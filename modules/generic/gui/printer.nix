@@ -7,6 +7,8 @@
     drivers = with pkgs; [
       cups-filters
       gutenprint
+      gutenprintBin
+      brlaser
       brgenml1lpr
       brgenml1cupswrapper
     ];
