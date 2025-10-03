@@ -20,6 +20,7 @@
   };
   services.ipp-usb.enable = true;
   # Sometimes it is necessary to use: sudo cupsenable <printer_name>; sudo cupsaccept <printer_name>
+  # Often it works best to register the printer in http://localhost:631 manually
 
   # Scan
   hardware.sane.enable = true;
