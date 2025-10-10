@@ -1,0 +1,13 @@
+# ${color2}${font Fira Code:bold:size=11}NETWORK${font}${color}
+# ${color1}Down:${color} ${downspeed enp3s0} ${color1}Up:${color} ${upspeed enp3s0}
+# ${downspeedgraph enp3s0 20,100 4fc3f7 4fc3f7}
+# ${upspeedgraph enp3s0 20,100 f06292 f06292}
+
+# ${color2}${font Fira Code:bold:size=11}GPU${font}${color}
+# NVIDIA example — comment out if not using NVIDIA
+# ${color1}Temp:${color} ${execi 5 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader}°C
+# ${color1}Load:${color} ${execi 5 nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader}
+# ${color1}VRAM:${color} ${execi 5 nvidia-smi --query-gpu=memory.used --format=csv,noheader} / ${execi 5 nvidia-smi --query-gpu=memory.total --format=csv,noheader} MiB
+
+# For AMD/iGPU, comment NVIDIA lines above and use:
+# ${color1}Temp:${color} ${execi 5 cat /sys/class/drm/card0/device/hwmon/hwmon*/temp1_input | awk '{printf("%.1f°C",$1/1000)}'}
