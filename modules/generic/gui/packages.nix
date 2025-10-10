@@ -27,6 +27,9 @@
         krita
         libresprite
 
+	# Monitoring
+	mission-center
+
         # Tools
         pgadmin4-desktopmode
         kdePackages.filelight
