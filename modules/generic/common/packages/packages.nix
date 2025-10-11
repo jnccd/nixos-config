@@ -10,10 +10,7 @@
       [
         home-manager
 
-        # Networking
         git
-
-        # Terminals
         bash
 
         screen # I use this extensively for services
@@ -35,6 +32,7 @@
         nixfmt-classic
         nil # LSP for nix lang
 
+        jq
         zip
         unzip
       ] else
