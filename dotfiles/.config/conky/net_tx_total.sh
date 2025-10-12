@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Reports total network download and upload speed across all interfaces (except lo)
 
-TX_FILE="/tmp/conky_tx_total"
+mkdir -p /tmp/conky
+TX_FILE="/tmp/conky/tx_total.cache"
 
 # Sum all interfaces except loopback
 tx=$(awk '{sum+=$1} END{print sum}' /sys/class/net/*/statistics/tx_bytes)
