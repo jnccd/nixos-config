@@ -32,7 +32,6 @@
         nixfmt-classic
         nil # LSP for nix lang
 
-        jq
         zip
         unzip
       ] else

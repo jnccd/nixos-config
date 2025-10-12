@@ -12,6 +12,7 @@
       sysstat
       intel-gpu-tools
       bc
+      jq
 
     ];
 
