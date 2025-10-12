@@ -11,6 +11,7 @@
       lm_sensors
       sysstat
       intel-gpu-tools
+      bc
 
     ];
 

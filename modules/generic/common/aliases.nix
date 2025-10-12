@@ -23,11 +23,12 @@ in {
     flake-upd = "nix flake update --flake .?submodules=1";
 
     # Home only rebuild
+    nix-cpd = "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
     nix-hrb =
-      "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
+      "nix-cpd && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
     # Rebuild
     nix-rb =
-      "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
+      "nix-cpd && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
     # Pull and rebuild
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "nix-collect-garbage -d";
