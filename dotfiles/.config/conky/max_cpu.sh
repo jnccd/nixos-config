@@ -59,4 +59,7 @@ done
 avg=$(echo "$sum / ${#cpu1[@]}" | bc -l)
 avg=${avg%.*}
 
+(( max > 100 )) && max=100
+(( avg > 100 )) && avg=100
+
 echo -e "$max\n$avg"
