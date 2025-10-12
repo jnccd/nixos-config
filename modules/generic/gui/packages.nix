@@ -10,14 +10,14 @@
       [
         # Browser
         firefox
+      ] ++ (if config.dobikoConf.nonEssentialGuiPkgs.enabled then [
+        # Browser
         (vivaldi.overrideAttrs
           (oldAttrs: { vivaldi-ffmpeg-codecs = vivaldi-ffmpeg-codecs; }))
         vivaldi-ffmpeg-codecs
 
         # Multimedia
         vlc
-      ] ++ (if config.dobikoConf.nonEssentialGuiPkgs.enabled then [
-        # Multimedia
         gimp
         inkscape-with-extensions
         kdePackages.kdenlive
