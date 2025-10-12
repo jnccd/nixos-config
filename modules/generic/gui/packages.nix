@@ -27,8 +27,9 @@
         krita
         libresprite
 
-	# Monitoring
-	mission-center
+        # Monitoring
+        mission-center
+        qdiskinfo
 
         # Tools
         pgadmin4-desktopmode
