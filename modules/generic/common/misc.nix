@@ -3,8 +3,9 @@
 
   # --- Tmp files ---
 
-  boot.tmpOnTmpfs = true;
+  boot.tmp.useTmpfs = true;
   boot.tmp.cleanOnBoot = true;
+  boot.tmp.tmpfsSize = "2G";
 
   # --- Locale ---
 
