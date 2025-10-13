@@ -24,12 +24,12 @@
       permissions = "0755";
     };
 
-    environment.etc."xdg/autostart/conky.desktop".text = ''
-      [Desktop Entry]
-      Type=Application
-      Name=Conky
-      Exec=conky -c ~/.config/conky/conky.conf
-      X-GNOME-Autostart-enabled=true
-    '';
+    # environment.etc."xdg/autostart/conky.desktop".text = ''
+    #   [Desktop Entry]
+    #   Type=Application
+    #   Name=Conky
+    #   Exec=conky -c ~/.config/conky/conky.conf
+    #   X-GNOME-Autostart-enabled=true
+    # '';
   };
 }
