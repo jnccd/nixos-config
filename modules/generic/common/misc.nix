@@ -3,6 +3,7 @@
 
   # --- Tmp files ---
 
+  boot.tmpOnTmpfs = true;
   boot.tmp.cleanOnBoot = true;
 
   # --- Locale ---
