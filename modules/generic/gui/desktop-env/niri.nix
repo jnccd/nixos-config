@@ -8,14 +8,14 @@
   config = lib.mkIf config.dobikoConf.niri.enabled {
     programs.niri.enable = true;
 
-    security.polkit.enable = true; # polkit
-    services.gnome.gnome-keyring.enable = true; # secret service
+    security.polkit.enable = true;
+    services.gnome.gnome-keyring.enable = true;
     security.pam.services.swaylock = { };
 
-    programs.waybar.enable = true; # top bar
     environment.systemPackages = with pkgs; [
       alacritty
       fuzzel
+      waybar
       swaylock
       mako
       swayidle
