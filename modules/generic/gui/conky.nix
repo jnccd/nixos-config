@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, globalArgs, ... }: {
   options.dobikoConf.conky.enabled = lib.mkOption {
     type = lib.types.bool;
     default = true;
@@ -23,5 +23,28 @@
       group = "root";
       permissions = "0755";
     };
+
+    systemd.services =
+      lib.custom.mkWrappedScreenService { # Ensure Conky runs at most once
+        sessionName = "conky-culler";
+        username = globalArgs.mainUsername;
+        scriptDirName = "conky-culler";
+        wantedBy = [ "graphical.target" ];
+        requires = [ "graphical.target" ];
+        after = [ "graphical.target" ];
+        script = pkgs.writeScript "script" ''
+          sleep 3
+
+          PIDS=$(pgrep -x conky)
+          COUNT=$(echo "$PIDS" | wc -w)
+
+          if [ "$COUNT" -gt 1 ]; then
+              echo "Found $COUNT Conky processes. Keeping one, killing the rest..."
+              FIRST_PID=$(echo "$PIDS" | head -n 1)
+              echo "$PIDS" | grep -v "^$FIRST_PID$" | xargs -r kill
+          else
+              echo "One or no Conky instances running."
+          fi'';
+      };
   };
 }
