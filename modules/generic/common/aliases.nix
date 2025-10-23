@@ -12,8 +12,13 @@ in {
           fi; 
         done'
     '';
-    py-shell =
-      "nix-shell -p python3 virtualenv --command '[ -d /tmp/py-shell-venv ] || virtualenv /tmp/py-shell-venv; source /tmp/py-shell-venv/bin/activate; exec bash' ";
+    py-shell = ''
+      nix-shell -p python3 virtualenv --command '
+        VENV_DIR="/tmp/py-shell-venv-$RANDOM-$RANDOM"
+        virtualenv "$VENV_DIR"
+        source "$VENV_DIR/bin/activate"
+        exec bash'
+    '';
 
     git-pull =
       "git checkout main && git pull && git submodule update --init --recursive && git submodule foreach 'git checkout main && git pull'";
