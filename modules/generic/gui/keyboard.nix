@@ -18,8 +18,8 @@
       ];
       settings.inputMethod = {
         "Groups/0" = {
-          "Default Layout" = "en";
-          "DefaultIM" = "keyboard-us";
+          "Default Layout" = "de";
+          "DefaultIM" = "";
         };
         "Groups/0/Items/0" = {
           "Name" = "keyboard-de";
@@ -31,15 +31,21 @@
         };
         "Groups/0/Items/2" = {
           "Name" = "pinyin";
-          "Layout" = "de";
+          "Layout" = "";
         };
         "Groups/0/Items/3" = {
           "Name" = "mozc";
-          "Layout" = "de";
+          "Layout" = "";
         };
         "GroupOrder" = { "0" = "Default"; };
       };
     };
   };
-  environment.sessionVariables = { XMODIFIERS = "@im=fcitx"; };
+  environment.etc."xdg/fcitx5/conf/keyboard.conf".text =
+    "EnableHintByDefault=False";
+  environment.sessionVariables = {
+    XMODIFIERS = "@im=fcitx";
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
+  };
 }
