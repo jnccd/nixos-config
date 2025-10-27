@@ -34,4 +34,9 @@
     acceptTerms = true;
     defaults.email = globalArgs.email;
   };
+
+  # --- Hardware ---
+
+  time.hardwareClockInLocalTime = true;
+  hardware.enableRedistributableFirmware = true;
 }

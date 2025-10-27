@@ -13,11 +13,10 @@
 
   dobikoConf.nvidia.enabled = true;
   dobikoConf.gaming.enabled = true;
+  dobikoConf.fcitx5.layout = "en";
 
   # --- Misc ---
 
-  time.hardwareClockInLocalTime = true;
-  hardware.enableRedistributableFirmware = true;
   hardware.bluetooth.enable = true;
   services.xserver.xkb = {
     layout = "us,de";

@@ -1,51 +1,58 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
-  services.xserver.xkb = lib.mkDefault {
-    layout = "de,us";
-    variant = ",altgr-intl";
-    options = "grp:win_space_toggle";
+  options.dobikoConf.fcitx5.layout = lib.mkOption {
+    type = lib.types.string;
+    default = "de";
+    description = "Keyboard layout used in fcitx5";
   };
 
-  i18n.inputMethod = lib.mkDefault {
-    enable = true;
-    type = "fcitx5";
-    fcitx5 = {
-      waylandFrontend = true;
-      plasma6Support = true;
-      addons = with pkgs; [
-        fcitx5-configtool
-        fcitx5-chinese-addons
-        fcitx5-mozc
-      ];
-      settings.inputMethod = {
-        "Groups/0" = {
-          "Default Layout" = "de";
-          "DefaultIM" = "";
+  config = {
+    services.xserver.xkb = lib.mkDefault {
+      layout = "de,us";
+      variant = ",altgr-intl";
+      options = "grp:win_space_toggle";
+    };
+    i18n.inputMethod = lib.mkDefault {
+      enable = true;
+      type = "fcitx5";
+      fcitx5 = {
+        waylandFrontend = true;
+        plasma6Support = true;
+        addons = with pkgs; [
+          fcitx5-configtool
+          fcitx5-chinese-addons
+          fcitx5-mozc
+        ];
+        settings.inputMethod = {
+          "Groups/0" = {
+            "Default Layout" = config.dobikoConf.fcitx5.layout;
+            "DefaultIM" = "";
+          };
+          "Groups/0/Items/0" = {
+            "Name" = "keyboard-de";
+            "Layout" = "";
+          };
+          "Groups/0/Items/1" = {
+            "Name" = "keyboard-us";
+            "Layout" = "";
+          };
+          "Groups/0/Items/2" = {
+            "Name" = "pinyin";
+            "Layout" = "";
+          };
+          "Groups/0/Items/3" = {
+            "Name" = "mozc";
+            "Layout" = "";
+          };
+          "GroupOrder" = { "0" = "Default"; };
         };
-        "Groups/0/Items/0" = {
-          "Name" = "keyboard-de";
-          "Layout" = "";
-        };
-        "Groups/0/Items/1" = {
-          "Name" = "keyboard-us";
-          "Layout" = "";
-        };
-        "Groups/0/Items/2" = {
-          "Name" = "pinyin";
-          "Layout" = "";
-        };
-        "Groups/0/Items/3" = {
-          "Name" = "mozc";
-          "Layout" = "";
-        };
-        "GroupOrder" = { "0" = "Default"; };
       };
     };
-  };
-  environment.etc."xdg/fcitx5/conf/keyboard.conf".text =
-    "EnableHintByDefault=False";
-  environment.sessionVariables = {
-    XMODIFIERS = "@im=fcitx";
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
+    environment.etc."xdg/fcitx5/conf/keyboard.conf".text =
+      "EnableHintByDefault=False";
+    environment.sessionVariables = {
+      XMODIFIERS = "@im=fcitx";
+      GTK_IM_MODULE = "fcitx";
+      QT_IM_MODULE = "fcitx";
+    };
   };
 }
