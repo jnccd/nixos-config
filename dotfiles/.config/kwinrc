@@ -10,6 +10,15 @@ NoiseStrength=0
 [Effect-translucency]
 MoveResize=89
 
+[NightColor]
+Active=true
+DayTemperature=6500
+EveningBeginFixed=2145
+Mode=Times
+MorningBeginFixed=0600
+NightTemperature=3200
+TransitionTime=15
+
 [Plugins]
 blurEnabled=true
 contrastEnabled=false
@@ -18,15 +27,6 @@ kwin4_effect_geometry_changeEnabled=true
 maximizeEnabled=false
 mousemarkEnabled=true
 translucencyEnabled=true
-
-[NightColor]
-Active=true
-Mode=Times
-NightTemperature=3200
-DayTemperature=6500
-MorningBeginFixed=0600
-EveningBeginFixed=2145
-TransitionTime=15
 
 [Tiling]
 padding=4
@@ -40,13 +40,17 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 [Tiling][dadcbf7d-c667-57c3-8703-d02d167e5638]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Wayland]
+InputMethod[$e]=/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop
+VirtualKeyboardEnabled=true
+
 [Windows]
 BorderSnapZone=5
 DelayFocusInterval=100
 WindowSnapZone=3
 
 [Xwayland]
-Scale=2
+Scale=1.25
 
 [org.kde.kdecoration2]
 library=org.kde.breeze
