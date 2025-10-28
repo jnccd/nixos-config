@@ -1,11 +1,11 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
   options.dobikoConf.fcitx5.layout = lib.mkOption {
-    type = lib.types.string;
+    type = lib.types.str;
     default = "de";
     description = "Keyboard layout used in fcitx5";
   };
   options.dobikoConf.fcitx5.im = lib.mkOption {
-    type = lib.types.string;
+    type = lib.types.str;
     default = "keyboard-de";
     description = "Keyboard input method used in fcitx5";
   };
@@ -22,6 +22,7 @@
       fcitx5 = {
         waylandFrontend = true;
         plasma6Support = true;
+        ignoreUserConfig = true;
         addons = with pkgs; [
           fcitx5-configtool
           fcitx5-chinese-addons
@@ -29,16 +30,21 @@
         ];
         settings.inputMethod = {
           "Groups/0" = {
+            "Name" = "Default";
             "Default Layout" = config.dobikoConf.fcitx5.layout;
             "DefaultIM" = config.dobikoConf.fcitx5.im;
           };
           "Groups/0/Items/0" = {
-            "Name" = "keyboard-de";
-            "Layout" = "";
+            "Name" = config.dobikoConf.fcitx5.im;
+            "Layout" = config.dobikoConf.fcitx5.layout;
           };
           "Groups/0/Items/1" = {
-            "Name" = "keyboard-us";
-            "Layout" = "";
+            "Name" = if config.dobikoConf.fcitx5.im == "keyboard-us" then
+              "keyboard-de"
+            else
+              "keyboard-us";
+            "Layout" =
+              if config.dobikoConf.fcitx5.im == "en" then "de" else "en";
           };
           "Groups/0/Items/2" = {
             "Name" = "pinyin";
