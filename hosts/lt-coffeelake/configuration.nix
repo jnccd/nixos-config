@@ -15,10 +15,6 @@
   dobikoConf.niri.enabled = true;
   dobikoConf.mountNas.enabled = true;
 
-  # --- Misc ---
-
-  hardware.bluetooth.enable = true;
-
   # --- Bootloader ---
 
   boot.loader = {

@@ -1,4 +1,6 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
+  hardware.bluetooth.enable = true;
+
   # - images -
 
   environment.etc."global-dotfiles/.background-image.jpeg".source =

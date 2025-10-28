@@ -17,7 +17,6 @@
 
   # --- Misc ---
 
-  hardware.bluetooth.enable = true;
   services.xserver.xkb = {
     layout = "us,de";
     variant = "altgr-intl,";
