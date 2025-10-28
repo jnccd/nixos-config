@@ -39,12 +39,15 @@
             "Layout" = config.dobikoConf.fcitx5.layout;
           };
           "Groups/0/Items/1" = {
-            "Name" = if config.dobikoConf.fcitx5.im == "keyboard-us" then
-              "keyboard-de"
+            "Name" =
+              if config.dobikoConf.fcitx5.im == "keyboard-us-altgr-intl" then
+                "keyboard-de"
+              else
+                "keyboard-us-altgr-intl";
+            "Layout" = if config.dobikoConf.fcitx5.im == "us(altgr-intl)" then
+              "de"
             else
-              "keyboard-us";
-            "Layout" =
-              if config.dobikoConf.fcitx5.im == "en" then "de" else "en";
+              "us(altgr-intl)";
           };
           "Groups/0/Items/2" = {
             "Name" = "pinyin";

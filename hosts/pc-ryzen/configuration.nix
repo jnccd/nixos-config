@@ -13,8 +13,8 @@
 
   dobikoConf.nvidia.enabled = true;
   dobikoConf.gaming.enabled = true;
-  dobikoConf.fcitx5.layout = "en";
-  dobikoConf.fcitx5.im = "keyboard-us";
+  dobikoConf.fcitx5.layout = "us(altgr-intl)";
+  dobikoConf.fcitx5.im = "keyboard-us-altgr-intl";
 
   # --- Misc ---
 
