@@ -14,6 +14,7 @@
   dobikoConf.nvidia.enabled = true;
   dobikoConf.gaming.enabled = true;
   dobikoConf.fcitx5.layout = "en";
+  dobikoConf.fcitx5.im = "keyboard-us";
 
   # --- Misc ---
 

@@ -4,6 +4,11 @@
     default = "de";
     description = "Keyboard layout used in fcitx5";
   };
+  options.dobikoConf.fcitx5.im = lib.mkOption {
+    type = lib.types.string;
+    default = "keyboard-de";
+    description = "Keyboard input method used in fcitx5";
+  };
 
   config = {
     services.xserver.xkb = lib.mkDefault {
@@ -25,7 +30,7 @@
         settings.inputMethod = {
           "Groups/0" = {
             "Default Layout" = config.dobikoConf.fcitx5.layout;
-            "DefaultIM" = "";
+            "DefaultIM" = config.dobikoConf.fcitx5.im;
           };
           "Groups/0/Items/0" = {
             "Name" = "keyboard-de";
