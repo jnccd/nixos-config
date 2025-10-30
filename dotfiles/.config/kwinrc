@@ -40,10 +40,6 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 [Tiling][dadcbf7d-c667-57c3-8703-d02d167e5638]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
-[Wayland]
-InputMethod[$e]=/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop
-VirtualKeyboardEnabled=true
-
 [Windows]
 BorderSnapZone=5
 DelayFocusInterval=100
