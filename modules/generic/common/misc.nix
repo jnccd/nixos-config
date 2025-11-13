@@ -37,6 +37,5 @@
 
   # --- Hardware ---
 
-  time.hardwareClockInLocalTime = true;
   hardware.enableRedistributableFirmware = true;
 }
