@@ -98,7 +98,7 @@
     };
   mkUpdatingContainerService = { screenSessionName, serviceName, imageName
     , serviceUser, defineEnvVarsScript, envVarsToPass, }:
-    lib.custom.mkWrappedScreenService {
+    mkWrappedScreenService {
       sessionName = screenSessionName;
       username = serviceUser;
       scriptDirName = serviceName;
@@ -112,7 +112,7 @@
           } --replace --name ${serviceName} ${imageName}
         done
       '';
-    } // lib.custom.mkWrappedScreenService {
+    } // mkWrappedScreenService {
       sessionName = "${screenSessionName}-updater";
       username = serviceUser;
       scriptDirName = "${serviceName}-updater";
