@@ -75,10 +75,10 @@
       scriptDirName = "${serviceName}-updater";
       script = pkgs.writeScript "script" ''
         sleep 60
-        cd ../${serviceName}/${repoName}
+        cd ../${repoName}/${repoName}
 
         while true; do
-          git fetch
+          git fetch || (echo "Error fetching updates!" && sleep 120 && continue)
 
           LOCAL=$(git rev-parse @)
           REMOTE=$(git rev-parse @{u})
@@ -119,7 +119,7 @@
       script = pkgs.writeScript "script" ''
         old_digest=$(docker inspect --format='{{index .RepoDigests 0}}' ${imageName} 2>/dev/null || echo "")
         while true; do
-          docker pull ${imageName} > /dev/null
+          docker pull ${imageName} || (echo "Error fetching updates!" && sleep 120 && continue)
           new_digest=$(docker inspect --format='{{index .RepoDigests 0}}' ${imageName})
 
           if [ "$old_digest" != "$new_digest" ]; then
