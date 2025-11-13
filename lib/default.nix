@@ -56,7 +56,7 @@
     mkWrappedScreenService {
       sessionName = serviceName;
       username = serviceUser;
-      scriptDirName = repoName;
+      scriptDirName = serviceName;
       script = pkgs.writeScript "script" ''
         git clone ${repoUrl}
         git -C ./${repoName} pull
@@ -75,7 +75,7 @@
       scriptDirName = "${serviceName}-updater";
       script = pkgs.writeScript "script" ''
         sleep 60
-        cd ../${repoName}/${repoName}
+        cd ../${serviceName}/${repoName}
 
         while true; do
           git fetch || (echo "Error fetching updates!" && sleep 120 && continue)
