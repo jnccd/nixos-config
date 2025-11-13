@@ -56,7 +56,7 @@
     mkWrappedScreenService {
       sessionName = serviceName;
       username = serviceUser;
-      scriptDirName = serviceName;
+      scriptDirName = repoName;
       script = pkgs.writeScript "script" ''
         git clone ${repoUrl}
         git -C ./${repoName} pull
