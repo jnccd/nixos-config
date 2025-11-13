@@ -53,7 +53,7 @@
     };
   mkUpdatingGitBasedService =
     { serviceName, repoName, repoUrl, serviceUser, defineEnvVarsScript }:
-    lib.custom.mkWrappedScreenService {
+    mkWrappedScreenService {
       sessionName = serviceName;
       username = serviceUser;
       scriptDirName = serviceName;
@@ -77,7 +77,7 @@
           git -C ./${repoName} pull
         done
       '';
-    } // lib.custom.mkWrappedScreenService {
+    } // mkWrappedScreenService {
       sessionName = "${serviceName}-updater";
       username = serviceUser;
       scriptDirName = "${serviceName}-updater";
