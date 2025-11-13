@@ -58,13 +58,6 @@
       username = serviceUser;
       scriptDirName = serviceName;
       script = pkgs.writeScript "script" ''
-        # Ctrl+C Handler (Due to this goto, working dir should NOT be changed with cd)
-        SCRIPT_PATH="$(realpath "$0")"
-        trap 'echo "Caught Ctrl+C! If you want to end this for good, use double Ctrl+C. Restarting script...";
-          trap "exit 0" INT;
-          sleep 0.2;
-          exec bash "$SCRIPT_PATH" "$@"' INT
-
         git clone ${repoUrl}
         git -C ./${repoName} pull
 
