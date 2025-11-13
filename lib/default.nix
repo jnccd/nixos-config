@@ -42,12 +42,66 @@
       script = pkgs.writeScript "wrapped-service-script" ''
         ${bashEnsureInternet}
         cd ~ && mkdir -p screen-runs/${scriptDirName}; cd screen-runs/${scriptDirName};
-        clear;
-        date;
+        clear
+        date
+        pwd
 
         ${script}
 
         ${bashWaitForever}
+      '';
+    };
+  mkUpdatingGitBasedService =
+    { serviceName, repoName, repoUrl, serviceUser, defineEnvVarsScript }:
+    lib.custom.mkWrappedScreenService {
+      sessionName = serviceName;
+      username = serviceUser;
+      scriptDirName = serviceName;
+      script = pkgs.writeScript "script" ''
+        # Ctrl+C Handler (Due to this goto, working dir should NOT be changed with cd)
+        SCRIPT_PATH="$(realpath "$0")"
+        trap 'echo "Caught Ctrl+C! If you want to end this for good, use double Ctrl+C. Restarting script...";
+          trap "exit 0" INT;
+          sleep 0.2;
+          exec bash "$SCRIPT_PATH" "$@"' INT
+
+        git clone ${repoUrl}
+        git -C ./${repoName} pull
+
+        ${defineEnvVarsScript}
+
+        while true; do
+          nix develop ./${repoName} -c bash ${repoName}/start_service.sh
+          
+          sleep 5
+          git -C ./${repoName} pull
+        done
+      '';
+    } // lib.custom.mkWrappedScreenService {
+      sessionName = "${serviceName}-updater";
+      username = serviceUser;
+      scriptDirName = "${serviceName}-updater";
+      script = pkgs.writeScript "script" ''
+        sleep 60
+        cd ../${serviceName}/${repoName}
+
+        while true; do
+          git fetch
+
+          LOCAL=$(git rev-parse @)
+          REMOTE=$(git rev-parse @{u})
+          BASE=$(git merge-base @ @{u})
+
+          if [ "$LOCAL" = "$BASE" ] && [ "$REMOTE" != "$BASE" ]; then
+            echo "Base $BASE / Local $LOCAL / Remote $REMOTE"
+            echo "$(date): New commits available. Sending Ctrl-C to ${serviceName}."
+            screen -S "${serviceName}" -X stuff $'\003'
+          else
+            echo "$(date): No new commits."
+          fi
+
+          sleep 120
+        done
       '';
     };
 
