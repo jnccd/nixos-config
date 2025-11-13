@@ -15,7 +15,7 @@
 
   programs.git = {
     enable = true;
-    userName = globalArgs.githubUsername;
+    userName = globalArgs.gitUsername;
     userEmail = globalArgs.email;
   };
 

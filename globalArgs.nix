@@ -3,7 +3,7 @@ rec {
   homeStateVersion = stateVersion;
 
   mainUsername = "dobiko";
-  githubUsername = "jnccd";
+  gitUsername = "jnccd";
   email = "kobidogao@outlook.com";
 
   defaultSystemUsername = "runner";
