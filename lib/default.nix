@@ -96,6 +96,43 @@
         done
       '';
     };
+  mkUpdatingContainerService = { screenSessionName, serviceName, imageName
+    , serviceUser, defineEnvVarsScript, envVarsToPass, }:
+    lib.custom.mkWrappedScreenService {
+      sessionName = screenSessionName;
+      username = serviceUser;
+      scriptDirName = serviceName;
+      script = pkgs.writeScript "script" ''
+        ${defineEnvVarsScript}
+        while true; do
+          docker pull ${imageName}
+          docker run -i --restart=always ${
+            builtins.concatStringsSep " "
+            (lib.concatMap (x: [ "-e" x ]) envVarsToPass)
+          } --replace --name ${serviceName} ${imageName}
+        done
+      '';
+    } // lib.custom.mkWrappedScreenService {
+      sessionName = "${screenSessionName}-updater";
+      username = serviceUser;
+      scriptDirName = "${serviceName}-updater";
+      script = pkgs.writeScript "script" ''
+        old_digest=$(docker inspect --format='{{index .RepoDigests 0}}' ${imageName} 2>/dev/null || echo "")
+        while true; do
+          docker pull ${imageName} > /dev/null
+          new_digest=$(docker inspect --format='{{index .RepoDigests 0}}' ${imageName})
+
+          if [ "$old_digest" != "$new_digest" ]; then
+              echo "New image version detected: $new_digest"
+              screen -S ${screenSessionName} -X stuff $'\003'
+              old_digest=$new_digest
+          else
+              echo "No update found."
+          fi
+          sleep 120
+        done
+      '';
+    };
 
   listAllLocalImportables = path:
     builtins.map (f: (path + "/${f}")) (builtins.attrNames
