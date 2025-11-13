@@ -152,7 +152,7 @@
       };
 
       # - Service -
-      systemd.services = lib.custom.mkWrappedScreenService {
+      systemd.services = mkWrappedScreenService {
         sessionName = buildServiceName;
         username = serviceUser;
         scriptDirName = buildServiceName;
@@ -171,7 +171,7 @@
             git pull
           done
         '';
-      } // lib.custom.mkWrappedScreenService {
+      } // mkWrappedScreenService {
         sessionName = "build-${websiteName}-trigger";
         username = serviceUser;
         scriptDirName = "build-${websiteName}-trigger";
