@@ -134,7 +134,7 @@
       '';
     };
   mkUpdatingNodeWebsiteModule = { websiteName, websiteUrl, repoName, repoUrl
-    , serviceUser, buildServiceName, firewallPorts, }: {
+    , serviceUser, buildServiceName, firewallPorts, isNginxDefault ? false }: {
       # - Firewall -
       networking.firewall.allowedTCPPorts = firewallPorts;
 
@@ -144,7 +144,7 @@
 
         # Certs go here: /var/lib/acme/[domain]/
         virtualHosts."${websiteUrl}" = {
-          default = true;
+          default = isNginxDefault;
           addSSL = true;
           enableACME = true;
           root = "/etc/www/${websiteName}/";
