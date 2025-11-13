@@ -133,6 +133,75 @@
         done
       '';
     };
+  mkUpdatingNodeWebsiteModule = { websiteName, websiteUrl, repoName, repoUrl
+    , serviceUser, buildServiceName, firewallPorts, }: {
+      # - Firewall -
+      networking.firewall.allowedTCPPorts = firewallPorts;
+
+      # - Nginx -
+      services.nginx = {
+        enable = true;
+
+        # Certs go here: /var/lib/acme/[domain]/
+        virtualHosts."${websiteUrl}" = {
+          default = true;
+          addSSL = true;
+          enableACME = true;
+          root = "/etc/www/${websiteName}/";
+        };
+      };
+
+      # - Service -
+      systemd.services = lib.custom.mkWrappedScreenService {
+        sessionName = buildServiceName;
+        username = serviceUser;
+        scriptDirName = buildServiceName;
+        script = pkgs.writeScript "website-build-script" ''
+          git clone ${repoUrl}
+          cd ${repoName}
+          git pull
+
+          while true; do
+            nix develop -c bash -c "npm run build"
+            rm -r /etc/www/${websiteName}/*
+            cp -r dist/* /etc/www/${websiteName}/
+            pwd
+            
+            read -p "Press enter to rebuild"
+            git pull
+          done
+        '';
+      } // lib.custom.mkWrappedScreenService {
+        sessionName = "build-${websiteName}-trigger";
+        username = serviceUser;
+        scriptDirName = "build-${websiteName}-trigger";
+        script = pkgs.writeScript "script" ''
+          sleep 60
+          cd ../${buildServiceName}/${repoName}
+
+          while true; do
+            git fetch || (echo "Error fetching updates!" && sleep 120 && continue)
+
+            LOCAL=$(git rev-parse @)
+            REMOTE=$(git rev-parse @{u})
+            BASE=$(git merge-base @ @{u})
+
+            if [ "$LOCAL" = "$BASE" ] && [ "$REMOTE" != "$BASE" ]; then
+              echo "Base $BASE / Local $LOCAL / Remote $REMOTE"
+              echo "$(date): New commits available. Sending enter to ${buildServiceName}."
+              screen -S "${buildServiceName}" -X stuff $'\n'
+            else
+              echo "$(date): No new commits."
+            fi
+
+            sleep 120
+          done
+        '';
+      };
+      environment.etc."www/${websiteName}/.mkdir" = { text = "create"; };
+      systemd.tmpfiles.rules =
+        [ "d /etc/www/${websiteName}/ 0770 ${serviceUser} nginx" ];
+    };
 
   listAllLocalImportables = path:
     builtins.map (f: (path + "/${f}")) (builtins.attrNames
