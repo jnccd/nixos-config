@@ -66,7 +66,6 @@
         while true; do
           nix develop ./${repoName} -c bash ${repoName}/start_service.sh
           
-          sleep 5
           git -C ./${repoName} pull
         done
       '';
