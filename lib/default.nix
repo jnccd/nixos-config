@@ -3,7 +3,8 @@
   bashWaitForever = "while :; do sleep 2073600; done";
 
   mkScreenService = { sessionName, username, script
-    , wantedBy ? [ "multi-user.target" ], requires ? [ ], after ? [ ] }: {
+    , wantedBy ? [ "multi-user.target" ], requires ? [ ], after ? [ ]
+    , cleanupScript ? "" }: {
       "${sessionName}" = {
         enable = true;
         description = sessionName;
@@ -29,6 +30,7 @@
           ExecStop = pkgs.writeScript "${sessionName}-stop-script" ''
             #!${pkgs.runtimeShell}
             PATH=$PATH:/run/current-system/sw/bin
+            ${cleanupScript}
             screen -XS ${sessionName} quit
           '';
         };
@@ -36,7 +38,7 @@
     };
   mkWrappedScreenService = { sessionName, username, scriptDirName, script
     , wantedBy ? [ "multi-user.target" ], requires ? [ "network-online.target" ]
-    , after ? [ ] }:
+    , after ? [ ], cleanupScript ? "" }:
     mkScreenService {
       inherit sessionName username wantedBy requires after;
       script = pkgs.writeScript "wrapped-service-script" ''
@@ -111,6 +113,10 @@
             (lib.concatMap (x: [ "-e" x ]) envVarsToPass)
           } --replace --name ${serviceName} ${imageName}
         done
+      '';
+      cleanupScript = ''
+        docker stop ${serviceName} || true
+        docker rm ${serviceName} || true
       '';
     } // mkWrappedScreenService {
       sessionName = "${screenSessionName}-updater";
