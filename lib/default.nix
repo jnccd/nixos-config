@@ -53,7 +53,7 @@
         ${bashWaitForever}
       '';
     };
-  mkUpdatingGitBasedService =
+  mkOnTagUpdatingGitBasedService =
     { serviceName, repoName, repoUrl, serviceUser, defineEnvVarsScript }:
     mkWrappedScreenService {
       sessionName = serviceName;
@@ -80,18 +80,17 @@
         cd ../${serviceName}/${repoName}
 
         while true; do
-          git fetch || (echo "Error fetching updates!" && sleep 120 && continue)
+          git fetch --tags || (echo "Error fetching updates!" && sleep 120 && continue)
 
-          LOCAL=$(git rev-parse @)
-          REMOTE=$(git rev-parse @{u})
-          BASE=$(git merge-base @ @{u})
+          LOCAL_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+          REMOTE_TAG=$(git describe --tags --abbrev=0 origin 2>/dev/null)
 
-          if [ "$LOCAL" = "$BASE" ] && [ "$REMOTE" != "$BASE" ]; then
-            echo "Base $BASE / Local $LOCAL / Remote $REMOTE"
-            echo "$(date): New commits available. Sending Ctrl-C to ${serviceName}."
+          if [ "$LOCAL_TAG" != "$REMOTE_TAG" ]; then
+            echo "Local $LOCAL_TAG / Remote $REMOTE_TAG"
+            echo "$(date): New tag(s) available. Sending Ctrl-C to ${serviceName}."
             screen -S "${serviceName}" -X stuff $'\003'
           else
-            echo "$(date): No new commits."
+            echo "$(date): No new tag(s)."
           fi
 
           sleep 120
@@ -139,8 +138,9 @@
         done
       '';
     };
-  mkUpdatingNodeWebsiteModule = { websiteName, websiteUrl, repoName, repoUrl
-    , serviceUser, buildServiceName, firewallPorts, isNginxDefault ? false }: {
+  mkOnCommitUpdatingNodeWebsiteModule = { websiteName, websiteUrl, repoName
+    , repoUrl, serviceUser, buildServiceName, firewallPorts
+    , isNginxDefault ? false }: {
       # - Firewall -
       networking.firewall.allowedTCPPorts = firewallPorts;
 
@@ -194,10 +194,10 @@
 
             if [ "$LOCAL" = "$BASE" ] && [ "$REMOTE" != "$BASE" ]; then
               echo "Base $BASE / Local $LOCAL / Remote $REMOTE"
-              echo "$(date): New commits available. Sending enter to ${buildServiceName}."
+              echo "$(date): New commit(s) available. Sending enter to ${buildServiceName}."
               screen -S "${buildServiceName}" -X stuff $'\n'
             else
-              echo "$(date): No new commits."
+              echo "$(date): No new commit(s)."
             fi
 
             sleep 120
