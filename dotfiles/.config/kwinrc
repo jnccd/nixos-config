@@ -7,6 +7,17 @@ Rows=1
 BlurStrength=2
 NoiseStrength=0
 
+[Effect-blurplus]
+BlurDocks=true
+BlurMenus=true
+BlurStrength=2
+FakeBlur=true
+NoiseStrength=1
+RefractionEdgeSize=9
+RefractionNormalPow=22
+RefractionRGBFringing=17
+WindowClasses=conky\norg.kde.konsole
+
 [Effect-translucency]
 MoveResize=89
 
@@ -20,8 +31,9 @@ NightTemperature=3200
 TransitionTime=15
 
 [Plugins]
-blurEnabled=true
+blurEnabled=false
 contrastEnabled=false
+forceblurEnabled=true
 fullscreenEnabled=false
 kwin4_effect_geometry_changeEnabled=true
 maximizeEnabled=false

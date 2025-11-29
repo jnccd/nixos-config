@@ -1,2 +1,5 @@
+[Common]
+RoundedCorners=false
+
 [Style]
 MenuOpacity=60
