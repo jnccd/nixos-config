@@ -1,5 +1,5 @@
 rec {
-  stateVersion = "25.05";
+  stateVersion = "25.11";
   homeStateVersion = stateVersion;
 
   mainUsername = "dobiko";
