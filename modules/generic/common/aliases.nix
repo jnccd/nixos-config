@@ -36,7 +36,7 @@ in {
       "nix-cpd && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
     # Pull and rebuild
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
-    nix-gc = "nix-collect-garbage -d";
+    nix-gc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
     nix-tr = "nix-tree /run/current-system";
   };
 
