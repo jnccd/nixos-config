@@ -72,6 +72,7 @@ local builtin = require("telescope.builtin")
 -- Key maps
 vim.keymap.set("n", "<M-f>", builtin.live_grep, {})
 vim.keymap.set("n", "<M-q>", ":bdelete<CR>")
+vim.keymap.set("n", "<M-g>", ":Neogit<CR>")
 
 -- Nvim-tree setup
 require("nvim-tree").setup()
