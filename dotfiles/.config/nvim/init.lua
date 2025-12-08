@@ -148,5 +148,3 @@ vim.keymap.set('n', '<F12>', dap.step_out, {})
 -- Open DAP UI
 vim.keymap.set('n', '<F4>', dapui.toggle, {})
 -- /C# stuff
-
-
