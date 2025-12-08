@@ -39,6 +39,21 @@ require("lazy").setup({
 
   -- Fuzzy finder
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+
+  {
+  "NeogitOrg/neogit",
+    lazy = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+
+      "nvim-telescope/telescope.nvim", 
+    },
+    cmd = "Neogit",
+    keys = {
+      { "M-g", "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
+    }
+  }
 })
 
 -- Basic settings
@@ -52,6 +67,11 @@ vim.cmd[[colorscheme tokyonight]]
 require("mason").setup()
 require("lualine").setup()
 require("bufferline").setup()
+local builtin = require("telescope.builtin")
+
+-- Key maps
+vim.keymap.set("n", "<M-f>", builtin.live_grep, {})
+vim.keymap.set("n", "<M-q>", ":bdelete<CR>")
 
 -- Nvim-tree setup
 require("nvim-tree").setup()
@@ -67,11 +87,6 @@ local function open_nvim_tree_on_startup(data)
   require("nvim-tree.api").tree.open()
 end
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree_on_startup })
-
--- Telescope setup
-local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
 
 -- Completion setup
 local cmp = require("cmp")
@@ -133,7 +148,7 @@ dap.configurations.cs = {
 vim.keymap.set('n', '<F9>', dap.toggle_breakpoint, {})
 
 -- Conditional breakpoint
-vim.keymap.set('n', '<Leader>b', function()
+vim.keymap.set('n', '<M-F9>', function()
   dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
 end, {})
 

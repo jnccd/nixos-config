@@ -29,6 +29,7 @@
 
         # Coding
         neovim
+        ripgrep
         nixfmt-classic
         nil # LSP for nix lang
 
