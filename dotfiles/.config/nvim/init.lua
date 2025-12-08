@@ -11,7 +11,6 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
-
 -- Plugin setup
 require("lazy").setup({
   -- File explorer
@@ -43,25 +42,55 @@ require("lazy").setup({
 })
 
 -- Basic settings
-vim.o.mouse = "a"                      -- Enable mouse
-vim.o.number = true                   -- Line numbers
+vim.o.mouse = "a"
+vim.opt.virtualedit = "onemore"
+vim.o.number = true
 vim.o.relativenumber = true
 vim.o.termguicolors = true
-vim.cmd[[colorscheme tokyonight]]    -- Set theme
+vim.cmd[[colorscheme tokyonight]]
+
+require("mason").setup()
+require("lualine").setup()
+require("bufferline").setup()
 
 -- Nvim-tree setup
 require("nvim-tree").setup()
 vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+local function open_nvim_tree_on_startup(data)
+  -- skip when opening a file directly or in diff mode
+  local real_file = vim.fn.filereadable(data.file) == 1
+  local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
+  if not real_file and not no_name then
+    return
+  end
 
--- Mason setup
-require("mason").setup()
+  require("nvim-tree.api").tree.open()
+end
+vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree_on_startup })
+
+-- Telescope setup
+local builtin = require("telescope.builtin")
+vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+
+-- Completion setup
+local cmp = require("cmp")
+cmp.setup({
+  mapping = cmp.mapping.preset.insert({
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+  },
+})
 
 -- LSP setup
 local lspconfig = require("lspconfig")
 lspconfig.lua_ls.setup({}) -- Example: Lua language server
+
 -- C# stuff
 local dap, dapui = require("dap"), require("dapui")
-
 dapui.setup({
   layouts = {
     {
@@ -84,13 +113,11 @@ dapui.setup({
     },
   },
 })
-
 dap.adapters.coreclr = {
   type = 'executable',
   command = vim.fn.exepath('netcoredbg'),
   args = { '--interpreter=vscode' },
 }
-
 dap.configurations.cs = {
   {
     type = 'coreclr',
@@ -122,39 +149,4 @@ vim.keymap.set('n', '<F12>', dap.step_out, {})
 vim.keymap.set('n', '<F4>', dapui.toggle, {})
 -- /C# stuff
 
--- Completion setup
-local cmp = require("cmp")
-cmp.setup({
-  mapping = cmp.mapping.preset.insert({
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  }),
-  sources = {
-    { name = 'nvim_lsp' },
-  },
-})
 
--- Lualine setup
-require("lualine").setup()
-
--- Bufferline setup
-require("bufferline").setup{}
-
--- Telescope setup
-local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-
--- Auto-open NvimTree on startup
-local function open_nvim_tree_on_startup(data)
-  -- skip when opening a file directly or in diff mode
-  local real_file = vim.fn.filereadable(data.file) == 1
-  local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
-  if not real_file and not no_name then
-    return
-  end
-
-  require("nvim-tree.api").tree.open()
-end
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree_on_startup })
