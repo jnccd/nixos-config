@@ -21,6 +21,7 @@
     variant = "altgr-intl,";
     options = "grp:win_space_toggle";
   };
+  time.hardwareClockInLocalTime = true;
 
   # --- Bootloader ---
 
