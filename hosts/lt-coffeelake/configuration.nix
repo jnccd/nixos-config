@@ -15,10 +15,6 @@
   dobikoConf.niri.enabled = true;
   dobikoConf.mountNas.enabled = true;
 
-  # --- Misc ---
-
-  time.hardwareClockInLocalTime = true;
-
   # --- Bootloader ---
 
   boot.loader = {
