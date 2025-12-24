@@ -63,6 +63,11 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.termguicolors = true
 vim.cmd[[colorscheme tokyonight]]
+--Tabs
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.expandtab = true
 
 require("mason").setup()
 require("lualine").setup()
