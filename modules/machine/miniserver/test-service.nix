@@ -2,7 +2,6 @@
 let runnerName = globalArgs.defaultSystemUsername + "-test";
 in {
   # - User -
-
   dobikoConf.userMngmnt.additionalUsers = [{
     name = runnerName;
     isAdmin = false;
@@ -10,14 +9,12 @@ in {
   }];
 
   # - Sops-Nix -
-
   sops.secrets.example_key = {
     sopsFile = "${inputs.self}/secrets/miniserver.yaml";
     owner = runnerName;
   };
 
   # - Service -
-
   systemd.services = lib.custom.mkWrappedScreenService {
     sessionName = "test";
     username = runnerName;
