@@ -2,6 +2,9 @@
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
 
+  userNameToPostgresRoleName = username:
+    lib.replaceStrings [ "-" "." ] [ "_" "_" ] username;
+
   mkScreenService = { sessionName, username, script
     , wantedBy ? [ "multi-user.target" ], requires ? [ ], after ? [ ]
     , cleanupScript ? "" }: {

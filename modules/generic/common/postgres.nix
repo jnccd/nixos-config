@@ -5,9 +5,17 @@
     description = "Enables postgres";
   };
 
-  config = lib.mkIf config.dobikoConf.postgres.enabled {
+  config = let
+    usernames =
+      (map (user: user.name) config.dobikoConf.userMngmnt.additionalUsers)
+      ++ [ globalArgs.mainUsername globalArgs.defaultSystemUsername ];
+    sopsSecrets = map (username: {
+      name = "postgres/pass/${lib.custom.userNameToPostgresRoleName username}";
+      value = { owner = username; };
+    }) usernames;
+  in lib.mkIf config.dobikoConf.postgres.enabled {
     # - Sops-Nix -
-    sops.secrets."postgres/pass" = { owner = "postgres"; };
+    sops.secrets = builtins.listToAttrs sopsSecrets;
 
     # - Services -
     services.postgresql = {
@@ -35,27 +43,26 @@
         max_parallel_maintenance_workers = 2;
       };
     };
-    systemd.services = lib.custom.mkWrappedScreenService {
-      sessionName = "psql-init";
-      username = "postgres";
-      scriptDirName = "psql-init";
-      after = [ "postgresql.service" ];
-      script = pkgs.writeScript "script" ''
-        sleep 1
-        export psql_pass=$(cat ${config.sops.secrets."postgres/pass".path})
-
-        ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
-          IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${globalArgs.mainUsername}') THEN
-            CREATE ROLE ${globalArgs.mainUsername} LOGIN PASSWORD '$psql_pass' CREATEDB INHERIT;
-          END IF;
-
-          IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${globalArgs.defaultSystemUsername}') THEN
-            CREATE ROLE ${globalArgs.defaultSystemUsername} LOGIN PASSWORD '$psql_pass' CREATEDB INHERIT;
-          END IF;
-        END \$\$;"
-        ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${globalArgs.mainUsername} OWNER ${globalArgs.mainUsername};"
-        ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${globalArgs.defaultSystemUsername} OWNER ${globalArgs.defaultSystemUsername};"
-      '';
-    };
+    systemd.services = lib.attrsets.mergeAttrsList (builtins.map (username:
+      lib.custom.mkWrappedScreenService {
+        sessionName = "psql-init-${username}";
+        username = username;
+        scriptDirName = "psql-init-${username}";
+        after = [ "postgresql.service" ];
+        script =
+          let psqlUsername = lib.custom.userNameToPostgresRoleName username;
+          in pkgs.writeScript "script" ''
+            sleep 1
+            export psql_pass=$(cat ${
+              config.sops.secrets."postgres/pass/${psqlUsername}".path
+            })
+            ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
+              IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${psqlUsername}') THEN
+                CREATE ROLE ${psqlUsername} LOGIN PASSWORD '$psql_pass' CREATEDB INHERIT;
+              END IF;
+            END \$\$;"
+            ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${psqlUsername} OWNER ${psqlUsername};"
+          '';
+      }) usernames);
   };
 }
