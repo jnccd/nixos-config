@@ -5,18 +5,7 @@
     description = "Enables postgres";
   };
 
-  config = let
-    usernames =
-      (map (user: user.name) config.dobikoConf.userMngmnt.additionalUsers)
-      ++ [ globalArgs.mainUsername globalArgs.defaultSystemUsername ];
-    sopsSecrets = map (username: {
-      name = "postgres/pass/${lib.custom.userNameToPostgresRoleName username}";
-      value = { owner = username; };
-    }) usernames;
-  in lib.mkIf config.dobikoConf.postgres.enabled {
-    # - Sops-Nix -
-    sops.secrets = builtins.listToAttrs sopsSecrets;
-
+  config = lib.mkIf config.dobikoConf.postgres.enabled {
     # - Services -
     services.postgresql = {
       enable = true;
@@ -46,26 +35,5 @@
         max_parallel_maintenance_workers = 2;
       };
     };
-    systemd.services = lib.attrsets.mergeAttrsList (builtins.map (username:
-      lib.custom.mkWrappedScreenService {
-        sessionName = "psql-init-${username}";
-        username = username;
-        scriptDirName = "psql-init-${username}";
-        after = [ "postgresql.service" ];
-        script =
-          let psqlUsername = lib.custom.userNameToPostgresRoleName username;
-          in pkgs.writeScript "script" ''
-            sleep 1
-            export psql_pass=$(cat ${
-              config.sops.secrets."postgres/pass/${psqlUsername}".path
-            })
-            ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
-              IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${psqlUsername}') THEN
-                CREATE ROLE ${psqlUsername} LOGIN PASSWORD '$psql_pass' CREATEDB INHERIT;
-              END IF;
-            END \$\$;"
-            ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${psqlUsername} OWNER ${psqlUsername};"
-          '';
-      }) usernames);
   };
 }

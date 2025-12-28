@@ -55,6 +55,7 @@ in {
         name = globalArgs.mainUsername;
         isAdmin = true;
         isSystem = false;
+        dbAccess = true;
         uid = 1000;
         gid = 1000;
       }
@@ -62,6 +63,7 @@ in {
         name = globalArgs.defaultSystemUsername;
         isAdmin = false;
         isSystem = true;
+        dbAccess = true;
         uid = 900;
         gid = 900;
       }
@@ -71,5 +73,42 @@ in {
 
     users.users = builtins.listToAttrs (pkgs.lib.imap0 mkUser usersToDefine);
     users.groups = builtins.listToAttrs (pkgs.lib.imap0 mkGroup usersToDefine);
-  };
+  } //
+  # Postgres db access setup
+  (let
+    dbAccessUsernames = (map (user: user.name)
+      (builtins.filter (user: user ? dbAccess && user.dbAccess) usersToDefine));
+    dbSopsSecrets = map (username: {
+      name = "postgres/pass/${lib.custom.userNameToPostgresRoleName username}";
+      value = { owner = username; };
+    }) dbAccessUsernames;
+  in {
+    sops.secrets = builtins.listToAttrs dbSopsSecrets;
+    systemd.services = lib.attrsets.mergeAttrsList (builtins.map (username:
+      lib.custom.mkWrappedScreenService {
+        sessionName = "psql-init-${username}";
+        username = "root";
+        scriptDirName = "psql-init-${username}";
+        after = [ "postgresql.service" ];
+        script = let
+          psqlUsername = lib.custom.userNameToPostgresRoleName username;
+          createRoleScript = pkgs.writeScript "create-role-script" ''
+            ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
+              IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${psqlUsername}') THEN
+                CREATE ROLE ${psqlUsername} LOGIN PASSWORD '$psql_pass' CREATEDB INHERIT;
+              END IF;
+            END \$\$;"'';
+          createDbScript = pkgs.writeScript "create-db-script" ''
+            ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${psqlUsername} OWNER ${psqlUsername};"'';
+        in pkgs.writeScript "script" ''
+          sleep 1
+          export psql_pass=$(cat ${
+            config.sops.secrets."postgres/pass/${psqlUsername}".path
+          })
+
+          sudo -iu postgres bash ${createRoleScript}
+          sudo -iu postgres bash ${createDbScript}
+        '';
+      }) dbAccessUsernames);
+  });
 }
