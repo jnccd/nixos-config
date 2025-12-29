@@ -32,9 +32,10 @@ let
       }];
 
       home = lib.mkIf user.isSystem "/srv/${user.name}/";
+      shell = lib.mkIf (user ? shell) user.shell;
 
       createHome = true;
-      useDefaultShell = true;
+      useDefaultShell = lib.mkIf (!(user ? shell)) true;
     };
   };
 
