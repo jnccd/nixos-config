@@ -13,7 +13,7 @@
 
   dobikoConf.xfce.enabled = true;
   dobikoConf.niri.enabled = true;
-  dobikoConf.mountNas.enabled = true;
+  dobikoConf.mountNasHome.enabled = true;
 
   # --- Bootloader ---
 
