@@ -7,13 +7,14 @@
     ./hardware-configuration.nix
 
     ../../modules/generic
+
+    ../../modules/private/nas/home.nix
   ];
 
   # --- Custom Module Settings ---
 
   dobikoConf.xfce.enabled = true;
   dobikoConf.niri.enabled = true;
-  dobikoConf.mountNasHome.enabled = true;
 
   # --- Bootloader ---
 

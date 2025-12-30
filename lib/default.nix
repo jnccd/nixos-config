@@ -211,6 +211,23 @@
       systemd.tmpfiles.rules =
         [ "d /etc/www/${websiteName}/ 0770 ${serviceUser} nginx" ];
     };
+  mkNasMountService = { shareFolderName, remoteServerName, remoteUser
+    , remotePassFile, localMountUser }:
+    let
+      mountPoint = "/mnt/nas/${shareFolderName}";
+      remoteShare = "//${remoteServerName}/${shareFolderName}";
+    in mkWrappedScreenService rec {
+      sessionName = "mount-nas-${shareFolderName}";
+      username = "root";
+      scriptDirName = "${sessionName}";
+      script = pkgs.writeScript "script" ''
+        echo ${remoteShare}
+        sudo mkdir -p ${mountPoint}
+        sudo mount -t cifs ${remoteShare} ${mountPoint} -o username=${remoteUser},password=$(cat ${remotePassFile}),uid=$(id ${localMountUser} -u),gid=$(id ${localMountUser} -g)
+      '';
+      cleanupScript =
+        pkgs.writeScript "cleanup-script" "sudo umount ${mountPoint}";
+    };
 
   listAllLocalImportables = path:
     builtins.map (f: (path + "/${f}")) (builtins.attrNames

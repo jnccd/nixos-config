@@ -8,6 +8,8 @@
 
     ../../modules/generic/common
     ../../modules/machine/miniserver
+
+    ../../modules/private/nas/transfer.nix
   ];
 
   # --- Custom Module Settings ---
