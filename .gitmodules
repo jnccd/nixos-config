@@ -1,9 +1,6 @@
-[submodule "modules/miniserver/private-module"]
-	path = modules/machine/miniserver/private-module
-	url = git@github.com:jnccd/nixos-config-miniserver-private-module.git
+[submodule "modules/private"]
+	path = modules/private
+	url = git@github.com:jnccd/nixos-config-private.git
 [submodule "secrets"]
 	path = secrets
 	url = git@github.com:jnccd/nixos-config-secrets.git
-[submodule "modules/generic/common/private-module"]
-	path = modules/generic/common/private-module
-	url = git@github.com:jnccd/nixos-config-common-private-module.git
