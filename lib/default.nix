@@ -228,6 +228,31 @@
       cleanupScript =
         pkgs.writeScript "cleanup-script" "sudo umount ${mountPoint}";
     };
+  mkNasMountModule =
+    { inputs, lib, config, globalArgs, folderName, secretsFile, mountUser }: {
+      sops.secrets."nas/${folderName}/user" = {
+        sopsFile = "${inputs.self}/secrets/${secretsFile}";
+        owner = "root";
+      };
+      sops.secrets."nas/${folderName}/pass" = {
+        sopsFile = "${inputs.self}/secrets/${secretsFile}";
+        owner = "root";
+      };
+      sops.secrets."nas/${folderName}/serverName" = {
+        sopsFile = "${inputs.self}/secrets/${secretsFile}";
+        owner = "root";
+      };
+
+      systemd.services = lib.custom.mkNasMountService {
+        shareFolderName = "${folderName}";
+        remoteServerName =
+          "$(cat ${config.sops.secrets."nas/${folderName}/serverName".path})";
+        remoteUser =
+          "$(cat ${config.sops.secrets."nas/${folderName}/user".path})";
+        remotePassFile = config.sops.secrets."nas/${folderName}/pass".path;
+        localMountUser = mountUser;
+      };
+    };
 
   listAllLocalImportables = path:
     builtins.map (f: (path + "/${f}")) (builtins.attrNames

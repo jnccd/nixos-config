@@ -1,4 +1,4 @@
-{ config, lib, pkgs, globalArgs, hostname, ... }: {
+{ inputs, config, lib, pkgs, globalArgs, hostname, ... }: {
   networking.hostName = hostname;
 
   # --- Imports ---
@@ -8,8 +8,6 @@
 
     ../../modules/generic/common
     ../../modules/machine/miniserver
-
-    ../../modules/private/nas/transfer.nix
   ];
 
   # --- Custom Module Settings ---
