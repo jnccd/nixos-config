@@ -21,5 +21,7 @@
 
     # Without this, podman containers can refuse to start after reboot
     systemd.tmpfiles.rules = [ "R! /tmp/storage-run-*" ];
+
+    environment.systemPackages = with pkgs; [ podman-compose ];
   };
 }
