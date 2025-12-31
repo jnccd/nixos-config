@@ -223,7 +223,7 @@
       script = pkgs.writeScript "script" ''
         echo ${remoteShare}
         sudo mkdir -p ${mountPoint}
-        sudo mount -t cifs ${remoteShare} ${mountPoint} -o username=${remoteUser},password=$(cat ${remotePassFile}),uid=$(id ${localMountUser} -u),gid=$(id ${localMountUser} -g)
+        sudo mount -t cifs ${remoteShare} ${mountPoint} -o username=${remoteUser},password=$(cat ${remotePassFile}),uid=$(id ${localMountUser} -u),gid=$(id ${localMountUser} -g),dir_mode=0770,file_mode=0660
       '';
       cleanupScript =
         pkgs.writeScript "cleanup-script" "sudo umount ${mountPoint}";
