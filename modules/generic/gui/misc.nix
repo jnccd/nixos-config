@@ -4,9 +4,9 @@
   # - images -
 
   environment.etc."global-dotfiles/.background-image.jpeg".source =
-    "${inputs.self}/dotfiles/.background-image.jpeg";
+    "${inputs.self}/assets/.background-image.jpeg";
   environment.etc."global-dotfiles/.lockscreen-image.jpeg".source =
-    "${inputs.self}/dotfiles/.lockscreen-image.jpeg";
+    "${inputs.self}/assets/.lockscreen-image.jpeg";
   environment.etc."global-dotfiles/.login-image.jpeg".source =
-    "${inputs.self}/dotfiles/.login-image.jpeg";
+    "${inputs.self}/assets/.login-image.jpeg";
 }
