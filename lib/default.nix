@@ -243,6 +243,8 @@
         owner = "root";
       };
 
+      environment.systemPackages = with pkgs; [ cifs-utils ];
+
       systemd.services = lib.custom.mkNasMountService {
         shareFolderName = "${folderName}";
         remoteServerName =

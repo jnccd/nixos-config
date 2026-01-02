@@ -14,7 +14,6 @@
         bash
 
         screen # I use this extensively for services
-        cifs-utils # NAS mounts
       ] ++ (if config.dobikoConf.nonEssentialCommonPkgs.enabled then [
         nushell
 
