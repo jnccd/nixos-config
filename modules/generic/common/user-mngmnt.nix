@@ -96,14 +96,14 @@ in {
           createRoleScript = pkgs.writeScript "create-role-script" ''
             ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
               IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${psqlUsername}') THEN
-                CREATE ROLE ${psqlUsername} LOGIN PASSWORD '$psql_pass' CREATEDB INHERIT;
+                CREATE ROLE ${psqlUsername} LOGIN PASSWORD '$PSQL_PASS' CREATEDB INHERIT;
               END IF;
             END \$\$;"'';
           createDbScript = pkgs.writeScript "create-db-script" ''
             ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${psqlUsername} OWNER ${psqlUsername};"'';
         in pkgs.writeScript "script" ''
           sleep 1
-          export psql_pass=$(cat ${
+          export PSQL_PASS=$(cat ${
             config.sops.secrets."postgres/pass/${psqlUsername}".path
           })
 
