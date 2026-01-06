@@ -13,14 +13,12 @@ else
         
         if [ "$uid" -ge 1000 ]; then
             # Real users get everything
-            sudo rsync -av "../dotfiles/" "$home/"
+            sudo rsync -av --chown=$uid:$gid "../dotfiles/" "$home/"
         else
             # System users get terminal settings
-            sudo rsync -av "../dotfiles/.config/nushell/" "$home/.config/nushell/"
-            sudo rsync -av "../dotfiles/.config/nvim/" "$home/.config/nvim/"
+            sudo rsync -av --chown=$uid:$gid "../dotfiles/.config/nushell/" "$home/.config/nushell/"
+            sudo rsync -av --chown=$uid:$gid "../dotfiles/.config/nvim/" "$home/.config/nvim/"
         fi
-
-        sudo chown $uid:$gid "$home/"
     fi
     done < /etc/passwd
 fi
