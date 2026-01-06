@@ -38,4 +38,12 @@
   # --- Hardware ---
 
   hardware.enableRedistributableFirmware = true;
+
+  # --- Journald ---
+  services.journald.extraConfig = ''
+    SystemMaxUse=1G
+    SystemKeepFree=3G
+    SystemMaxFileSize=150M
+    MaxRetentionSec=1month
+  '';
 }
