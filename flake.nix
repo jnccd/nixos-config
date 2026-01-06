@@ -70,20 +70,23 @@
       };
 
       # Define HomeManager config set for a host
-      mkHome = host: {
-        name = "${globalArgs.mainUsername}@${host.hostname}";
-        value = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${host.system};
-          extraSpecialArgs = {
-            inherit inputs globalArgs;
-            inherit (host) hostname;
-          };
+      mkHomes = host:
+        let homeUsers = builtins.filter (x: !x.isSystem) globalArgs.baseUsers;
+        in map (homeUser: {
+          name = "${homeUser.name}@${host.hostname}";
+          value = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.${host.system};
+            extraSpecialArgs = {
+              inherit inputs globalArgs homeUser;
+              inherit (host) hostname;
+            };
 
-          modules = [ ./hosts/${host.hostname}/home.nix ];
-        };
-      };
+            modules = [ ./hosts/${host.hostname}/home.nix ];
+          };
+        }) homeUsers;
     in {
       nixosConfigurations = builtins.listToAttrs (map mkSystem hosts);
-      homeConfigurations = builtins.listToAttrs (map mkHome hosts);
+      homeConfigurations =
+        builtins.listToAttrs (builtins.concatMap mkHomes hosts);
     };
 }

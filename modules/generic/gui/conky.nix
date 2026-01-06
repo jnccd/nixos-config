@@ -27,7 +27,7 @@
     systemd.services =
       lib.custom.mkWrappedScreenService { # Ensure Conky runs at most once
         sessionName = "conky-culler";
-        username = globalArgs.mainUsername;
+        username = globalArgs.mainUser.name;
         scriptDirName = "conky-culler";
         wantedBy = [ "graphical.target" ];
         requires = [ "graphical.target" ];

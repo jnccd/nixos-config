@@ -13,6 +13,6 @@
 
   wsl = {
     enable = true;
-    defaultUser = globalArgs.mainUsername;
+    defaultUser = globalArgs.mainUser.name;
   };
 }

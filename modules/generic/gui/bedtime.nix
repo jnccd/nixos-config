@@ -16,7 +16,7 @@
       systemCronJobs = [
         "${bedtimeTime} * * *      root    shutdown +${delayMin} >> /tmp/cron.log"
         ''
-          ${bedtimeTime} * * *      ${globalArgs.mainUsername}    kdialog --passivepopup "Bedtime in ${delayMin} minutes." 10 >> /tmp/cron.log''
+          ${bedtimeTime} * * *      ${globalArgs.mainUser.name}    kdialog --passivepopup "Bedtime in ${delayMin} minutes." 10 >> /tmp/cron.log''
       ];
     };
   };

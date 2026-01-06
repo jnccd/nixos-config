@@ -21,7 +21,7 @@
     settings = {
       Users.HideUsers = (lib.lists.foldl (a: b: a + "," + b) ""
         ((builtins.genList (x: "nixbld" + (builtins.toString x)) 33)
-          ++ [ globalArgs.defaultSystemUsername ]));
+          ++ [ globalArgs.defaultSystemUser.name ]));
       X11.DisplayCommand = "/etc/sddm/scripts/my-xsetup";
     };
     theme = "sddm-astronaut-theme";

@@ -51,24 +51,8 @@ in {
   };
 
   config = let
-    usersToDefine = config.dobikoConf.userMngmnt.additionalUsers ++ [
-      {
-        name = globalArgs.mainUsername;
-        isAdmin = true;
-        isSystem = false;
-        dbAccess = true;
-        uid = 1000;
-        gid = 1000;
-      }
-      {
-        name = globalArgs.defaultSystemUsername;
-        isAdmin = false;
-        isSystem = true;
-        dbAccess = true;
-        uid = 900;
-        gid = 900;
-      }
-    ];
+    usersToDefine = config.dobikoConf.userMngmnt.additionalUsers
+      ++ globalArgs.baseUsers;
   in {
     users.defaultUserShell = pkgs.bash;
 

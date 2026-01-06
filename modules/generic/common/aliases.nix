@@ -1,5 +1,5 @@
 { config, lib, pkgs, globalArgs, ... }:
-let nixosConfigPath = "/home/${globalArgs.mainUsername}/git/nixos-config";
+let nixosConfigPath = "/home/${globalArgs.mainUser.name}/git/nixos-config";
 in {
   environment.shellAliases = {
     owo = "echo uwu"; # I owo into the void and the void uwus back

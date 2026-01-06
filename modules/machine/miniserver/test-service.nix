@@ -1,5 +1,5 @@
 { inputs, config, lib, pkgs, globalArgs, ... }:
-let runnerName = globalArgs.defaultSystemUsername + "-test";
+let runnerName = globalArgs.defaultSystemUser.name + "-test";
 in {
   # - User -
   dobikoConf.userMngmnt.additionalUsers = [{

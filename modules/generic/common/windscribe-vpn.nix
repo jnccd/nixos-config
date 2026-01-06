@@ -7,10 +7,10 @@
 
   config = lib.mkIf config.dobikoConf.windscribe.enabled {
     sops.secrets."windscribe/private_key" = {
-      owner = globalArgs.mainUsername;
+      owner = globalArgs.mainUser.name;
     };
     sops.secrets."windscribe/preshared_key" = {
-      owner = globalArgs.mainUsername;
+      owner = globalArgs.mainUser.name;
     };
     networking.wg-quick.interfaces = {
       wg0 = {

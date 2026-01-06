@@ -1,4 +1,4 @@
-{ config, pkgs, globalArgs, ... }: {
+{ config, pkgs, globalArgs, homeUser, ... }: {
   # --- Nix ---
 
   nixpkgs.config.allowUnfree = true;
@@ -6,8 +6,8 @@
   # --- Main User ---
 
   home = {
-    username = globalArgs.mainUsername;
-    homeDirectory = "/home/${globalArgs.mainUsername}";
+    username = homeUser.name;
+    homeDirectory = "/home/${homeUser.name}";
     stateVersion = globalArgs.homeStateVersion;
   };
 
@@ -16,8 +16,8 @@
   programs.git = {
     enable = true;
     settings.user = {
-      Name = globalArgs.gitUsername;
-      Email = globalArgs.email;
+      Name = homeUser.gitUsername;
+      Email = homeUser.email;
     };
   };
 
