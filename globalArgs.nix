@@ -3,7 +3,7 @@ rec {
   homeStateVersion = stateVersion;
 
   baseUsers = [
-    {
+    rec {
       name = "dobiko";
       gitUsername = "jnccd";
       email = "kobidogao@outlook.com";
@@ -11,15 +11,24 @@ rec {
       isSystem = false;
       dbAccess = true;
       uid = 1000;
-      gid = 1000;
+      gid = uid;
     }
-    {
+    rec {
+      name = "dobiko2";
+      gitUsername = "jnccd";
+      email = "kobidogao@outlook.com";
+      isAdmin = true;
+      isSystem = false;
+      uid = 1001;
+      gid = uid;
+    }
+    rec {
       name = "runner";
       isAdmin = false;
       isSystem = true;
       dbAccess = true;
       uid = 900;
-      gid = 900;
+      gid = uid;
     }
   ];
   mainUser = builtins.head (builtins.filter (x: x.isAdmin) baseUsers);
