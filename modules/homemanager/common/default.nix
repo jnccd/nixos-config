@@ -1,4 +1,16 @@
-{ pkgs, homeUser, ... }: {
+{ config, pkgs, ... }:
+let
+  homeUser = rec {
+    name = "dobiko";
+    gitUsername = "jnccd";
+    email = "kobidogao@outlook.com";
+    isAdmin = true;
+    isSystem = false;
+    dbAccess = true;
+    uid = 1000;
+    gid = uid;
+  };
+in {
   # --- Main User ---
 
   home = {

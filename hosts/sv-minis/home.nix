@@ -1,4 +1,4 @@
-{ lib, pkgs, globalArgs, ... }: {
+{ config, lib, pkgs, ... }: {
   imports = [
     ../../modules/homemanager/common
 

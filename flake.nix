@@ -49,22 +49,17 @@
         });
 
       # Define HomeManager users for a host
-      mkHomes = { host, globalArgs }:
-        let homeUsers = builtins.filter (x: !x.isSystem) globalArgs.baseUsers;
+      mkHomes = { host }:
+        let
+          homeUsers =
+            builtins.filter (user: !user.isSystem) globalArgs.baseUsers;
         in map (homeUser: {
           name = "${homeUser.name}";
-          value = {
-            extraModules = [
-              (import ./hosts/${host.hostname}/home.nix {
-                _args = {
-                  inherit inputs globalArgs homeUser;
-                  inherit (host) hostname;
-                  lib = extendWithCustomLib host.system;
-                  pkgs = nixpkgs.legacyPackages.${host.system};
-                };
-
-              })
-            ];
+          value = import ./hosts/${host.hostname}/home.nix {
+            inherit inputs;
+            inherit (host) hostname;
+            lib = extendWithCustomLib host.system;
+            pkgs = nixpkgs.legacyPackages.${host.system};
           };
         }) homeUsers;
 
@@ -83,11 +78,11 @@
             ./hosts/${host.hostname}/configuration.nix
             home-manager.nixosModules.default
             {
+              _module.args = { inherit globalArgs; };
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users =
-                  builtins.listToAttrs (mkHomes { inherit host globalArgs; });
+                users = builtins.listToAttrs (mkHomes { inherit host; });
               };
             }
             sops-nix.nixosModules.sops
