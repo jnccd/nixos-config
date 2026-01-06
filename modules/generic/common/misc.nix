@@ -32,7 +32,7 @@
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = globalArgs.email;
+    defaults.email = globalArgs.mainUser.email;
   };
 
   # --- Hardware ---
