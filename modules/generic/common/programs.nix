@@ -4,4 +4,10 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    nix-direnv.enable = true;
+  };
 }
