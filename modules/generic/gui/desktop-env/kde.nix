@@ -13,8 +13,8 @@
       plasma-panel-colorizer
       kdePackages.plasma-browser-integration
 
-      inputs.kwin-effects-forceblur.packages.${system}.default # Wayland
-      inputs.kwin-effects-forceblur.packages.${system}.x11
+      inputs.kwin-effects-forceblur.packages.${stdenv.hostPlatform.system}.default # Wayland
+      inputs.kwin-effects-forceblur.packages.${stdenv.hostPlatform.system}.x11
 
     ];
   };
