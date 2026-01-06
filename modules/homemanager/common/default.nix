@@ -1,14 +1,10 @@
-{ config, pkgs, globalArgs, homeUser, ... }: {
-  # --- Nix ---
-
-  nixpkgs.config.allowUnfree = true;
-
+{ pkgs, homeUser, ... }: {
   # --- Main User ---
 
   home = {
     username = homeUser.name;
     homeDirectory = "/home/${homeUser.name}";
-    stateVersion = globalArgs.homeStateVersion;
+    stateVersion = "25.11";
   };
 
   # --- Programs ---

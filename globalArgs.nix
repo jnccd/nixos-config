@@ -14,6 +14,15 @@ rec {
       gid = uid;
     }
     rec {
+      name = "dobiko2";
+      gitUsername = "jnccd";
+      email = "kobidogao@outlook.com";
+      isAdmin = true;
+      isSystem = false;
+      uid = 1001;
+      gid = uid;
+    }
+    rec {
       name = "runner";
       isAdmin = false;
       isSystem = true;

@@ -27,7 +27,7 @@
 
   outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, ... }@inputs:
     let
-      globalArgs = import ./globalArgs.nix;
+      globalArgs = import "${inputs.self}/globalArgs.nix";
 
       # Load hosts
       hostsDir = ./hosts;
@@ -48,6 +48,26 @@
           };
         });
 
+      # Define HomeManager users for a host
+      mkHomes = { host, globalArgs }:
+        let homeUsers = builtins.filter (x: !x.isSystem) globalArgs.baseUsers;
+        in map (homeUser: {
+          name = "${homeUser.name}";
+          value = {
+            extraModules = [
+              (import ./hosts/${host.hostname}/home.nix {
+                _args = {
+                  inherit inputs globalArgs homeUser;
+                  inherit (host) hostname;
+                  lib = extendWithCustomLib host.system;
+                  pkgs = nixpkgs.legacyPackages.${host.system};
+                };
+
+              })
+            ];
+          };
+        }) homeUsers;
+
       # Define NixOS system config set for a host
       mkSystem = host: {
         name = "${host.hostname}";
@@ -61,6 +81,15 @@
 
           modules = [
             ./hosts/${host.hostname}/configuration.nix
+            home-manager.nixosModules.default
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users =
+                  builtins.listToAttrs (mkHomes { inherit host globalArgs; });
+              };
+            }
             sops-nix.nixosModules.sops
           ] ++ (if nixpkgs.lib.strings.hasSuffix "-wsl" host.hostname then
             [ nixos-wsl.nixosModules.default ]
@@ -68,25 +97,5 @@
             [ ]);
         };
       };
-
-      # Define HomeManager config set for a host
-      mkHomes = host:
-        let homeUsers = builtins.filter (x: !x.isSystem) globalArgs.baseUsers;
-        in map (homeUser: {
-          name = "${homeUser.name}@${host.hostname}";
-          value = home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.${host.system};
-            extraSpecialArgs = {
-              inherit inputs globalArgs homeUser;
-              inherit (host) hostname;
-            };
-
-            modules = [ ./hosts/${host.hostname}/home.nix ];
-          };
-        }) homeUsers;
-    in {
-      nixosConfigurations = builtins.listToAttrs (map mkSystem hosts);
-      homeConfigurations =
-        builtins.listToAttrs (builtins.concatMap mkHomes hosts);
-    };
+    in { nixosConfigurations = builtins.listToAttrs (map mkSystem hosts); };
 }

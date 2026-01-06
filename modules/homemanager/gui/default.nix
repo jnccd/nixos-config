@@ -1,4 +1,4 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{ lib, pkgs, ... }: {
   # --- Programs ---
 
   programs.vscode = {

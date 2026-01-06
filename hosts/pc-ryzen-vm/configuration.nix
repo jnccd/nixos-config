@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, globalArgs, hostname, ... }: {
+{ lib, pkgs, globalArgs, hostname, ... }: {
   networking.hostName = hostname;
 
   # --- Imports ---
