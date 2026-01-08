@@ -46,7 +46,7 @@
       inherit sessionName username wantedBy requires after;
       script = pkgs.writeScript "wrapped-service-script" ''
         ${bashEnsureInternet}
-        cd ~ && mkdir -p screen-runs/${scriptDirName}; cd screen-runs/${scriptDirName};
+        cd ~ && mkdir -m 750 -p screen-runs/${scriptDirName}; cd screen-runs/${scriptDirName};
         clear
         date
         pwd

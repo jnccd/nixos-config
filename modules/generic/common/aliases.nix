@@ -38,6 +38,17 @@ in {
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
     nix-tr = "nix-tree /run/current-system";
+
+    fix-screen-service-perms = ''
+      while IFS=: read -r user _ uid gid _ home shell; do
+        if [ -d "$home/screen-runs" ]; then
+          echo "$home"
+          
+          sudo chown -R $uid:$gid "$home/screen-runs"
+          sudo chmod -R 750 "$home/screen-runs"
+        fi
+      done < /etc/passwd
+    '';
   };
 
   environment.systemPackages = [
