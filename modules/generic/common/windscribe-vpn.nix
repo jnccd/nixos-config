@@ -18,7 +18,7 @@
     networking.wg-quick.interfaces = {
       wg0 = {
         address = [ "100.110.207.220/32" ];
-        dns = [ "10.255.255.3" ];
+        dns = [ "1.1.1.1" ];
         privateKeyFile = config.sops.secrets."windscribe/private_key".path;
 
         peers = [{
