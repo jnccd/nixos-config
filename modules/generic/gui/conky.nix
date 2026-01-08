@@ -16,14 +16,6 @@
 
     ];
 
-    security.wrappers.intel_gpu_top = {
-      source = "${pkgs.intel-gpu-tools}/bin/intel_gpu_top";
-      capabilities = "cap_perfmon+ep";
-      owner = "root";
-      group = "root";
-      permissions = "0755";
-    };
-
     systemd.services =
       lib.custom.mkWrappedScreenService { # Ensure Conky runs at most once
         sessionName = "conky-culler";
