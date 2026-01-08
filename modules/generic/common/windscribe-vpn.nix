@@ -6,12 +6,15 @@
   };
 
   config = lib.mkIf config.dobikoConf.windscribe.enabled {
+    # - Sops-Nix -
     sops.secrets."windscribe/private_key" = {
       owner = globalArgs.mainUser.name;
     };
     sops.secrets."windscribe/preshared_key" = {
       owner = globalArgs.mainUser.name;
     };
+
+    # - Interface -
     networking.wg-quick.interfaces = {
       wg0 = {
         address = [ "100.110.207.220/32" ];
