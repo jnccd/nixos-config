@@ -5,6 +5,7 @@
 
   imports = [
     ./hardware-configuration.nix
+    ../../modules/private/sv-minis-specific
 
     ../../modules/generic/common
     ../../modules/machine/miniserver
