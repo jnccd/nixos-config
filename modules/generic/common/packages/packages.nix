@@ -19,7 +19,6 @@
 
         # System Info
         htop
-        btop
         glances
         nix-tree
         lm_sensors
