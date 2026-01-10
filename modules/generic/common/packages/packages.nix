@@ -22,6 +22,7 @@
         btop
         glances
         nix-tree
+        lm_sensors
 
         # Security
         sops
