@@ -14,6 +14,8 @@ else
             sudo rsync -qav --chown=$uid:$gid "../dotfiles/" "$home/"
         else
             # System users get terminal settings
+            sudo mkdir -p "$home/.config/nushell/"
+            sudo mkdir -p "$home/.config/nvim/"
             sudo rsync -qav --chown=$uid:$gid "../dotfiles/.config/nushell/" "$home/.config/nushell/"
             sudo rsync -qav --chown=$uid:$gid "../dotfiles/.config/nvim/" "$home/.config/nvim/"
         fi
