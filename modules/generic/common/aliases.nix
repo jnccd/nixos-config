@@ -23,7 +23,27 @@ in {
     git-pull =
       "git checkout main && git pull && git submodule update --init --recursive && git submodule foreach 'git checkout main && git pull'";
     git-pull-nixconf =
-      "oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";
+      ''oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd $oldPwd";'';
+    "gitag++" = (pkgs.writeScript "git-tag-incr" ''
+      #!/usr/bin/env bash
+      set -e
+
+      git fetch --tags
+
+      latest_tag=$(git tag --sort=-v:refname | head -n 1)
+
+      if [[ -z "$latest_tag" ]]; then
+        next_tag="v0.1.0"
+      else
+        next_tag=$(echo "$latest_tag" | awk -F. 'BEGIN { OFS="." } {$NF++; print}')
+      fi
+
+      echo "Latest tag: $latest_tag"
+      echo "Next tag:   $next_tag"
+
+      git tag -a "$next_tag" -m "Release $next_tag"
+      git push origin "$next_tag"
+    '');
 
     flake-upd = "nix flake update --flake .?submodules=1";
 
