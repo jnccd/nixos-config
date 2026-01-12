@@ -22,6 +22,7 @@
     environment.systemPackages = with pkgs; [
       nvtopPackages.nvidia
       cudaPackages.cuda_nvml_dev
+      cudaPackages.cudatoolkit
     ];
   };
 }
