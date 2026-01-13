@@ -83,7 +83,7 @@
         cd ../${serviceName}/${repoName}
 
         while true; do
-          git fetch --tags || (echo "Error fetching updates!" && sleep 120 && continue)
+          (git reset --hard && git fetch --tags) || (echo "Error fetching updates!" && sleep 120 && continue)
 
           LOCAL_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
           REMOTE_TAG=$(git describe --tags --abbrev=0 origin 2>/dev/null)
@@ -189,7 +189,7 @@
           cd ../${buildServiceName}/${repoName}
 
           while true; do
-            git fetch || (echo "Error fetching updates!" && sleep 120 && continue)
+            (git reset --hard && git fetch) || (echo "Error fetching updates!" && sleep 120 && continue)
 
             LOCAL=$(git rev-parse @)
             REMOTE=$(git rev-parse @{u})
