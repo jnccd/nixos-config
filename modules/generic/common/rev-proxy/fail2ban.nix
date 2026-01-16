@@ -16,7 +16,8 @@ in {
     jails = {
       "${notFoundJailName}".settings = {
         filter = "${notFoundJailName}";
-        maxretry = 14;
+        maxretry = 10;
+        findtime = "3m";
         bantime = "1m";
         enabled = true;
         logpath = "/var/log/nginx/access.log";
