@@ -5,12 +5,12 @@ let
 in {
   services.fail2ban = {
     enable = true;
-    maxretry = 2;
+    maxretry = 4;
     ignoreIP = [ "192.168.0.0/16" ];
-    bantime = "1m";
+    bantime = "3m";
     bantime-increment = {
       enable = true;
-      multipliers = "1 4 16 32 64 128 256 512";
+      multipliers = "1 4 8 16 32 64 128 256 512";
       maxtime = "24h";
       overalljails = true;
     };
