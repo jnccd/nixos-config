@@ -16,7 +16,7 @@ in {
     jails = {
       "${notFoundJailName}".settings = {
         filter = "${notFoundJailName}";
-        maxretry = 20;
+        maxretry = 50;
         findtime = "1m";
         bantime = "1m";
         enabled = true;
