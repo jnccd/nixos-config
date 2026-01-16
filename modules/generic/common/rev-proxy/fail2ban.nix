@@ -16,7 +16,7 @@ in {
     jails = {
       "${notFoundJailName}".settings = {
         filter = "${notFoundJailName}";
-        maxretry = 7;
+        maxretry = 14;
         bantime = "1m";
         enabled = true;
         logpath = "/var/log/nginx/access.log";
@@ -28,7 +28,7 @@ in {
       "${botJailName}".settings = {
         filter = "${botJailName}";
         maxretry = 2;
-        bantime = "4m";
+        bantime = "3m";
         enabled = true;
         logpath = "/var/log/nginx/access.log";
         action = ''
@@ -46,13 +46,13 @@ in {
     '';
     "fail2ban/filter.d/${botJailName}.local".text = pkgs.lib.mkAfter ''
       [Definition]
-      failregex = ^<HOST>.*"(GET|POST|HEAD).*(phpunit|wp-includes|wp-content|wp-trackback|wp-admin|\.\./\.\./).*"
+      failregex = ^<HOST>.*"(GET|POST|HEAD).*(phpunit|wp-includes|wp-admin).*"
       ignoreregex =
     '';
     "fail2ban/action.d/${logActionName}.local".text = pkgs.lib.mkAfter ''
       [Definition]
       norestored = true # Needed to avoid receiving a new notification after every restart
-      actionban = echo "$(date) <name> jail has banned <ip> from accessing $(hostname) after <failures> attempts" >> /var/log/fail2ban/ban.log
+      actionban = echo "$(date) <name> jail has banned <ip> after <failures> attempts" >> /var/log/fail2ban/ban.log
     '';
   };
 }
