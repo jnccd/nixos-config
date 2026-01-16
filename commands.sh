@@ -15,6 +15,7 @@ nix flake update nixpkgs --override-input nixpkgs github:NixOS/nixpkgs/ce01daebf
 
 sudo nixos-rebuild switch --flake .?submodules=1 && home-manager switch -b backup --flake .?submodules=1
 
+#/run/secrets.d/
 sops -e -i secrets/
 sops secrets/
 sops updatekeys secrets/

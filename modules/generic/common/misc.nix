@@ -30,7 +30,7 @@
 
   # --- ACME ---
 
-  security.acme = {
+  security.acme = { # /var/lib/acme
     acceptTerms = true;
     defaults.email = globalArgs.mainUser.email;
   };
