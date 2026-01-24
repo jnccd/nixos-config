@@ -14,6 +14,7 @@
   # --- Custom Module Settings ---
 
   dobikoConf.intel_iGPU.enabled = true;
+  dobikoConf.fail2ban.enabled = true;
 
   # --- Bootloader ---
 
