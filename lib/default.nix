@@ -69,7 +69,12 @@
         ${defineEnvVarsScript}
 
         while true; do
-          nix develop ./${repoName} -c bash ${repoName}/start_service.sh
+          nix develop ./${repoName} -c bash ${
+            pkgs.writeScript "script" ''
+              cd ${repoName}
+              bash start_service.sh
+            ''
+          }
           
           git -C ./${repoName} pull
         done
