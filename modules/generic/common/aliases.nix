@@ -1,9 +1,13 @@
 { config, lib, pkgs, globalArgs, ... }:
-let nixosConfigPath = "/home/${globalArgs.mainUser.name}/git/nixos-config";
+let
+  nixosConfigPath = "/home/${globalArgs.mainUser.name}/git/nixos-config";
+  cdAliases = (builtins.listToAttrs (map (n: {
+    name = lib.concatStrings ([ "cd.." ] ++ (lib.replicate n "."));
+    value = lib.concatStrings ([ "cd .." ] ++ (lib.replicate n "/.."));
+  }) (builtins.genList (n: n) 10)));
 in {
-  environment.shellAliases = {
+  environment.shellAliases = cdAliases // {
     owo = "echo uwu"; # I owo into the void and the void uwus back
-    "cd.." = "cd ..";
     scrn-ls = ''
       sudo bash -c '
         for home in $(cut -d: -f6 /etc/passwd | grep -v '/var/empty'); do 
