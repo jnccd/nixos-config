@@ -43,6 +43,26 @@ Should a third party (usually windows) destroy your bootloader, then Nixos makes
 
 If you want to build the bootloader into a new partition, dont forget to update the uuid in `hardware-configuration.nix`.
 
+## Updating
+
+1. Prepare
+   1. Update Postgres version {X-1} to {X} if the default version changed in nixpkgs and the state version should be updated
+      1. Make sure /var/lib/postgresql/{X} is empty or nonexistant and /var/lib/postgresql/{X-1} has data
+         - In some instances it is wise to disable extensions for the upgrade process and reenable them afterwards
+      2. In `postgres.nix`, change `services.postgresql.package` to version {X}
+      3. `nix-rb`
+      4. `systemctl stop postgresql`
+      5. `sudo rm -r /var/lib/postgresql/{X}`
+      5. `sudo -u postgres initdb -D /var/lib/postgresql/{X}`
+      6. `sudo -u postgres pg_upgrade -b "$(nix build --no-link --print-out-paths nixpkgs#postgresql_{X-1}.out)/bin" -B /run/current-system/sw/bin -d /var/lib/postgresql/{X-1} -D /var/lib/postgresql/{X}`
+         - If checksums are an issue: `pg_checksums -d /var/lib/postgresql/{X}`
+      7. `nix-rb`
+   2. Check for other packages that use the state version
+2. Update
+   1. Update `flake.nix` inputs to new version
+   2. Update state version in `globalArgs.nix` to new version (this is not mandatory)
+   3. `nix-rb`
+
 ## Inspiration
 
 I mainly learned Nix from [Ampersand's](https://www.youtube.com/watch?v=nLwbNhSxLd4) and [Vimjoyer's](https://www.youtube.com/@vimjoyer) YouTube videos as well as these repos:
