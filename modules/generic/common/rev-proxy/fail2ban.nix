@@ -24,7 +24,7 @@
           filter = "${notFoundJailName}";
           maxretry = 50;
           findtime = "1m";
-          bantime = "1m";
+          bantime = "4m";
           enabled = true;
           logpath = "/var/log/nginx/access.log";
           action = ''
@@ -35,7 +35,7 @@
         "${botJailName}".settings = {
           filter = "${botJailName}";
           maxretry = 2;
-          bantime = "3m";
+          bantime = "15m";
           enabled = true;
           logpath = "/var/log/nginx/access.log";
           action = ''
