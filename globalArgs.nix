@@ -10,16 +10,16 @@ rec {
       isAdmin = true;
       isSystem = false;
       dbAccess = true;
-      uid = 1000;
-      gid = uid;
+      defaultUid = 1000;
+      defaultGid = defaultUid;
     }
     rec {
       name = "runner";
       isAdmin = false;
       isSystem = true;
       dbAccess = true;
-      uid = 900;
-      gid = uid;
+      defaultUid = 900;
+      defaultGid = defaultUid;
     }
   ];
   mainUser = builtins.head (builtins.filter (x: x.isAdmin) baseUsers);
