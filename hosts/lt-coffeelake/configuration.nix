@@ -21,6 +21,7 @@
 
   dobikoConf.xfce.enabled = true;
   dobikoConf.niri.enabled = true;
+  dobikoConf.wine.enabled = true;
 
   # --- Bootloader ---
 
