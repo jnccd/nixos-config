@@ -6,6 +6,10 @@
   };
 
   config = lib.mkIf config.dobikoConf.wine.enabled {
-    environment.systemPackages = with pkgs; [ wineWowPackages.waylandFull ];
+    environment.systemPackages = with pkgs; [
+      wineWowPackages.waylandFull
+      wineWowPackages.fonts
+      winetricks
+    ];
   };
 }
