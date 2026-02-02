@@ -48,7 +48,7 @@ If you want to build the bootloader into a new partition, dont forget to update 
 1. Prepare
    1. Update Postgres version {X-1} to {X} if the default version changed in nixpkgs and the state version should be updated
       1. Make sure /var/lib/postgresql/{X} is empty or nonexistant and /var/lib/postgresql/{X-1} has data
-         - In some instances it is wise to disable extensions for the upgrade process and reenable them afterwards
+         - In some instances (basically all the time) it is wise to disable extensions for the upgrade process and reenable them afterwards (`DROP EXTENSION IF EXISTS <EXTENSION>;`)
       2. In `postgres.nix`, change `services.postgresql.package` to version {X}
       3. `nix-rb`
       4. `systemctl stop postgresql`
