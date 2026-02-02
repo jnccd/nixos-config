@@ -9,7 +9,7 @@
     # - Services -
     services.postgresql = {
       enable = true;
-      package = pkgs.postgresql;
+      package = pkgs.postgresql_18;
       # Upgrade (make sure /var/lib/postgresql/X is empty and /var/lib/postgresql/X-1 has data):
       # sudo -u postgres initdb -D /var/lib/postgresql/17
       # sudo -u postgres pg_upgrade -b "$(nix build --no-link --print-out-paths nixpkgs#postgresql_16.out)/bin" -B /run/current-system/sw/bin -d /var/lib/postgresql/16 -D /var/lib/postgresql/17
