@@ -9,6 +9,10 @@
     ../../modules/generic/common
   ];
 
+  # --- Custom Module Settings ---
+
+  dobikoConf.postgres.enabled = true;
+
   # --- WSL ---
 
   wsl = {

@@ -1,7 +1,7 @@
 { config, lib, pkgs, globalArgs, ... }: {
   options.dobikoConf.postgres.enabled = lib.mkOption {
     type = lib.types.bool;
-    default = true;
+    default = false;
     description = "Enables postgres";
   };
 

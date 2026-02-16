@@ -60,6 +60,7 @@ in {
     users.groups = builtins.listToAttrs (pkgs.lib.imap0 mkGroup usersToDefine);
   } //
   # Postgres db access setup
+
   (let
     dbAccessUsernames = (map (user: user.name)
       (builtins.filter (user: user ? dbAccess && user.dbAccess) usersToDefine));
@@ -68,32 +69,34 @@ in {
       value = { owner = username; };
     }) dbAccessUsernames;
   in {
-    sops.secrets = builtins.listToAttrs dbSopsSecrets;
-    systemd.services = lib.attrsets.mergeAttrsList (builtins.map (username:
-      lib.custom.mkWrappedScreenService {
-        sessionName = "psql-init-${username}";
-        username = "root";
-        scriptDirName = "psql-init-${username}";
-        after = [ "postgresql.service" ];
-        script = let
-          psqlUsername = lib.custom.userNameToPostgresRoleName username;
-          createRoleScript = pkgs.writeScript "create-role-script" ''
-            ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
-              IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${psqlUsername}') THEN
-                CREATE ROLE ${psqlUsername} LOGIN PASSWORD '$PSQL_PASS' CREATEDB INHERIT;
-              END IF;
-            END \$\$;"'';
-          createDbScript = pkgs.writeScript "create-db-script" ''
-            ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${psqlUsername} OWNER ${psqlUsername};"'';
-        in pkgs.writeScript "script" ''
-          sleep 1
-          export PSQL_PASS=$(cat ${
-            config.sops.secrets."postgres/pass/${psqlUsername}".path
-          })
+    sops.secrets = lib.mkIf config.dobikoConf.postgres.enabled
+      (builtins.listToAttrs dbSopsSecrets);
+    systemd.services = lib.mkIf config.dobikoConf.postgres.enabled
+      (lib.attrsets.mergeAttrsList (builtins.map (username:
+        lib.custom.mkWrappedScreenService {
+          sessionName = "psql-init-${username}";
+          username = "root";
+          scriptDirName = "psql-init-${username}";
+          after = [ "postgresql.service" ];
+          script = let
+            psqlUsername = lib.custom.userNameToPostgresRoleName username;
+            createRoleScript = pkgs.writeScript "create-role-script" ''
+              ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ BEGIN
+                IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${psqlUsername}') THEN
+                  CREATE ROLE ${psqlUsername} LOGIN PASSWORD '$PSQL_PASS' CREATEDB INHERIT;
+                END IF;
+              END \$\$;"'';
+            createDbScript = pkgs.writeScript "create-db-script" ''
+              ${pkgs.postgresql}/bin/psql -U postgres -c "CREATE DATABASE ${psqlUsername} OWNER ${psqlUsername};"'';
+          in pkgs.writeScript "script" ''
+            sleep 1
+            export PSQL_PASS=$(cat ${
+              config.sops.secrets."postgres/pass/${psqlUsername}".path
+            })
 
-          sudo -iu postgres bash ${createRoleScript}
-          sudo -iu postgres bash ${createDbScript}
-        '';
-      }) dbAccessUsernames);
+            sudo -iu postgres bash ${createRoleScript}
+            sudo -iu postgres bash ${createDbScript}
+          '';
+        }) dbAccessUsernames));
   });
 }

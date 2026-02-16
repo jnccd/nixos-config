@@ -13,6 +13,7 @@
 
   # --- Custom Module Settings ---
 
+  dobikoConf.postgres.enabled = true;
   dobikoConf.intel_iGPU.enabled = true;
   dobikoConf.fail2ban.enabled = true;
 

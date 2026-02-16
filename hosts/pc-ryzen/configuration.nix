@@ -11,6 +11,7 @@
 
   # --- Custom Module Settings ---
 
+  dobikoConf.postgres.enabled = true;
   dobikoConf.nvidia.enabled = true;
   dobikoConf.gaming.enabled = true;
 
