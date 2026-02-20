@@ -49,7 +49,7 @@ in {
       git push origin "$next_tag"
     '');
 
-    flake-upd = "nix flake update --flake .?submodules=1";
+    nix-fup = "nix flake update --flake .?submodules=1";
 
     # Home only rebuild
     nix-cpd = "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
