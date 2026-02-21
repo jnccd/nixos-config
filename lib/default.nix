@@ -69,7 +69,7 @@
         ${defineEnvVarsScript}
 
         while true; do
-          nix develop ./${repoName} -c bash ${
+          nix develop ./${repoName}#service -c bash ${
             pkgs.writeScript "script" ''
               cd ${repoName}
               bash start_service.sh
@@ -176,7 +176,7 @@
           git pull
 
           while true; do
-            nix develop -c bash -c "npm run build"
+            nix develop .#service -c bash -c "npm run build"
             rm -r /etc/www/${websiteName}/*
             cp -r dist/* /etc/www/${websiteName}/
             pwd
