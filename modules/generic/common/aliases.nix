@@ -1,6 +1,6 @@
 { config, lib, pkgs, globalArgs, ... }:
 let
-  nixosConfigPath = "/home/${globalArgs.mainUser.name}/git/nixos-config";
+  nixosConfigPath = globalArgs.nixosConfigPath;
   cdAliases = (builtins.listToAttrs (map (n: {
     name = lib.concatStrings ([ "cd.." ] ++ (lib.replicate n "."));
     value = lib.concatStrings ([ "cd .." ] ++ (lib.replicate n "/.."));

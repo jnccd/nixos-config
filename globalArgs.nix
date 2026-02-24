@@ -22,6 +22,10 @@ rec {
       defaultGid = defaultUid;
     }
   ];
+
   mainUser = builtins.head (builtins.filter (x: x.isAdmin) baseUsers);
   defaultSystemUser = builtins.head (builtins.filter (x: x.isSystem) baseUsers);
+
+  nixosConfigPath = "/home/${mainUser.name}/git/nixos-config";
+  sopsKeyFile = "/home/${mainUser.name}/.config/sops/age/keys.txt";
 }
