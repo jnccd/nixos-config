@@ -9,15 +9,25 @@
     environment.systemPackages = with pkgs; [ kdePackages.kdialog ];
 
     services.cron = let
-      delayMin = "3";
-      bedtimeTime = "0 23";
+      delayMin = 3;
+      bedTimeMin = 0;
+      bedTimeHour = 23;
     in {
       enable = true;
       systemCronJobs = [
-        "${bedtimeTime} * * *      root    shutdown +${delayMin} >> /tmp/cron.log"
+        "${builtins.toString bedTimeMin} ${
+          builtins.toString bedTimeHour
+        } * * *      root    shutdown +${
+          builtins.toString delayMin
+        } >> /tmp/cron.log"
+      ] ++ (map (delayPassed:
         ''
-          ${bedtimeTime} * * *      ${globalArgs.mainUser.name}    kdialog --passivepopup "Bedtime in ${delayMin} minutes." 10 >> /tmp/cron.log''
-      ];
+          ${builtins.toString (bedTimeMin + delayPassed)} ${
+            builtins.toString bedTimeHour
+          } * * *      ${globalArgs.mainUser.name}    kdialog --passivepopup "Bedtime in ${
+            builtins.toString (delayMin - delayPassed)
+          } minutes." 10 >> /tmp/cron.log'')
+        (builtins.genList (i: i) delayMin));
     };
   };
 }
