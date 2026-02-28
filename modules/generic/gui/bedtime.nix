@@ -24,9 +24,9 @@
         ''
           ${builtins.toString (bedTimeMin + delayPassed)} ${
             builtins.toString bedTimeHour
-          } * * *      ${globalArgs.mainUser.name}    kdialog --passivepopup "Bedtime in ${
+          } * * *      ${globalArgs.mainUser.name}    kdialog --sorry "Bedtime in ${
             builtins.toString (delayMin - delayPassed)
-          } minutes." 10 >> /tmp/cron.log'')
+          } minutes." "You really need to go to bed :(" >> /tmp/cron.log'')
         (builtins.genList (i: i) delayMin));
     };
   };
