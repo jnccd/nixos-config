@@ -23,10 +23,10 @@ MoveResize=89
 [NightColor]
 Active=true
 DayTemperature=6500
-EveningBeginFixed=2145
+EveningBeginFixed=2200
 Mode=Times
 MorningBeginFixed=0600
-NightTemperature=3200
+NightTemperature=1200
 TransitionTime=15
 
 [Plugins]
