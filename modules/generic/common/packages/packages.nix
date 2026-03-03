@@ -22,6 +22,7 @@
         glances
         nix-tree
         lm_sensors
+        ncdu
 
         # Security
         sops
