@@ -4,7 +4,7 @@
 
   mkScreenService = { sessionName, username, script
     , wantedBy ? [ "multi-user.target" ], requires ? [ ], after ? [ ]
-    , cleanupScript ? "" }: {
+    , cleanupScript ? "", extraServiceConfig ? { } }: {
       "${sessionName}" = {
         enable = true;
         description = sessionName;
@@ -33,14 +33,14 @@
             ${cleanupScript}
             screen -XS ${sessionName} quit
           '';
-        };
+        } // extraServiceConfig;
       };
     };
   mkWrappedScreenService = { sessionName, username, scriptDirName, script
     , wantedBy ? [ "multi-user.target" ], requires ? [ "network-online.target" ]
-    , after ? [ ], cleanupScript ? "" }:
+    , after ? [ ], cleanupScript ? "", extraServiceConfig ? { } }:
     mkScreenService {
-      inherit sessionName username wantedBy requires after;
+      inherit sessionName username wantedBy requires after extraServiceConfig;
       script = pkgs.writeScript "wrapped-service-script" ''
         ${bashEnsureInternet}
         cd ~ && mkdir -m 750 -p screen-runs/${scriptDirName}; cd screen-runs/${scriptDirName};

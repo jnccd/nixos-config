@@ -24,6 +24,7 @@ in {
       pwd
       export EXAMPLE_KEY=$(cat ${config.sops.secrets.example_key.path})
       echo $EXAMPLE_KEY
+      sh
     '';
   };
 }
