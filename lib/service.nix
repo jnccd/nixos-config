@@ -60,7 +60,9 @@
       username = serviceUser;
       scriptDirName = serviceName;
       script = pkgs.writeScript "script" ''
-        git clone ${repoUrl}
+        git clone ${repoUrl} || true
+        git -C ./${repoName} reset --hard
+        git -C ./${repoName} rebase
         git -C ./${repoName} pull
 
         ${defineEnvVarsScript}
@@ -73,6 +75,8 @@
             ''
           }
           
+          git -C ./${repoName} reset --hard
+          git -C ./${repoName} rebase
           git -C ./${repoName} pull
         done
       '';
