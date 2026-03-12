@@ -1,28 +1,10 @@
 { config, lib, pkgs, ... }: {
-  options.dobikoConf.nonEssentialGuiPkgs.enabled = lib.mkOption {
-    type = lib.types.bool;
-    default = true;
-    description = "Enables nonEssentialGuiPkgs";
-  };
-
   config = {
     environment.systemPackages = with pkgs;
       [
         # Browser
         firefox
       ] ++ (if config.dobikoConf.nonEssentialGuiPkgs.enabled then [
-        # Browser
-        (vivaldi.overrideAttrs (oldAttrs: {
-          vivaldi-ffmpeg-codecs = vivaldi-ffmpeg-codecs;
-          postInstall = (oldAttrs.postInstall or "") + ''
-            mkdir -p $out/opt/vivaldi/resources/vivaldi/user_files/
-            cp ${
-              ./Filter_DarkMode.css
-            } $out/opt/vivaldi/resources/vivaldi/user_files/
-          '';
-        }))
-        vivaldi-ffmpeg-codecs
-
         # Multimedia
         vlc
         gimp
