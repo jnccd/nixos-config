@@ -12,8 +12,15 @@
         firefox
       ] ++ (if config.dobikoConf.nonEssentialGuiPkgs.enabled then [
         # Browser
-        (vivaldi.overrideAttrs
-          (oldAttrs: { vivaldi-ffmpeg-codecs = vivaldi-ffmpeg-codecs; }))
+        (vivaldi.overrideAttrs (oldAttrs: {
+          vivaldi-ffmpeg-codecs = vivaldi-ffmpeg-codecs;
+          postInstall = (oldAttrs.postInstall or "") + ''
+            mkdir -p $out/opt/vivaldi/resources/vivaldi/user_files/
+            cp ${
+              ./Filter_DarkMode.css
+            } $out/opt/vivaldi/resources/vivaldi/user_files/
+          '';
+        }))
         vivaldi-ffmpeg-codecs
 
         # Multimedia

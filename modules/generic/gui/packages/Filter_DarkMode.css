@@ -1,0 +1,5 @@
+html {
+    -webkit-filter: invert(100%) hue-rotate(180deg) brightness(80%);
+    filter: invert(100%) hue-rotate(180deg) brightness(80%);
+}
+  
