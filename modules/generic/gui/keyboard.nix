@@ -4,14 +4,14 @@
     default = "us(altgr-intl)";
     description = ''
       Keyboard layout used in fcitx5
-      Example: de, en, us, us(altgr-intl)'';
+      Example: de, us, us(altgr-intl)'';
   };
   options.dobikoConf.fcitx5.im = lib.mkOption {
     type = lib.types.str;
     default = "keyboard-us-altgr-intl";
     description = ''
       Keyboard input method used in fcitx5
-      Example: keyboard-de, keyboard-en, keyboard-us, keyboard-us-altgr-intl
+      Example: keyboard-de, keyboard-us, keyboard-us-altgr-intl
     '';
   };
 
