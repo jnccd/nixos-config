@@ -17,11 +17,6 @@
 
   # --- Misc ---
 
-  services.xserver.xkb = {
-    layout = "us,de";
-    variant = "altgr-intl,";
-    options = "grp:win_space_toggle";
-  };
   time.hardwareClockInLocalTime = true;
 
   # --- Bootloader ---
