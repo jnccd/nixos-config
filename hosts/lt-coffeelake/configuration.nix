@@ -19,6 +19,7 @@
 
   # --- Custom Module Settings ---
 
+  dobikoConf.fcitx5.layout = "de";
   dobikoConf.postgres.enabled = true;
   dobikoConf.xfce.enabled = true;
   dobikoConf.niri.enabled = true;
