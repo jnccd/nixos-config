@@ -6,15 +6,20 @@
   };
 
   config = lib.mkIf config.dobikoConf.python.enabled {
-    environment.systemPackages = with pkgs;
-      [
-        (python3.withPackages (ps:
-          with ps;
-          [
-            requests
+    environment.systemPackages = with pkgs; [
+      (python3.withPackages (ps:
+        with ps;
+        [
+          requests
 
-          ]))
-      ];
+        ]))
+
+      uv
+    ];
+
+    environment.shellAliases = {
+      upython = "uv run python";
+      upip = "uv pip";
+    };
   };
-
 }
