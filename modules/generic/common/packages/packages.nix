@@ -18,8 +18,6 @@
         nushell
 
         # System Info
-        htop
-        glances
         nix-tree
         lm_sensors
         ncdu
@@ -33,6 +31,8 @@
         ripgrep
         nixfmt-classic
         nil # LSP for nix lang
+
+        dig
 
         zip
         unzip
