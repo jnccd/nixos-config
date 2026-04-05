@@ -7,6 +7,14 @@
     ./hardware-configuration.nix
 
     ../../modules/generic
+
+    (let
+      folderName = "home";
+      secretsFile = "nas.yaml";
+      mountUser = globalArgs.mainUser.name;
+    in lib.custom.mkNasMountModule {
+      inherit inputs lib config globalArgs folderName secretsFile mountUser;
+    })
   ];
 
   # --- Custom Module Settings ---
