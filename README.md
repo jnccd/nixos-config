@@ -16,6 +16,7 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 > Since parts of this config are private you`ll have to substitute some imports in the config to make it work. Notably, the dotfiles also reference my main username.
 
 1. Use the nixos iso installer to get the basic system
+   1. Should you choose to do this with KDE, you need to install a GPU driver first, the nixos installer usually doesn't add one by default
 2. `sudo nixos-generate-config`
 3. Edit the initial config to get git and add the desired hostname in networking.hostname
 4. `sudo nixos-rebuild switch`
@@ -27,16 +28,22 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 10. `sudo nixos-rebuild switch --install-bootloader --flake .`
 11. Reboot for good measure
 12. `nix-rb`
-13. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
-14. Done, enjoy :)
+13. Make an age key from you ssh key
+    1. Get Pubkey: `nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'`
+    2. Generate private key: `nix-shell -p ssh-to-age --run "ssh-to-age -private-key -i ~/.ssh/id_ed25519 > ~/keys.txt" && sudo mv ~/keys.txt ~/.config/sops/age/keys.txt`
+    3. If you have access add the pubkey to `./.sops.yaml` and let a PC with access rebuild the `.yaml` files in the `secrets` submodule. If you dont have access you are on your own, good luck.
+14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
+15. Done, enjoy :)
 
 ## Rebuilding the bootloader
 
 Should a third party (usually windows) destroy your bootloader, then Nixos makes it fairly simle to restore it.
+
 1. Boot into a NixOS installer USB Stick
 2. `sudo mount /dev/<your-root-partition> /mnt`
 
    `sudo mount /dev/<your-broken-boot-partition> /mnt/boot`
+
 3. `sudo nixos-enter`
 4. `sudo nixos-rebuild switch --flake /home/<your-user-name>/git/nixos-config?submodules=1#<your-host-name> --install-bootloader`
 5. Done, it should boot as normal
@@ -53,10 +60,10 @@ If you want to build the bootloader into a new partition, dont forget to update 
       3. `nix-rb`
       4. `systemctl stop postgresql`
       5. `sudo rm -r /var/lib/postgresql/{X}`
-      5. `sudo -u postgres initdb -D /var/lib/postgresql/{X}`
-      6. `sudo -u postgres pg_upgrade -b "$(nix build --no-link --print-out-paths nixpkgs#postgresql_{X-1}.out)/bin" -B /run/current-system/sw/bin -d /var/lib/postgresql/{X-1} -D /var/lib/postgresql/{X}`
+      6. `sudo -u postgres initdb -D /var/lib/postgresql/{X}`
+      7. `sudo -u postgres pg_upgrade -b "$(nix build --no-link --print-out-paths nixpkgs#postgresql_{X-1}.out)/bin" -B /run/current-system/sw/bin -d /var/lib/postgresql/{X-1} -D /var/lib/postgresql/{X}`
          - If checksums are an issue: `pg_checksums -d /var/lib/postgresql/{X}`
-      7. `nix-rb`
+      8. `nix-rb`
    2. Check for other packages that use the state version
 2. Update
    1. Update `flake.nix` inputs to new version
