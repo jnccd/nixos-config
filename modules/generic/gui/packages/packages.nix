@@ -15,6 +15,7 @@
         obs-studio
         krita
         libresprite
+        jellyfin-desktop
 
         # Monitoring
         mission-center
