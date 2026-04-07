@@ -2,10 +2,10 @@
   description = "Dobiko Config";
 
   inputs = {
+
+    # --- Common ---
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-
-    # --- Core Inputs ---
-
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,20 +14,20 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # - WSL -
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # --- Nice to haves ---
+    # --- GUI ---
 
+    # - KDE Plasma -
     kwin-effects-forceblur = {
       url = "github:taj-ny/kwin-effects-forceblur";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # --- My own custom stuff ---
-
+    # - Grub -
     crossgrub-theme = {
       url = "github:jnccd/crossgrub";
       inputs.nixpkgs.follows = "nixpkgs";
