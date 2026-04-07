@@ -23,6 +23,11 @@
       url = "github:taj-ny/kwin-effects-forceblur";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    crossgrub-theme = {
+      url = "github:jnccd/crossgrub";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, ... }@inputs:
