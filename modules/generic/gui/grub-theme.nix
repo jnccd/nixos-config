@@ -1,4 +1,6 @@
-{ config, inputs, lib, pkgs, globalArgs, ... }: {
-  boot.loader.grub.theme = "${inputs.crossgrub-theme}";
-  boot.loader.grub.splashImage = "${inputs.crossgrub-theme}/background.png";
+{ config, inputs, lib, pkgs, system, globalArgs, ... }: {
+  boot.loader.grub.theme =
+    "${inputs.crossgrub-theme.defaultPackage."${system}"}";
+  boot.loader.grub.splashImage =
+    "${inputs.crossgrub-theme.defaultPackage."${system}"}/background.png";
 }

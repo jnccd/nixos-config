@@ -66,6 +66,7 @@
           specialArgs = {
             inherit inputs globalArgs;
             inherit (host) hostname;
+            inherit (host) system;
             lib = extendWithCustomLib host.system;
           };
 
