@@ -172,18 +172,31 @@
         username = serviceUser;
         scriptDirName = buildServiceName;
         script = pkgs.writeScript "website-build-script" ''
-          git clone ${repoUrl}
-          cd ${repoName}
-          git pull
-
-          while true; do
+          build_site() {
+            echo "Rebuilding site..."
             nix develop .#service -c bash -c "npm run build"
             rm -r /etc/www/${websiteName}/*
             cp -r dist/* /etc/www/${websiteName}/
-            pwd
-            
+          }
+
+          echo "Startup..."
+          git clone ${repoUrl} || echo "Using existing repo"
+          cd ${repoName}
+
+          git fetch origin
+          if [ $(git rev-list HEAD...origin/main --count) -gt 0 ]; then # This assumes that the default branch is main which is kinda shit but whatever
+            echo "Found new commits."
+            git pull
+            build_site
+          else
+            echo "No new commits on the remote branch."
+          fi
+
+          while true; do
             read -p "Press enter to rebuild"
             git pull
+
+            build_site
           done
         '';
       } // mkWrappedScreenService {
