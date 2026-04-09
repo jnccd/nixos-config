@@ -66,10 +66,11 @@
       # Define NixOS system config set for a host
       mkSystem = host: {
         name = "${host.hostname}";
-        value = nixpkgs.lib.nixosSystem {
+        value = let isWsl = nixpkgs.lib.strings.hasSuffix "-wsl" host.hostname;
+        in nixpkgs.lib.nixosSystem {
           inherit (host) system;
           specialArgs = {
-            inherit inputs globalArgs;
+            inherit inputs globalArgs isWsl;
             inherit (host) hostname;
             inherit (host) system;
             lib = extendWithCustomLib host.system;
@@ -78,10 +79,7 @@
           modules = [
             ./hosts/${host.hostname}/configuration.nix
             sops-nix.nixosModules.sops
-          ] ++ (if nixpkgs.lib.strings.hasSuffix "-wsl" host.hostname then
-            [ nixos-wsl.nixosModules.default ]
-          else
-            [ ]);
+          ] ++ (if isWsl then [ nixos-wsl.nixosModules.default ] else [ ]);
         };
       };
 
