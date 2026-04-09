@@ -32,7 +32,9 @@
         nixfmt-classic
         nil # LSP for nix lang
 
+        # Network stuff
         dig
+        traceroute
 
         zip
         unzip
