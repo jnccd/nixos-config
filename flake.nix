@@ -33,6 +33,11 @@
       url = "github:jnccd/crossgrub";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # --- Server ---
+    working-keycloak-nixpkgs = {
+      url = "github:nixos/nixpkgs/8bb5646e0bed5dbd3ab08c7a7cc15b75ab4e1d0f";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, ... }@inputs:
