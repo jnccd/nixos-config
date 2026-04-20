@@ -33,6 +33,11 @@
       url = "github:jnccd/crossgrub";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # - Monitoring -
+    tux-manager = {
+      url = "github:benapetr/TuxManager/";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # --- Server ---
     working-keycloak-nixpkgs = {
