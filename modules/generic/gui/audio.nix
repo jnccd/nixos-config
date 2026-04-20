@@ -17,7 +17,9 @@
     requires = [ "graphical.target" ];
     after = [ "graphical.target" ];
     script = pkgs.writeScript "script" ''
-      WAYLAND_DISPLAY=wayland-0 XDG_RUNTIME_DIR=/run/user/1000 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus XDG_DATA_DIRS="/run/current-system/sw/share" pipewire-pulse
+      ${
+        lib.custom.bashGetGuiVarsForUser globalArgs.mainUser.name
+      } pipewire-pulse
     '';
   };
 }

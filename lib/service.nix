@@ -1,6 +1,9 @@
 { pkgs, lib }: rec {
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
+  bashGetGuiVarsForUser = username:
+    ''
+      WAYLAND_DISPLAY=wayland-0 XDG_RUNTIME_DIR=/run/user/$(id -u ${username}) DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u ${username})/bus XDG_DATA_DIRS="/run/current-system/sw/share"'';
 
   mkScreenService = { sessionName, username, script
     , wantedBy ? [ "multi-user.target" ], requires ? [ ], after ? [ ]
