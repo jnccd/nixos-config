@@ -17,6 +17,7 @@
     requires = [ "graphical.target" ];
     after = [ "graphical.target" ];
     script = pkgs.writeScript "script" ''
+      sleep 2
       ${
         lib.custom.bashGetGuiVarsForUser globalArgs.mainUser.name
       } pipewire-pulse
