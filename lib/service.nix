@@ -67,6 +67,7 @@
         git -C ./${repoName} reset --hard
         git -C ./${repoName} rebase
         git -C ./${repoName} pull
+        git -C ./${repoName} submodule update --init --recursive
 
         ${defineEnvVarsScript}
 
