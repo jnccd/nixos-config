@@ -32,7 +32,9 @@
         thunderbird
         anki
 
+        # Fonts
         plemoljp-nf # Neovim fonts
+        orbitron
       ] else
         [ ]);
   };
