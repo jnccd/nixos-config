@@ -35,7 +35,12 @@
     };
     # - Monitoring -
     tux-manager = {
-      url = "github:benapetr/TuxManager/";
+      url = "github:benapetr/TuxManager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # - Instant Eyedropper Reborn -
+    instant-eyedropper-r = {
+      url = "github:miaupaw/ie-r";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

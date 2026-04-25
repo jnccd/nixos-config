@@ -16,6 +16,7 @@
         krita
         libresprite
         jellyfin-desktop
+        inputs.instant-eyedropper-r.packages."${system}".default
 
         # Monitoring
         mission-center
