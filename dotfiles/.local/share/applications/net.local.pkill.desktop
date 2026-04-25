@@ -1,0 +1,7 @@
+[Desktop Entry]
+Exec=pkill -SIGUSR1 ie-r
+Name=Launch instant eyedropper reborn
+NoDisplay=true
+StartupNotify=false
+Type=Application
+X-KDE-GlobalAccel-CommandShortcut=true

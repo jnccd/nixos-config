@@ -93,6 +93,7 @@ cp_to_dotfiles .config/spectaclerc
 cp_to_dotfiles .config/systemmonitorrc
 cp_to_dotfiles .config/systemsettingsrc
 cp_to_dotfiles .config/plasmaparc
+cpr_to_dotfiles .local/share/applications/
 
 # Konsole
 cp_to_dotfiles .config/konsolerc
