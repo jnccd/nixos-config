@@ -1,0 +1,15 @@
+{ config, lib, pkgs, ... }: {
+  options.dobikoConf.ambilight.enabled = lib.mkOption {
+    type = lib.types.bool;
+    default = false;
+    description = "Enables ambilight packages";
+  };
+
+  config = lib.mkIf config.dobikoConf.ambilight.enabled {
+    environment.systemPackages = with pkgs;
+      [
+        hyperhdr
+
+      ];
+  };
+}

@@ -21,6 +21,7 @@
 
   dobikoConf.nvidia.enabled = true;
   dobikoConf.gaming.enabled = true;
+  dobikoConf.ambilight.enabled = true;
 
   # --- Misc ---
 
