@@ -1,11 +1,11 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
-  options.dobikoConf.ambilight.enabled = lib.mkOption {
+  options.dobikoConf.eyedropper.enabled = lib.mkOption {
     type = lib.types.bool;
-    default = false;
+    default = true;
     description = "Enables eyedropper packages";
   };
 
-  config = lib.mkIf config.dobikoConf.ambilight.enabled {
+  config = lib.mkIf config.dobikoConf.eyedropper.enabled {
     environment.systemPackages = with pkgs;
       [
         inputs.instant-eyedropper-r.packages."${system}".default
