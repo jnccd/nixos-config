@@ -9,10 +9,10 @@
     wireplumber.enable = true;
   };
 
-  systemd.services = lib.custom.mkWrappedScreenService {
+  systemd.services = lib.custom.mkWrappedScreenService rec {
     sessionName = "pipewire-pulse-starter";
     username = globalArgs.mainUser.name;
-    scriptDirName = "pipewire-pulse-starter";
+    scriptDirName = sessionName;
     wantedBy = [ "graphical.target" ];
     requires = [ "graphical.target" ];
     after = [ "graphical.target" ];
