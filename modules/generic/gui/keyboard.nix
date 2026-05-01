@@ -43,10 +43,11 @@
                 "keyboard-de"
               else
                 "keyboard-us-altgr-intl";
-            "Layout" = if config.dobikoConf.fcitx5.im == "us(altgr-intl)" then
-              "de"
-            else
-              "us(altgr-intl)";
+            "Layout" =
+              if config.dobikoConf.fcitx5.layout == "us(altgr-intl)" then
+                "de"
+              else
+                "us(altgr-intl)";
           };
           "Groups/0/Items/2".Name = "pinyin";
           "Groups/0/Items/3".Name = "mozc";
