@@ -1,26 +1,27 @@
 { inputs, config, lib, pkgs, globalArgs, ... }: {
   options.dobikoConf.fcitx5.layout = lib.mkOption {
     type = lib.types.str;
-    default = "us(altgr-intl)";
+    default = "us";
     description = ''
       Keyboard layout used in fcitx5
-      Example: de, us, us(altgr-intl)'';
+      Example: de, us, us-intl, us(altgr-intl)'';
   };
   options.dobikoConf.fcitx5.im = lib.mkOption {
     type = lib.types.str;
     default = "keyboard-us-altgr-intl";
     description = ''
       Keyboard input method used in fcitx5
-      Example: keyboard-de, keyboard-us, keyboard-us-altgr-intl
+      Example: keyboard-de, keyboard-us, keyboard-us-intl, keyboard-us-altgr-intl
     '';
   };
 
   config = {
+    environment.sessionVariables = { SKIP_FCITX_USER_PATH = ""; };
     i18n.inputMethod = {
       enable = true;
       type = "fcitx5";
       fcitx5 = {
-        ignoreUserConfig = true;
+        ignoreUserConfig = false;
         waylandFrontend = true;
         addons = with pkgs; [
           kdePackages.fcitx5-qt
@@ -44,10 +45,7 @@
               else
                 "keyboard-us-altgr-intl";
             "Layout" =
-              if config.dobikoConf.fcitx5.layout == "us(altgr-intl)" then
-                "de"
-              else
-                "us(altgr-intl)";
+              if config.dobikoConf.fcitx5.layout == "us" then "de" else "us";
           };
           "Groups/0/Items/2".Name = "pinyin";
           "Groups/0/Items/3".Name = "mozc";
