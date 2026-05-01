@@ -17,10 +17,10 @@
     requires = [ "graphical.target" ];
     after = [ "graphical.target" ];
     script = pkgs.writeScript "script" ''
-      sleep 2
-      ${
-        lib.custom.bashGetGuiVarsForUser globalArgs.mainUser.name
-      } pipewire-pulse
+      sleep 6
+      export ${lib.custom.bashGetGuiVarsForUser globalArgs.mainUser.name} 
+      dbus-run-session -- pipewire-pulse
+      pipewire-pulse
     '';
   };
 }
