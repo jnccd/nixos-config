@@ -1,11 +1,11 @@
 [Favorites-org.kde.plasma.kickoff.favorites.instance-3-946d9400-acfe-4551-a28f-fde9a4dbbc09]
-ordering=preferred://browser,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:org.kde.discover.desktop,applications:Workout.desktop
+ordering=preferred://browser,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:Workout.desktop,applications:org.jellyfin.JellyfinDesktop.desktop,applications:code.desktop
 
 [Favorites-org.kde.plasma.kickoff.favorites.instance-3-global]
-ordering=preferred://browser,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:org.kde.discover.desktop,applications:Workout.desktop
+ordering=preferred://browser,applications:systemsettings.desktop,applications:org.kde.dolphin.desktop,applications:Workout.desktop,applications:org.jellyfin.JellyfinDesktop.desktop,applications:code.desktop
 
 [Favorites-org.kde.plasma.kickoff.favorites.instance-31-946d9400-acfe-4551-a28f-fde9a4dbbc09]
-ordering=applications:org.kde.discover.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,preferred://browser,applications:Workout.desktop
+ordering=applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,preferred://browser,applications:Workout.desktop,applications:org.jellyfin.JellyfinDesktop.desktop,applications:code.desktop
 
 [Favorites-org.kde.plasma.kickoff.favorites.instance-31-global]
-ordering=applications:org.kde.discover.desktop,applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,preferred://browser,applications:Workout.desktop
+ordering=applications:org.kde.dolphin.desktop,applications:systemsettings.desktop,preferred://browser,applications:Workout.desktop,applications:org.jellyfin.JellyfinDesktop.desktop,applications:code.desktop
