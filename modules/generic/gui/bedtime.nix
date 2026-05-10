@@ -42,9 +42,10 @@
           timeStr = "${bedTimeHourStr}:${warnTimeMinStr}";
           user = "${globalArgs.mainUser.name}";
           command = ''
-            ${lib.custom.bashGetUserVars} && kdialog --sorry "Bedtime in ${
+            bash -c '${lib.custom.bashGetUserVars} && kdialog --sorry "Bedtime in ${
               builtins.toString (delayMin - delayPassed)
-            } minutes." "You really need to go to bed :(" '';
+            } minutes." "You really need to go to bed :("'
+          '';
         })) (builtins.genList (i: i) delayMin));
 
     bedTimeJobs = (bedTimeJobForTime {
