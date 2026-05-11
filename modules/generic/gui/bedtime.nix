@@ -18,7 +18,7 @@
         description = "Bedtime Shutdown at ${timeStr}";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${command}";
+          ExecStart = lib.custom.systemdExecWrapper command;
           User = user;
         };
       };
