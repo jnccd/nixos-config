@@ -9,16 +9,10 @@
     wireplumber.enable = true;
   };
 
-  systemd.services = lib.custom.mkWrappedScreenService rec {
-    sessionName = "pipewire-pulse-starter";
+  systemd.services = lib.custom.mkGuiAutostartService {
+    sessionName = "eyedropper-starter";
     username = globalArgs.mainUser.name;
-    scriptDirName = sessionName;
-    wantedBy = [ "graphical.target" ];
-    requires = [ "graphical.target" ];
-    after = [ "graphical.target" ];
     script = pkgs.writeScript "script" ''
-      sleep 6
-      ${lib.custom.bashGetGuiVarsForUser globalArgs.mainUser.name}
       pipewire-pulse
     '';
   };

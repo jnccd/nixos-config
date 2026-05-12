@@ -57,6 +57,20 @@
         ${bashWaitForever}
       '';
     };
+  mkGuiAutostartService = { serviceName, serviceUser, script }:
+    lib.custom.mkWrappedScreenService rec {
+      sessionName = serviceName;
+      username = serviceUser;
+      scriptDirName = sessionName;
+      wantedBy = [ "graphical.target" ];
+      requires = [ "graphical.target" ];
+      after = [ "graphical.target" ];
+      script = pkgs.writeScript "script" ''
+        sleep 2
+        ${lib.custom.bashGetGuiVarsForUser serviceUser}
+        ${script}
+      '';
+    };
   mkOnTagUpdatingGitBasedService =
     { serviceName, repoName, repoUrl, serviceUser, defineEnvVarsScript }:
     mkWrappedScreenService {
