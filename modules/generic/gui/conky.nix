@@ -16,36 +16,32 @@
 
     ];
 
-    systemd.services =
-      lib.custom.mkWrappedScreenService { # Ensure Conky runs at most once
-        sessionName = "conky-culler";
-        username = globalArgs.mainUser.name;
-        scriptDirName = "conky-culler";
-        wantedBy = [ "graphical.target" ];
-        requires = [ "graphical.target" ];
-        after = [ "graphical.target" ];
-        script = pkgs.writeScript "script" ''
-          function cull_conky() {
-            PIDS=$(pgrep -x conky)
-            COUNT=$(echo "$PIDS" | wc -w)
+    # Ensure Conky runs at most once
+    systemd.services = lib.custom.mkGuiAutostartService {
+      sessionName = "conky-culler";
+      username = globalArgs.mainUser.name;
+      script = pkgs.writeScript "script" ''
+        function cull_conky() {
+          PIDS=$(pgrep -x conky)
+          COUNT=$(echo "$PIDS" | wc -w)
 
-            if [ "$COUNT" -gt 1 ]; then
-                echo "Found $COUNT Conky processes. Keeping one, killing the rest..."
-                FIRST_PID=$(echo "$PIDS" | head -n 1)
-                echo "$PIDS" | grep -v "^$FIRST_PID$" | xargs -r kill
-            else
-                echo "One or no Conky instances running."
-            fi
-          }
+          if [ "$COUNT" -gt 1 ]; then
+              echo "Found $COUNT Conky processes. Keeping one, killing the rest..."
+              FIRST_PID=$(echo "$PIDS" | head -n 1)
+              echo "$PIDS" | grep -v "^$FIRST_PID$" | xargs -r kill
+          else
+              echo "One or no Conky instances running."
+          fi
+        }
 
-          cull_conky
-          sleep 1
-          cull_conky
-          sleep 3
-          cull_conky
-          sleep 15
-          cull_conky
-        '';
-      };
+        cull_conky
+        sleep 1
+        cull_conky
+        sleep 3
+        cull_conky
+        sleep 15
+        cull_conky
+      '';
+    };
   };
 }
