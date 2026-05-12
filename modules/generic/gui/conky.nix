@@ -18,9 +18,9 @@
 
     # Ensure Conky runs at most once
     systemd.services = lib.custom.mkGuiAutostartService {
-      sessionName = "conky-culler";
+      serviceName = "conky-culler";
       username = globalArgs.mainUser.name;
-      script = pkgs.writeScript "script" ''
+      guiScript = pkgs.writeScript "script" ''
         function cull_conky() {
           PIDS=$(pgrep -x conky)
           COUNT=$(echo "$PIDS" | wc -w)

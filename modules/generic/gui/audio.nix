@@ -10,9 +10,9 @@
   };
 
   systemd.services = lib.custom.mkGuiAutostartService {
-    sessionName = "eyedropper-starter";
+    serviceName = "pipewire-pulse-starter";
     username = globalArgs.mainUser.name;
-    script = pkgs.writeScript "script" ''
+    guiScript = pkgs.writeScript "script" ''
       pipewire-pulse
     '';
   };

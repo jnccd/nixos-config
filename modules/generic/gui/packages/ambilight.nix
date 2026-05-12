@@ -13,9 +13,9 @@
       ];
 
     systemd.services = lib.custom.mkGuiAutostartService {
-      sessionName = "eyedropper-starter";
+      serviceName = "hyperhdr-starter";
       username = globalArgs.mainUser.name;
-      script = pkgs.writeScript "script" ''
+      guiScript = pkgs.writeScript "script" ''
         hyperhdr
       '';
     };
