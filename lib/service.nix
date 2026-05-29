@@ -80,9 +80,9 @@
       script = pkgs.writeScript "script" ''
         git clone ${repoUrl} || true
         git -C ./${repoName} reset --hard
-        git -C ./${repoName} rebase
         git -C ./${repoName} pull
         git -C ./${repoName} submodule update --init --recursive
+        git -C ./${repoName} submodule update --recursive --remote
 
         ${defineEnvVarsScript}
 
