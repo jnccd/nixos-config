@@ -194,9 +194,6 @@ PreloadWeight=37
 immutability=1
 plugin=org.kde.plasma.mediacontroller
 
-[Containments][2][Applets][7][Applets][24][Configuration]
-PreloadWeight=55
-
 [Containments][2][Applets][7][Applets][27]
 immutability=1
 plugin=org.kde.plasma.weather
@@ -354,9 +351,6 @@ plugin=org.kde.plasma.networkmanagement
 [Containments][30][Applets][35][Applets][54]
 immutability=1
 plugin=org.kde.plasma.mediacontroller
-
-[Containments][30][Applets][35][Applets][54][Configuration]
-PreloadWeight=42
 
 [Containments][30][Applets][35][Applets][58]
 immutability=1

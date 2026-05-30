@@ -59,7 +59,6 @@ cp_to_dotfiles .config/krunnerrc
 cp_to_dotfiles .config/baloofilerc
 cp_to_dotfiles .config/kuriikwsfiltersrc
 cpr_to_dotfiles .local/share/kservices5/searchproviders/
-cpr_to_dotfiles .local/share/plasma-systemmonitor/
 cp_to_dotfiles .config/plasmanotifyrc
 cp_to_dotfiles .config/plasma-localerc
 cp_to_dotfiles .config/plasma-localerc
@@ -93,7 +92,6 @@ cp_to_dotfiles .config/spectaclerc
 cp_to_dotfiles .config/systemmonitorrc
 cp_to_dotfiles .config/systemsettingsrc
 cp_to_dotfiles .config/plasmaparc
-cpr_to_dotfiles .local/share/applications/
 
 # Konsole
 cp_to_dotfiles .config/konsolerc
