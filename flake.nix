@@ -6,9 +6,9 @@
     # --- Common ---
 
     # - Core -
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -24,8 +24,8 @@
     # --- GUI ---
 
     # - KDE Plasma -
-    kwin-effects-forceblur = {
-      url = "github:taj-ny/kwin-effects-forceblur";
+    kwin-effects-better-blur-dx = {
+      url = "github:xarblu/kwin-effects-better-blur-dx";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # - Grub -
