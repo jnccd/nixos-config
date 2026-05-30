@@ -52,7 +52,7 @@
             },
             "nix": {
                 "flake": {
-                    "autoEvalInputs": true
+                    "autoEvalInputs": false
                 }
             }
         },
