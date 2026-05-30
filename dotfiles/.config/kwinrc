@@ -3,6 +3,15 @@ Id_1=0217a948-fe02-47d9-9cfe-5a654d8444f3
 Number=1
 Rows=1
 
+[Effect-better-blur-dx]
+BlurDocks=true
+BlurMenus=true
+BlurStrength=1
+ForceContrastParams=true
+NoiseStrength=0
+Saturation=100
+WindowClasses=conky
+
 [Effect-blur]
 BlurStrength=2
 NoiseStrength=0
@@ -30,6 +39,7 @@ NightTemperature=1200
 TransitionTime=15
 
 [Plugins]
+better_blur_dxEnabled=true
 blurEnabled=false
 contrastEnabled=false
 forceblurEnabled=true
