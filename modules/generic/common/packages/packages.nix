@@ -29,7 +29,7 @@
         # Coding
         neovim
         ripgrep
-        nixfmt-classic
+        nixfmt
         nil # LSP for nix lang
 
         # Network stuff

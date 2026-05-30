@@ -30,7 +30,7 @@
   # Only use the first connected display
   environment.etc."sddm/scripts/my-xsetup".text = ''
     #!/bin/sh
-    export PATH=${pkgs.xorg.xrandr}/bin:$PATH
+    export PATH=${pkgs.xrandr}/bin:$PATH
 
     connected_displays=$(xrandr | grep " connected" | cut -d' ' -f1)
     primary=$(echo "$connected_displays" | grep -E '^DP' | head -n 1)
