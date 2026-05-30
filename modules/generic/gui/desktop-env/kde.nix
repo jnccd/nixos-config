@@ -23,6 +23,11 @@
       inputs.kwin-effects-better-blur-dx.packages.${stdenv.hostPlatform.system}.default # Wayland
       inputs.kwin-effects-better-blur-dx.packages.${stdenv.hostPlatform.system}.x11
 
+      # For KDE Spell Checker
+      hunspell
+      hunspellDicts.en_US
+      hunspellDicts.de_DE
+
       # Since plasma 6.6 there is OCR support in spectacle, but tesseract needs to be installed manually for it apparently
       tesseract
     ];
