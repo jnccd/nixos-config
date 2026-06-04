@@ -1,18 +1,37 @@
-{ pkgs, lib }: rec {
+{ pkgs, lib }:
+rec {
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
-  bashGetUserEnvVars = username:
+  bashGetUserEnvVars =
+    username:
     "export USER=${username} XDG_RUNTIME_DIR=/run/user/$(id -u ${username}) DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u ${username})/bus && eval $(systemctl --user show-environment | xargs -0 -I {} echo export {})";
-  systemdExecWrapper = script:
+  systemdExecWrapper =
+    script:
     pkgs.writeScript "systemdExecWrapper-script" ''
       #!${pkgs.runtimeShell}
       PATH=$PATH:/run/current-system/sw/bin
       ${script}
     '';
+  scriptForceRefreshGitRepo =
+    repoPath:
+    pkgs.writeScript "for-refresh-git-repo-script" ''
+      git -C ${repoPath} reset --hard
+      git -C ${repoPath} pull
+      git -C ${repoPath} submodule update --init --recursive --force # Dont update --recursive --remote, keep linked versions
+    '';
 
-  mkScreenService = { sessionName, username, script
-    , wantedBy ? [ "multi-user.target" ], requires ? [ ], after ? [ ]
-    , cleanupScript ? "", extraServiceConfig ? { } }: {
+  mkScreenService =
+    {
+      sessionName,
+      username,
+      script,
+      wantedBy ? [ "multi-user.target" ],
+      requires ? [ ],
+      after ? [ ],
+      cleanupScript ? "",
+      extraServiceConfig ? { },
+    }:
+    {
       "${sessionName}" = {
         enable = true;
         description = sessionName;
@@ -22,8 +41,7 @@
         after = after;
 
         environment = {
-          NIX_PATH =
-            "nixpkgs=flake:nixpkgs:/nix/var/nix/profiles/per-user/root/channels";
+          NIX_PATH = "nixpkgs=flake:nixpkgs:/nix/var/nix/profiles/per-user/root/channels";
         };
 
         serviceConfig = {
@@ -37,14 +55,31 @@
             ${cleanupScript}
             screen -XS ${sessionName} quit
           '';
-        } // extraServiceConfig;
+        }
+        // extraServiceConfig;
       };
     };
-  mkWrappedScreenService = { sessionName, username, scriptDirName, script
-    , wantedBy ? [ "multi-user.target" ], requires ? [ "network-online.target" ]
-    , after ? [ ], cleanupScript ? "", extraServiceConfig ? { } }:
+  mkWrappedScreenService =
+    {
+      sessionName,
+      username,
+      scriptDirName,
+      script,
+      wantedBy ? [ "multi-user.target" ],
+      requires ? [ "network-online.target" ],
+      after ? [ ],
+      cleanupScript ? "",
+      extraServiceConfig ? { },
+    }:
     mkScreenService {
-      inherit sessionName username wantedBy requires after extraServiceConfig;
+      inherit
+        sessionName
+        username
+        wantedBy
+        requires
+        after
+        extraServiceConfig
+        ;
       script = pkgs.writeScript "wrapped-service-script" ''
         ${bashEnsureInternet}
         cd ~ && mkdir -m 750 -p screen-runs/${scriptDirName}; cd screen-runs/${scriptDirName};
@@ -57,7 +92,12 @@
         ${bashWaitForever}
       '';
     };
-  mkGuiAutostartService = { serviceName, username, guiScript }:
+  mkGuiAutostartService =
+    {
+      serviceName,
+      username,
+      guiScript,
+    }:
     mkWrappedScreenService rec {
       sessionName = serviceName;
       inherit username;
@@ -72,33 +112,34 @@
       '';
     };
   mkOnTagUpdatingGitBasedService =
-    { serviceName, repoName, repoUrl, serviceUser, defineEnvVarsScript }:
+    {
+      serviceName,
+      repoName,
+      repoUrl,
+      serviceUser,
+      defineEnvVarsScript,
+    }:
     mkWrappedScreenService {
       sessionName = serviceName;
       username = serviceUser;
       scriptDirName = serviceName;
       script = pkgs.writeScript "script" ''
         git clone ${repoUrl} || true
-        git -C ./${repoName} reset --hard
-        git -C ./${repoName} pull
-        git -C ./${repoName} submodule update --init --recursive --force # Dont update --recursive --remote, keep linked versions
+        ${scriptForceRefreshGitRepo "./${repoName}"}
 
         ${defineEnvVarsScript}
 
         while true; do
-          nix develop ./${repoName}#service -c bash ${
-            pkgs.writeScript "script" ''
-              cd ${repoName}
-              bash start_service.sh
-            ''
-          }
+          nix develop ./${repoName}#service -c bash ${pkgs.writeScript "script" ''
+            cd ${repoName}
+            bash start_service.sh
+          ''}
           
-          git -C ./${repoName} reset --hard
-          git -C ./${repoName} rebase
-          git -C ./${repoName} pull
+          ${scriptForceRefreshGitRepo "./${repoName}"}
         done
       '';
-    } // mkWrappedScreenService {
+    }
+    // mkWrappedScreenService {
       sessionName = "${serviceName}-updater";
       username = serviceUser;
       scriptDirName = "${serviceName}-updater";
@@ -124,8 +165,15 @@
         done
       '';
     };
-  mkUpdatingContainerService = { screenSessionName, serviceName, imageName
-    , serviceUser, defineEnvVarsScript, envVarsToPass, }:
+  mkUpdatingContainerService =
+    {
+      screenSessionName,
+      serviceName,
+      imageName,
+      serviceUser,
+      defineEnvVarsScript,
+      envVarsToPass,
+    }:
     mkWrappedScreenService {
       sessionName = screenSessionName;
       username = serviceUser;
@@ -135,8 +183,12 @@
         while true; do
           docker pull ${imageName}
           docker run -i --restart=always ${
-            builtins.concatStringsSep " "
-            (lib.concatMap (x: [ "-e" x ]) envVarsToPass)
+            builtins.concatStringsSep " " (
+              lib.concatMap (x: [
+                "-e"
+                x
+              ]) envVarsToPass
+            )
           } --replace --name ${serviceName} ${imageName}
         done
       '';
@@ -144,7 +196,8 @@
         docker stop ${serviceName} || true
         docker rm ${serviceName} || true
       '';
-    } // mkWrappedScreenService {
+    }
+    // mkWrappedScreenService {
       sessionName = "${screenSessionName}-updater";
       username = serviceUser;
       scriptDirName = "${serviceName}-updater";
@@ -165,9 +218,18 @@
         done
       '';
     };
-  mkOnCommitUpdatingNodeWebsiteModule = { websiteName, websiteUrl, repoName
-    , repoUrl, serviceUser, buildServiceName, firewallPorts
-    , isNginxDefault ? false }: {
+  mkOnCommitUpdatingNodeWebsiteModule =
+    {
+      websiteName,
+      websiteUrl,
+      repoName,
+      repoUrl,
+      serviceUser,
+      buildServiceName,
+      firewallPorts,
+      isNginxDefault ? false,
+    }:
+    {
       # - Firewall -
       networking.firewall.allowedTCPPorts = firewallPorts;
 
@@ -185,75 +247,85 @@
       };
 
       # - Service -
-      systemd.services = mkWrappedScreenService {
-        sessionName = buildServiceName;
-        username = serviceUser;
-        scriptDirName = buildServiceName;
-        script = pkgs.writeScript "website-build-script" ''
-          build_site() {
-            echo "Rebuilding site..."
-            nix develop .#service -c bash -c "npm run build"
-            rm -r /etc/www/${websiteName}/*
-            cp -r dist/* /etc/www/${websiteName}/
-          }
+      systemd.services =
+        mkWrappedScreenService {
+          sessionName = buildServiceName;
+          username = serviceUser;
+          scriptDirName = buildServiceName;
+          script = pkgs.writeScript "website-build-script" ''
+            build_site() {
+              echo "Rebuilding site..."
+              nix develop .#service -c bash -c "npm run build"
+              rm -r /etc/www/${websiteName}/*
+              cp -r dist/* /etc/www/${websiteName}/
+            }
 
-          echo "Startup..."
-          git clone ${repoUrl} || echo "Using existing repo"
-          cd ${repoName}
+            echo "Startup..."
+            git clone ${repoUrl} || echo "Using existing repo"
+            cd ${repoName}
 
-          git fetch origin
-          if [ $(git rev-list HEAD...origin/main --count) -gt 0 ]; then # This assumes that the default branch is main which is kinda shit but whatever
-            echo "Found new commits."
-            git pull
-            build_site
-          else
-            echo "No new commits on the remote branch."
-          fi
-
-          while true; do
-            read -p "Press enter to rebuild"
-            git pull
-
-            build_site
-          done
-        '';
-      } // mkWrappedScreenService {
-        sessionName = "build-${websiteName}-trigger";
-        username = serviceUser;
-        scriptDirName = "build-${websiteName}-trigger";
-        script = pkgs.writeScript "script" ''
-          sleep 60
-          cd ../${buildServiceName}/${repoName}
-
-          while true; do
-            (git reset --hard && git fetch) || (echo "Error fetching updates!" && sleep 120 && continue)
-
-            LOCAL=$(git rev-parse @)
-            REMOTE=$(git rev-parse @{u})
-            BASE=$(git merge-base @ @{u})
-
-            if [ "$LOCAL" = "$BASE" ] && [ "$REMOTE" != "$BASE" ]; then
-              echo "Base $BASE / Local $LOCAL / Remote $REMOTE"
-              echo "$(date): New commit(s) available. Sending enter to ${buildServiceName}."
-              screen -S "${buildServiceName}" -X stuff $'\n'
+            git fetch origin
+            if [ $(git rev-list HEAD...origin/main --count) -gt 0 ]; then # This assumes that the default branch is main which is kinda shit but whatever
+              echo "Found new commits."
+              git pull
+              build_site
             else
-              echo "$(date): No new commit(s)."
+              echo "No new commits on the remote branch."
             fi
 
-            sleep 120
-          done
-        '';
+            while true; do
+              read -p "Press enter to rebuild"
+              git pull
+
+              build_site
+            done
+          '';
+        }
+        // mkWrappedScreenService {
+          sessionName = "build-${websiteName}-trigger";
+          username = serviceUser;
+          scriptDirName = "build-${websiteName}-trigger";
+          script = pkgs.writeScript "script" ''
+            sleep 60
+            cd ../${buildServiceName}/${repoName}
+
+            while true; do
+              (git reset --hard && git fetch) || (echo "Error fetching updates!" && sleep 120 && continue)
+
+              LOCAL=$(git rev-parse @)
+              REMOTE=$(git rev-parse @{u})
+              BASE=$(git merge-base @ @{u})
+
+              if [ "$LOCAL" = "$BASE" ] && [ "$REMOTE" != "$BASE" ]; then
+                echo "Base $BASE / Local $LOCAL / Remote $REMOTE"
+                echo "$(date): New commit(s) available. Sending enter to ${buildServiceName}."
+                screen -S "${buildServiceName}" -X stuff $'\n'
+              else
+                echo "$(date): No new commit(s)."
+              fi
+
+              sleep 120
+            done
+          '';
+        };
+      environment.etc."www/${websiteName}/.mkdir" = {
+        text = "create";
       };
-      environment.etc."www/${websiteName}/.mkdir" = { text = "create"; };
-      systemd.tmpfiles.rules =
-        [ "d /etc/www/${websiteName}/ 0770 ${serviceUser} nginx" ];
+      systemd.tmpfiles.rules = [ "d /etc/www/${websiteName}/ 0770 ${serviceUser} nginx" ];
     };
-  mkNasMountService = { shareFolderName, remoteServerName, remoteUser
-    , remotePassFile, localMountUser }:
+  mkNasMountService =
+    {
+      shareFolderName,
+      remoteServerName,
+      remoteUser,
+      remotePassFile,
+      localMountUser,
+    }:
     let
       mountPoint = "/mnt/nas/${shareFolderName}";
       remoteShare = "//${remoteServerName}/${shareFolderName}";
-    in mkWrappedScreenService rec {
+    in
+    mkWrappedScreenService rec {
       sessionName = "mount-nas-${shareFolderName}";
       username = "root";
       scriptDirName = "${sessionName}";
@@ -262,11 +334,19 @@
         sudo mkdir -p ${mountPoint}
         sudo mount -t cifs ${remoteShare} ${mountPoint} -o username=${remoteUser},password=$(cat ${remotePassFile}),uid=$(id ${localMountUser} -u),gid=$(id ${localMountUser} -g),dir_mode=0770,file_mode=0660
       '';
-      cleanupScript =
-        pkgs.writeScript "cleanup-script" "sudo umount ${mountPoint}";
+      cleanupScript = pkgs.writeScript "cleanup-script" "sudo umount ${mountPoint}";
     };
   mkNasMountModule =
-    { inputs, lib, config, globalArgs, folderName, secretsFile, mountUser }: {
+    {
+      inputs,
+      lib,
+      config,
+      globalArgs,
+      folderName,
+      secretsFile,
+      mountUser,
+    }:
+    {
       sops.secrets."nas/${folderName}/user" = {
         sopsFile = "${inputs.self}/secrets/${secretsFile}";
         owner = "root";
@@ -284,10 +364,8 @@
 
       systemd.services = lib.custom.mkNasMountService {
         shareFolderName = "${folderName}";
-        remoteServerName =
-          "$(cat ${config.sops.secrets."nas/${folderName}/serverName".path})";
-        remoteUser =
-          "$(cat ${config.sops.secrets."nas/${folderName}/user".path})";
+        remoteServerName = "$(cat ${config.sops.secrets."nas/${folderName}/serverName".path})";
+        remoteUser = "$(cat ${config.sops.secrets."nas/${folderName}/user".path})";
         remotePassFile = config.sops.secrets."nas/${folderName}/pass".path;
         localMountUser = mountUser;
       };
