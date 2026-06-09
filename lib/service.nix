@@ -128,7 +128,7 @@ rec {
         ${defineEnvVarsScript}
 
         while true; do
-          nix develop ./${repoName}#gui -c bash ${pkgs.writeScript "script" ''
+          nix develop ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
             cd ${repoName}
             bash start_desktop_app.sh
           ''}
