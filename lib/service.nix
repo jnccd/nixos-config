@@ -111,6 +111,33 @@ rec {
         ${guiScript}
       '';
     };
+  mkGuiAppService =
+    {
+      username,
+      repoName,
+      repoUrl,
+      defineEnvVarsScript ? "",
+    }:
+    mkGuiAutostartService {
+      serviceName = "notes-starter";
+      inherit username;
+      guiScript = pkgs.writeScript "script" ''
+        git clone ${repoUrl} || true
+        ${scriptForceRefreshGitRepo "./${repoName}"}
+
+        ${defineEnvVarsScript}
+
+        while true; do
+          nix develop ./${repoName}#gui -c bash ${pkgs.writeScript "script" ''
+            cd ${repoName}
+            bash start_desktop_app.sh
+          ''}
+          
+          ${scriptForceRefreshGitRepo "./${repoName}"}
+        done
+      '';
+    };
+
   mkOnTagUpdatingGitBasedService =
     {
       serviceName,
