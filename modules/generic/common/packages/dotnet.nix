@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.dobikoConf.dotnet.enabled = lib.mkOption {
     type = lib.types.bool;
     default = true;
@@ -11,7 +17,7 @@
       DOTNET_NOLOGO = "true";
     };
     environment.systemPackages = with pkgs; [
-      dotnet-sdk
+      dotnet-sdk_10
       dotnet-ef
 
       # For Neovim
