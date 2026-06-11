@@ -10,7 +10,7 @@ BlurStrength=1
 ForceContrastParams=true
 NoiseStrength=0
 Saturation=100
-WindowClasses=conky
+WindowClasses=conky\nMusicPlayerAvaloniaPort
 
 [Effect-blur]
 BlurStrength=2
