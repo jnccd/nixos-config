@@ -13,10 +13,19 @@
   };
 
   config = lib.mkIf config.dobikoConf.music-player.enabled {
-    # systemd.services = lib.custom.mkGuiAppService rec {
-    #   username = globalArgs.mainUser.name;
-    #   repoName = "music-player-avalonia-port";
-    #   repoUrl = "https://github.com/jnccd/${repoName}";
-    # };
+    environment.systemPackages = with pkgs; [
+      pulseaudio
+
+    ];
+
+    systemd.services = lib.custom.mkGuiAppService rec {
+      username = globalArgs.mainUser.name;
+      repoName = "music-player-avalonia-port";
+      repoUrl = "https://github.com/jnccd/${repoName}";
+      defineEnvVarsScript = ''
+        export LD_LIBRARY_PATH="${pkgs.pulseaudio}/lib/:$LD_LIBRARY_PATH"
+        export PULSE_SERVER=unix:/run/user/$(id -u ${username})/pulse/native
+      '';
+    };
   };
 }
