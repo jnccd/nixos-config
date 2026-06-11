@@ -119,7 +119,7 @@ rec {
       defineEnvVarsScript ? "",
     }:
     mkGuiAutostartService {
-      serviceName = "notes-starter";
+      serviceName = "${repoName}-starter";
       inherit username;
       guiScript = pkgs.writeScript "script" ''
         git clone ${repoUrl} || true
