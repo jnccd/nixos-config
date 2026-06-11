@@ -13,10 +13,10 @@
   };
 
   config = lib.mkIf config.dobikoConf.music-player.enabled {
-    systemd.services = lib.custom.mkGuiAppService rec {
-      username = globalArgs.mainUser.name;
-      repoName = "music-player-avalonia-port";
-      repoUrl = "https://github.com/jnccd/${repoName}";
-    };
+    # systemd.services = lib.custom.mkGuiAppService rec {
+    #   username = globalArgs.mainUser.name;
+    #   repoName = "music-player-avalonia-port";
+    #   repoUrl = "https://github.com/jnccd/${repoName}";
+    # };
   };
 }
