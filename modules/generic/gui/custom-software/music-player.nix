@@ -12,7 +12,7 @@
     description = "Enables MusicPlayer gui app service";
   };
 
-  config = lib.mkIf config.dobikoConf.notes.enabled {
+  config = lib.mkIf config.dobikoConf.music-player.enabled {
     systemd.services = lib.custom.mkGuiAppService rec {
       username = globalArgs.mainUser.name;
       repoName = "music-player-avalonia-port";
