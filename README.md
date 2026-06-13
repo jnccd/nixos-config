@@ -30,7 +30,7 @@ The background image is from [Alena Aenami](https://www.artstation.com/artwork/n
 12. `nix-rb`
 13. Make an age key from you ssh key
     1. Get Pubkey: `nix-shell -p ssh-to-age --run 'cat ~/.ssh/id_ed25519.pub | ssh-to-age'`
-    2. Generate private key: `nix-shell -p ssh-to-age --run "ssh-to-age -private-key -i ~/.ssh/id_ed25519 > ~/keys.txt" && sudo mv ~/keys.txt ~/.config/sops/age/keys.txt`
+    2. Generate private key: `nix-shell -p ssh-to-age --run "ssh-to-age -private-key -i ~/.ssh/id_ed25519 > ~/keys.txt" && mkdir -p ~/.config/sops/age/ && sudo mv ~/keys.txt ~/.config/sops/age/keys.txt`
     3. If you have access add the pubkey to `./.sops.yaml` and let a PC with access rebuild the `.yaml` files in the `secrets` submodule. If you dont have access you are on your own, good luck.
 14. Log into vivaldi or your favorite browser, sync settings, (maybe try out [my style](https://github.com/jnccd/vivaldi-style))
 15. Done, enjoy :)
