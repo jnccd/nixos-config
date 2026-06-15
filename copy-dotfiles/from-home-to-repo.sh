@@ -38,7 +38,6 @@ cp_to_dotfiles .config/kcmfonts
 cp_to_dotfiles .config/kdeglobals
 cp_to_dotfiles .config/kcminputrc
 cp_to_dotfiles .config/klaunchrc
-cp_to_dotfiles .config/kfontinstuirc
 cp_to_dotfiles .config/ksplashrc
 cp_to_dotfiles .config/plasmarc
 cp_to_dotfiles .config/kglobalshortcutsrc
