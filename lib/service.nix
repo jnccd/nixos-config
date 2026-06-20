@@ -126,6 +126,7 @@ rec {
         ${scriptForceRefreshGitRepo "./${repoName}"}
 
         while true; do
+          ${bashGetUserEnvVars username}
           ${defineEnvVarsScript}
 
           mkdir -p ~/.nix-profiles
