@@ -125,9 +125,9 @@ rec {
         git clone ${repoUrl} || true
         ${scriptForceRefreshGitRepo "./${repoName}"}
 
-        ${defineEnvVarsScript}
-
         while true; do
+          ${defineEnvVarsScript}
+
           mkdir -p ~/.nix-profiles
           nix develop --profile ~/.nix-profiles/${serviceName} ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
             cd ${repoName}
