@@ -1,12 +1,23 @@
-{ inputs, config, lib, pkgs, globalArgs, ... }:
-let runnerName = globalArgs.defaultSystemUser.name + "-test";
-in {
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+let
+  runnerName = globalArgs.defaultSystemUser.name + "-test";
+in
+{
   # - User -
-  dobikoConf.userMngmnt.additionalUsers = [{
-    name = runnerName;
-    isAdmin = false;
-    isSystem = true;
-  }];
+  dobikoConf.userMngmnt.additionalUsers = [
+    {
+      name = runnerName;
+      isAdmin = false;
+      isSystem = true;
+    }
+  ];
 
   # - Sops-Nix -
   sops.secrets.example_key = {

@@ -1,3 +1,11 @@
-{ config, lib, pkgs, globalArgs, inputs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  inputs,
+  ...
+}:
+{
   imports = [ "${inputs.self}/modules/private/machine-miniserver" ];
 }

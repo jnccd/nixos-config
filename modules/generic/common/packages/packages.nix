@@ -1,4 +1,11 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   options.dobikoConf.nonEssentialCommonPkgs.enabled = lib.mkOption {
     type = lib.types.bool;
     default = true;
@@ -6,7 +13,8 @@
   };
 
   config = {
-    environment.systemPackages = with pkgs;
+    environment.systemPackages =
+      with pkgs;
       [
         home-manager
 
@@ -14,31 +22,36 @@
         bash
 
         screen # I use this extensively for services
-      ] ++ (if config.dobikoConf.nonEssentialCommonPkgs.enabled then [
-        nushell
+      ]
+      ++ (
+        if config.dobikoConf.nonEssentialCommonPkgs.enabled then
+          [
+            nushell
 
-        # System Info
-        nix-tree
-        lm_sensors
-        ncdu
+            # System Info
+            nix-tree
+            lm_sensors
+            ncdu
 
-        # Security
-        sops
-        age
+            # Security
+            sops
+            age
 
-        # Coding
-        neovim
-        ripgrep
-        nixfmt
-        nil # LSP for nix lang
+            # Coding
+            neovim
+            ripgrep
+            nixfmt
+            nil # LSP for nix lang
 
-        # Network stuff
-        dig
-        traceroute
+            # Network stuff
+            dig
+            traceroute
 
-        zip
-        unzip
-      ] else
-        [ ]);
+            zip
+            unzip
+          ]
+        else
+          [ ]
+      );
   };
 }

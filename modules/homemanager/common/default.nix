@@ -1,4 +1,11 @@
-{ config, pkgs, globalArgs, homeUser, ... }: {
+{
+  config,
+  pkgs,
+  globalArgs,
+  homeUser,
+  ...
+}:
+{
   # --- Nix ---
 
   nixpkgs.config.allowUnfree = true;

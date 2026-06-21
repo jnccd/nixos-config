@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.dobikoConf.nvidia.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -6,7 +12,9 @@
   };
 
   config = lib.mkIf config.dobikoConf.nvidia.enabled {
-    hardware.graphics = { enable = true; };
+    hardware.graphics = {
+      enable = true;
+    };
 
     services.xserver.videoDrivers = [ "nvidia" ];
 

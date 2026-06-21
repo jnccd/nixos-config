@@ -1,11 +1,22 @@
-{ config, lib, pkgs, globalArgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
 let
   nixosConfigPath = globalArgs.nixosConfigPath;
-  cdAliases = (builtins.listToAttrs (map (n: {
-    name = lib.concatStrings ([ "cd.." ] ++ (lib.replicate n "."));
-    value = lib.concatStrings ([ "cd .." ] ++ (lib.replicate n "/.."));
-  }) (builtins.genList (n: n) 10)));
-in {
+  cdAliases = (
+    builtins.listToAttrs (
+      map (n: {
+        name = lib.concatStrings ([ "cd.." ] ++ (lib.replicate n "."));
+        value = lib.concatStrings ([ "cd .." ] ++ (lib.replicate n "/.."));
+      }) (builtins.genList (n: n) 10)
+    )
+  );
+in
+{
   environment.shellAliases = cdAliases // {
     owo = "echo uwu"; # I owo into the void and the void uwus back
     scrn-ls = ''
@@ -24,40 +35,38 @@ in {
         exec bash'
     '';
 
-    git-pull =
-      "git checkout main && git pull && git submodule update --init --recursive && git submodule foreach 'git checkout main && git pull'";
-    git-pull-nixconf =
-      ''oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd "$oldPwd" '';
-    "gitag++" = (pkgs.writeScript "git-tag-incr" ''
-      #!/usr/bin/env bash
-      set -e
+    git-pull = "git checkout main && git pull && git submodule update --init --recursive && git submodule foreach 'git checkout main && git pull'";
+    git-pull-nixconf = ''oldPwd=$(pwd) && cd ${nixosConfigPath} && git-pull && cd "$oldPwd" '';
+    "gitag++" = (
+      pkgs.writeScript "git-tag-incr" ''
+        #!/usr/bin/env bash
+        set -e
 
-      git fetch --tags
+        git fetch --tags
 
-      latest_tag=$(git tag --sort=-v:refname | head -n 1)
+        latest_tag=$(git tag --sort=-v:refname | head -n 1)
 
-      if [[ -z "$latest_tag" ]]; then
-        next_tag="v0.1.0"
-      else
-        next_tag=$(echo "$latest_tag" | awk -F. 'BEGIN { OFS="." } {$NF++; print}')
-      fi
+        if [[ -z "$latest_tag" ]]; then
+          next_tag="v0.1.0"
+        else
+          next_tag=$(echo "$latest_tag" | awk -F. 'BEGIN { OFS="." } {$NF++; print}')
+        fi
 
-      echo "Latest tag: $latest_tag"
-      echo "Next tag:   $next_tag"
+        echo "Latest tag: $latest_tag"
+        echo "Next tag:   $next_tag"
 
-      git tag -a "$next_tag" -m "Release $next_tag"
-      git push origin "$next_tag"
-    '');
+        git tag -a "$next_tag" -m "Release $next_tag"
+        git push origin "$next_tag"
+      ''
+    );
 
     nix-fup = "nix flake update --flake .?submodules=1";
 
     # Home only rebuild
     nix-cpd = "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
-    nix-hrb =
-      "export COPY_DOTFILES_SUDOLESS=true && nix-cpd && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
+    nix-hrb = "export COPY_DOTFILES_SUDOLESS=true && nix-cpd && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
     # Rebuild
-    nix-rb =
-      "sudo sleep 0 && export COPY_DOTFILES_SUDOLESS= && nix-cpd && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
+    nix-rb = "sudo sleep 0 && export COPY_DOTFILES_SUDOLESS= && nix-cpd && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
     # Pull and rebuild
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";

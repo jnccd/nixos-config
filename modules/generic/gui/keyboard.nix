@@ -1,11 +1,19 @@
-{ inputs, config, lib, pkgs, globalArgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
 let
   defaultLayout = "us-altgr-intl";
   defaultIM = "keyboard-us-altgr-intl";
 
   secondaryLayout = "de";
   secondaryIM = "keyboard-de";
-in {
+in
+{
   options.dobikoConf.fcitx5.layout = lib.mkOption {
     type = lib.types.str;
     default = defaultLayout;
@@ -51,14 +59,9 @@ in {
             "Layout" = config.dobikoConf.fcitx5.layout;
           };
           "Groups/0/Items/1" = {
-            "Name" = if config.dobikoConf.fcitx5.im == defaultIM then
-              secondaryIM
-            else
-              defaultIM;
-            "Layout" = if config.dobikoConf.fcitx5.layout == defaultLayout then
-              secondaryLayout
-            else
-              defaultLayout;
+            "Name" = if config.dobikoConf.fcitx5.im == defaultIM then secondaryIM else defaultIM;
+            "Layout" =
+              if config.dobikoConf.fcitx5.layout == defaultLayout then secondaryLayout else defaultLayout;
           };
           "Groups/0/Items/2".Name = "pinyin";
           "Groups/0/Items/3".Name = "mozc";

@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.dobikoConf.printing.enabled = lib.mkOption {
     type = lib.types.bool;
     default = true;
@@ -31,7 +37,10 @@
 
     # Scan
     hardware.sane.enable = true;
-    hardware.sane.extraBackends = with pkgs; [ brscan4 sane-airscan ];
+    hardware.sane.extraBackends = with pkgs; [
+      brscan4
+      sane-airscan
+    ];
     hardware.sane.brscan4.enable = true;
     services.udev.packages = [ pkgs.sane-airscan ];
     environment.systemPackages = with pkgs; [

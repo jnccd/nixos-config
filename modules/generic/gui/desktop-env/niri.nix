@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.dobikoConf.niri.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;

@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.dobikoConf.xfce.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -14,14 +20,16 @@
       };
     };
 
-    environment.systemPackages = (with pkgs.xfce; [
-      xfce4-panel-profiles
-      xfce4-whiskermenu-plugin
+    environment.systemPackages =
+      (with pkgs.xfce; [
+        xfce4-panel-profiles
+        xfce4-whiskermenu-plugin
 
-    ]) ++ (with pkgs; [
-      qogir-theme
-      qogir-icon-theme
+      ])
+      ++ (with pkgs; [
+        qogir-theme
+        qogir-icon-theme
 
-    ]);
+      ]);
   };
 }

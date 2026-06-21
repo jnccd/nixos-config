@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.dobikoConf.intel_iGPU.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -18,10 +24,11 @@
         intel-media-driver # This is a second driver for dire times
       ];
     };
-    environment.sessionVariables = { LIBVA_DRIVER_NAME = "i965"; };
+    environment.sessionVariables = {
+      LIBVA_DRIVER_NAME = "i965";
+    };
     nixpkgs.config.packageOverrides = pkgs: {
-      intel-vaapi-driver =
-        pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
+      intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
     };
 
     # intel_gpu_top setup

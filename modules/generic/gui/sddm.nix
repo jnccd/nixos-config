@@ -1,4 +1,12 @@
-{ inputs, config, lib, pkgs, globalArgs, ... }: {
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   environment.systemPackages = with pkgs; [
     kdePackages.sddm-kcm # For sddm/kde screen sync
     kdePackages.qtmultimedia # For theme
@@ -19,9 +27,11 @@
   services.displayManager.sddm = {
     enable = true;
     settings = {
-      Users.HideUsers = (lib.lists.foldl (a: b: a + "," + b) ""
-        ((builtins.genList (x: "nixbld" + (builtins.toString x)) 33)
-          ++ [ globalArgs.defaultSystemUser.name ]));
+      Users.HideUsers = (
+        lib.lists.foldl (a: b: a + "," + b) "" (
+          (builtins.genList (x: "nixbld" + (builtins.toString x)) 33) ++ [ globalArgs.defaultSystemUser.name ]
+        )
+      );
       X11.DisplayCommand = "/etc/sddm/scripts/my-xsetup";
     };
     theme = "sddm-astronaut-theme";

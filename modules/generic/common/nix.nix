@@ -1,5 +1,15 @@
-{ config, lib, pkgs, globalArgs, ... }: {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nixpkgs.config.allowUnfree = true;
 

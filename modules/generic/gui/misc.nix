@@ -1,4 +1,12 @@
-{ inputs, config, lib, pkgs, globalArgs, ... }: {
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   hardware.bluetooth.enable = true;
 
   # - images -

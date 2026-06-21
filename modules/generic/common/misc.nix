@@ -1,4 +1,11 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   system.stateVersion = globalArgs.stateVersion;
 
   # --- Tmp files ---
@@ -30,7 +37,8 @@
 
   # --- ACME ---
 
-  security.acme = { # /var/lib/acme
+  security.acme = {
+    # /var/lib/acme
     acceptTerms = true;
     defaults.email = globalArgs.mainUser.email;
   };

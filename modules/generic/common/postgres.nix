@@ -1,4 +1,11 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   options.dobikoConf.postgres.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;

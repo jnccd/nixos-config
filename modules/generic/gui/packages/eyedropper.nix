@@ -1,4 +1,12 @@
-{ inputs, config, lib, pkgs, globalArgs, ... }: {
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   options.dobikoConf.eyedropper.enabled = lib.mkOption {
     type = lib.types.bool;
     default = true;
@@ -6,11 +14,10 @@
   };
 
   config = lib.mkIf config.dobikoConf.eyedropper.enabled {
-    environment.systemPackages = with pkgs;
-      [
-        inputs.instant-eyedropper-r.packages."${system}".default
+    environment.systemPackages = with pkgs; [
+      inputs.instant-eyedropper-r.packages."${system}".default
 
-      ];
+    ];
 
     systemd.services = lib.custom.mkGuiAutostartService {
       serviceName = "eyedropper-starter";

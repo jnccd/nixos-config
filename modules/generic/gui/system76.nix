@@ -1,4 +1,11 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   hardware.system76.kernel-modules.enable = true;
 
   services.system76-scheduler = {

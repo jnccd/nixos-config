@@ -1,4 +1,11 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   security.rtkit.enable = true;
   services.pulseaudio.enable = false;
   services.pipewire = {

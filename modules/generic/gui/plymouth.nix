@@ -1,14 +1,21 @@
-{ inputs, config, lib, pkgs, globalArgs, ... }: {
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   boot = {
     plymouth = {
       enable = true;
       theme = "motion";
-      themePackages = with pkgs;
-        [
-          (adi1090x-plymouth-themes.override {
-            selected_themes = [ "motion" ];
-          })
-        ];
+      themePackages = with pkgs; [
+        (adi1090x-plymouth-themes.override {
+          selected_themes = [ "motion" ];
+        })
+      ];
     };
 
     # Enable "Silent boot"

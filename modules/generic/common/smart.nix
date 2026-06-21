@@ -1,4 +1,12 @@
-{ config, lib, pkgs, globalArgs, isWsl, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  isWsl,
+  ...
+}:
+{
   environment.systemPackages = with pkgs; [ smartmontools ];
 
   services.smartd = {

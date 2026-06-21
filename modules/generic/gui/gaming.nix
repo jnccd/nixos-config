@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   options.dobikoConf.gaming.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;

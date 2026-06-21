@@ -1,4 +1,13 @@
-{ inputs, config, lib, pkgs, globalArgs, hostname, ... }: {
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  hostname,
+  ...
+}:
+{
   networking.hostName = hostname;
 
   # --- Imports ---
@@ -8,13 +17,24 @@
 
     ../../modules/generic
 
-    (let
-      folderName = "home";
-      secretsFile = "nas.yaml";
-      mountUser = globalArgs.mainUser.name;
-    in lib.custom.mkNasMountModule {
-      inherit inputs lib config globalArgs folderName secretsFile mountUser;
-    })
+    (
+      let
+        folderName = "home";
+        secretsFile = "nas.yaml";
+        mountUser = globalArgs.mainUser.name;
+      in
+      lib.custom.mkNasMountModule {
+        inherit
+          inputs
+          lib
+          config
+          globalArgs
+          folderName
+          secretsFile
+          mountUser
+          ;
+      }
+    )
   ];
 
   # --- Custom Module Settings ---

@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   config = lib.mkIf config.dobikoConf.nonEssentialCommonPkgs.enabled {
     environment.systemPackages = with pkgs; [ btop ];
     security.wrappers.btop = {

@@ -1,4 +1,11 @@
-{ config, lib, pkgs, globalArgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  globalArgs,
+  ...
+}:
+{
   options.dobikoConf.windscribe.enabled = lib.mkOption {
     type = lib.types.bool;
     default = false;
@@ -21,14 +28,18 @@
         dns = [ "1.1.1.1" ];
         privateKeyFile = config.sops.secrets."windscribe/private_key".path;
 
-        peers = [{
-          publicKey = "dxMoXE/9ztTLm2UK0g6GxO1TLya8vxF7pZpX7LABuAI=";
-          presharedKeyFile =
-            config.sops.secrets."windscribe/preshared_key".path;
-          allowedIPs = [ "0.0.0.0/0" "::/0" ];
-          endpoint = "yyz-292-wg.whiskergalaxy.com:65142";
-          persistentKeepalive = 25;
-        }];
+        peers = [
+          {
+            publicKey = "dxMoXE/9ztTLm2UK0g6GxO1TLya8vxF7pZpX7LABuAI=";
+            presharedKeyFile = config.sops.secrets."windscribe/preshared_key".path;
+            allowedIPs = [
+              "0.0.0.0/0"
+              "::/0"
+            ];
+            endpoint = "yyz-292-wg.whiskergalaxy.com:65142";
+            persistentKeepalive = 25;
+          }
+        ];
       };
     };
   };
