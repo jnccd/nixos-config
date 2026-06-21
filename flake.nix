@@ -43,6 +43,10 @@
       url = "github:miaupaw/ie-r";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # - CachyOS Kernel -
+    nix-cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+    };
 
     # --- Server ---
     working-keycloak-nixpkgs = {
