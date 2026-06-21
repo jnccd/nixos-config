@@ -1,61 +1,51 @@
 {
-    "extensions.autoCheckUpdates": false,
-    "extensions.autoUpdate": false,
-    "update.mode": "none",
-    "git.enableSmartCommit": true,
-    "git.confirmSync": false,
-    "git.autofetch": true,
-    "csharp.experimental.debug.hotReload": true,
-    "csharp.debug.hotReloadVerbosity": "detailed",
-    "cSpell.customDictionaries": {},
-    "cSpell.maxNumberOfProblems": 500,
-    "cSpell.maxDuplicateProblems": 25,
-    "cSpell.numSuggestions": 24,
-    "cSpell.dictionaryDefinitions": [],
-    "cSpell.language": "en,de",
-    "cSpell.userWords": [
-        "Dont",
-        "livelock",
-        "nixos",
-        "lockscreen"
-    ],
-    "editor.wordWrap": "on",
-    "editor.formatOnSave": true,
-    "workbench.iconTheme": "material-icon-theme",
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "diffEditor.ignoreTrimWhitespace": false,
-    "terminal.integrated.persistentSessionScrollback": 1000,
-    "terminal.integrated.scrollback": 100000,
-    "terminal.integrated.commandsToSkipShell": [
-        "-ctrl+k"
-    ],
-    "terminal.integrated.fontFamily": "JetBrains Mono, Fira Code, monospace",
-    "terminal.integrated.allowChords": false,
-    "rust-analyzer.cargo.buildScripts.enable": false, // Hopefully optimize rust-analyzer RAM usage
-    "rust-analyzer.procMacro.enable": false,
-    "rust-analyzer.lru.capacity": 512,
-    "nix.enableLanguageServer": true,
-    "nix.serverPath": "nil",
-    "nix.serverSettings": {
-        "nil": {
-            "diagnostics": {
-                "ignored": [
-                    "unused_binding"
-                ]
-            },
-            "formatting": {
-                "command": [
-                    "nixfmt"
-                ]
-            },
-            "nix": {
-                "flake": {
-                    "autoEvalInputs": false
-                }
-            }
+  "extensions.autoCheckUpdates": false,
+  "extensions.autoUpdate": false,
+  "update.mode": "none",
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "csharp.experimental.debug.hotReload": true,
+  "csharp.debug.hotReloadVerbosity": "detailed",
+  "cSpell.customDictionaries": {},
+  "cSpell.maxNumberOfProblems": 500,
+  "cSpell.maxDuplicateProblems": 25,
+  "cSpell.numSuggestions": 24,
+  "cSpell.dictionaryDefinitions": [],
+  "cSpell.language": "en,de",
+  "cSpell.userWords": ["Dont", "livelock", "nixos", "lockscreen"],
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": true,
+  "workbench.iconTheme": "material-icon-theme",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "terminal.integrated.persistentSessionScrollback": 1000,
+  "terminal.integrated.scrollback": 100000,
+  "terminal.integrated.commandsToSkipShell": ["-ctrl+k"],
+  "terminal.integrated.fontFamily": "JetBrains Mono, Fira Code, monospace",
+  "terminal.integrated.allowChords": false,
+  "rust-analyzer.cargo.buildScripts.enable": false, // Hopefully optimize rust-analyzer RAM usage
+  "rust-analyzer.procMacro.enable": false,
+  "rust-analyzer.lru.capacity": 512,
+  "nix.enableLanguageServer": true,
+  "nix.serverPath": "nil",
+  "nix.serverSettings": {
+    "nil": {
+      "diagnostics": {
+        "ignored": ["unused_binding"],
+      },
+      "formatting": {
+        "command": ["nixfmt"],
+      },
+      "nix": {
+        "flake": {
+          "autoEvalInputs": false,
         },
+      },
     },
-    "nix.formatterPath": "nixfmt",
+  },
+  "nix.formatterPath": "nixfmt",
+  "redhat.telemetry.enabled": true,
 }

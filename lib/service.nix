@@ -118,17 +118,19 @@ rec {
       repoUrl,
       defineEnvVarsScript ? "",
     }:
-    mkGuiAutostartService {
+    mkGuiAutostartService rec {
       serviceName = "${repoName}-starter";
       inherit username;
       guiScript = pkgs.writeScript "script" ''
         git clone ${repoUrl} || true
         ${scriptForceRefreshGitRepo "./${repoName}"}
 
-        ${defineEnvVarsScript}
-
         while true; do
-          nix develop ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
+          ${bashGetUserEnvVars username}
+          ${defineEnvVarsScript}
+
+          mkdir -p ~/.nix-profiles
+          nix develop --profile ~/.nix-profiles/${serviceName} ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
             cd ${repoName}
             bash start_desktop_app.sh
           ''}
