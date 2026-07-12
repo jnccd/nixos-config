@@ -276,5 +276,8 @@ toggle do not disturb=none,,Toggle do not disturb
 [services][net.local.spectacle.desktop]
 _launch=F19
 
+[services][org.kde.krunner.desktop]
+_launch=Search\tAlt+F2\tAlt+Space
+
 [services][org.kde.touchpadshortcuts.desktop]
 ToggleTouchpad=Touchpad Toggle\tMeta+Ctrl+Zenkaku Hankaku
