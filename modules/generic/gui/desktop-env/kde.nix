@@ -5,6 +5,34 @@
   inputs,
   ...
 }:
+let
+  tiledmenu-prime = pkgs.stdenv.mkDerivation {
+    pname = "tiledmenu-prime";
+    version = "1.0.0";
+    src = pkgs.fetchzip {
+      url = "https://github.com/jnccd/nix-utils/releases/download/v0.0.-1/tiledmenu-prime-v1.0.zip";
+      sha256 = "sha256-dfXmpRA5AkIfFB1YGdyNU9UyF4yhol3AJINAOEJ5gnA=";
+    };
+
+    dontBuild = true;
+
+    buildInputs = [ pkgs.unzip ];
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/share/plasma/plasmoids/com.github.nirwin81.tiledmenuprime/
+      unzip ./tiledmenu-prime-v1.0.2.plasmoid -d $out/share/plasma/plasmoids/com.github.nirwin81.tiledmenuprime/
+      runHook postInstall
+    '';
+
+    passthru.updateScript = pkgs.nix-update-script { };
+
+    meta = with pkgs.lib; {
+      description = "A menu based on Windows 10's Start Menu.";
+      license = lib.licenses.mit;
+      platforms = platforms.linux;
+    };
+  };
+in
 {
   options.dobikoConf.kde.enabled = lib.mkOption {
     type = lib.types.bool;
@@ -19,6 +47,7 @@
     environment.systemPackages = with pkgs; [
       plasma-panel-colorizer
       kdePackages.plasma-browser-integration
+      tiledmenu-prime
 
       inputs.kwin-effects-better-blur-dx.packages.${stdenv.hostPlatform.system}.default # Wayland
       inputs.kwin-effects-better-blur-dx.packages.${stdenv.hostPlatform.system}.x11
