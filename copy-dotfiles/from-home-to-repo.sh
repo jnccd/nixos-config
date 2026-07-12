@@ -77,6 +77,7 @@ cp_to_dotfiles .config/krusaderrc
 cp_to_dotfiles .config/spectaclerc
 cp_to_dotfiles .config/systemmonitorrc
 cp_to_dotfiles .config/plasmaparc
+cp_to_dotfiles .config/plasma-org.kde.plasma.desktop-appletsrc
 
 # Konsole
 cp_to_dotfiles .config/konsolerc
