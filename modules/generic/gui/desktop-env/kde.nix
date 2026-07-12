@@ -28,6 +28,7 @@ let
 
     meta = with pkgs.lib; {
       description = "A menu based on Windows 10's Start Menu.";
+      homepage = "https://store.kde.org/p/2357462/";
       license = lib.licenses.mit;
       platforms = platforms.linux;
     };
