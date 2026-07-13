@@ -60,6 +60,7 @@
   dobikoConf.postgres.enabled = true;
   dobikoConf.nvidia.enabled = true;
   dobikoConf.gaming.enabled = true;
+  dobikoConf.wine.enabled = true;
   dobikoConf.ambilight.enabled = true;
 
   # --- Misc ---
