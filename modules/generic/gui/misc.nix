@@ -11,13 +11,6 @@
 
   hardware.bluetooth.enable = true;
 
-  # - ntfs -
-
-  environment.systemPackages = with pkgs; [
-    ntfs3g
-
-  ];
-
   # - images -
 
   environment.etc."global-dotfiles/.background-image.jpeg".source =
