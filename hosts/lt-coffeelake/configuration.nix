@@ -20,7 +20,7 @@
     (
       let
         folderName = "home";
-        secretsFile = "nas.yaml";
+        secretsFile = "nas-synology.yaml";
         mountUser = globalArgs.mainUser.name;
       in
       lib.custom.mkNasMountModule {

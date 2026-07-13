@@ -20,7 +20,25 @@
     (
       let
         folderName = "home";
-        secretsFile = "nas.yaml";
+        secretsFile = "nas-synology.yaml";
+        mountUser = globalArgs.mainUser.name;
+      in
+      lib.custom.mkNasMountModule {
+        inherit
+          inputs
+          lib
+          config
+          globalArgs
+          folderName
+          secretsFile
+          mountUser
+          ;
+      }
+    )
+    (
+      let
+        folderName = "media";
+        secretsFile = "nas-minis.yaml";
         mountUser = globalArgs.mainUser.name;
       in
       lib.custom.mkNasMountModule {
