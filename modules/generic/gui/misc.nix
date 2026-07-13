@@ -7,7 +7,16 @@
   ...
 }:
 {
+  # - bluetooth -
+
   hardware.bluetooth.enable = true;
+
+  # - ntfs -
+
+  environment.systemPackages = with pkgs; [
+    ntfs3g
+
+  ];
 
   # - images -
 
