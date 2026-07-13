@@ -90,7 +90,9 @@ cp_to_dotfiles .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
 cp_to_dotfiles .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
 cp_to_dotfiles .config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 
+# .desktop entries
 cp_to_dotfiles .local/share/kio/servicemenus/openVSCode.desktop
+cp_to_dotfiles .local/share/applications/Workout.desktop
 
 cp_to_dotfiles .nanorc
 

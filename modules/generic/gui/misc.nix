@@ -17,4 +17,7 @@
     "${inputs.self}/assets/.lockscreen-image.jpeg";
   environment.etc."global-dotfiles/.login-image.jpeg".source =
     "${inputs.self}/assets/.login-image.jpeg";
+
+  environment.etc."global-dotfiles/workout-icon.png".source =
+    "${inputs.self}/assets/workout-icon.png";
 }
