@@ -30,3 +30,5 @@ git submodule update --recursive --remote
 
 nix build .?submodules=1#aws
 nixos-rebuild build-image --flake .?submodules=1#pk-minimal --image-variant iso-installer
+
+pg_dumpall --clean -f full_backup_$(date +%Y%^Cd).sql
