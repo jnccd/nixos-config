@@ -10,6 +10,7 @@ ConfigVersion=1
 ToolBarsMovable=Disabled
 
 [Notification Messages]
+CloseAllEmptyTabs=true
 CloseAllTabs=true
 
 [UiSettings]

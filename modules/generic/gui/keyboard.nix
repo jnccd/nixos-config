@@ -41,7 +41,7 @@ in
       enable = true;
       type = "fcitx5";
       fcitx5 = {
-        ignoreUserConfig = true;
+        ignoreUserConfig = false;
         waylandFrontend = true;
         addons = with pkgs; [
           kdePackages.fcitx5-qt
