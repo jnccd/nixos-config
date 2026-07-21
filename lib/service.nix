@@ -122,12 +122,22 @@ rec {
       serviceName = "${repoName}-starter";
       inherit username;
       guiScript = pkgs.writeScript "script" ''
-        git clone ${repoUrl} || true
+        REPO_CHANGED=0
+
+        # Clone if possible
+        (git clone ${repoUrl} "./${repoName}" && REPO_CHANGED=1) || true
+        # Pull if necessary
+        OLD_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
         ${scriptForceRefreshGitRepo "./${repoName}"}
+        NEW_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
+        [ "$OLD_REV" != "$NEW_REV" ] && REPO_CHANGED=1
 
         while true; do
           ${bashGetUserEnvVars username}
           ${defineEnvVarsScript}
+
+          [ "$REPO_CHANGED" -eq 0 ] && export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1
+          [ "$REPO_CHANGED" -ne 0 ] && unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
 
           mkdir -p ~/.nix-profiles
           nix develop --profile ~/.nix-profiles/${serviceName} ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
@@ -135,7 +145,11 @@ rec {
             bash start_desktop_app.sh
           ''}
           
+          REPO_CHANGED=0
+          OLD_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
           ${scriptForceRefreshGitRepo "./${repoName}"}
+          NEW_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
+          [ "$OLD_REV" != "$NEW_REV" ] && REPO_CHANGED=1
         done
       '';
     };
