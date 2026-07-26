@@ -68,9 +68,13 @@
             timeStr = "${bedTimeHourStr}:${warnTimeMinStr}";
             user = "${globalArgs.mainUser.name}";
             command = ''
-              bash -c '${lib.custom.bashGetUserEnvVars globalArgs.mainUser.name} && kdialog --sorry "Bedtime in ${
-                builtins.toString (delayMin - delayPassed)
-              } minutes." "You really need to go to bed :("'
+              bash -c '${lib.custom.bashGetUserEnvVars globalArgs.mainUser.name} && \
+              if shutdown --show 2>&1 | grep -q "scheduled for"; then
+                kdialog --sorry "Bedtime in ${
+                  builtins.toString (delayMin - delayPassed)
+                } minutes." "You really need to go to bed :("; 
+              fi
+              '
             '';
           })
         ) (builtins.genList (i: i) delayMin));
