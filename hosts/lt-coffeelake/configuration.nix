@@ -44,6 +44,7 @@
     im = "keyboard-de";
   };
   dobikoConf.postgres.enabled = true;
+  dobikoConf.intel_iGPU.enabled = true;
 
   # --- Bootloader ---
 
