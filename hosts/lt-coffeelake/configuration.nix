@@ -35,6 +35,24 @@
           ;
       }
     )
+    (
+      let
+        folderName = "media";
+        secretsFile = "nas-minis.yaml";
+        mountUser = globalArgs.mainUser.name;
+      in
+      lib.custom.mkNasMountModule {
+        inherit
+          inputs
+          lib
+          config
+          globalArgs
+          folderName
+          secretsFile
+          mountUser
+          ;
+      }
+    )
   ];
 
   # --- Custom Module Settings ---
