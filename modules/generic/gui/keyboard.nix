@@ -41,13 +41,27 @@ in
       enable = true;
       type = "fcitx5";
       fcitx5 = {
-        ignoreUserConfig = false;
+        ignoreUserConfig = true;
         waylandFrontend = true;
         addons = with pkgs; [
           kdePackages.fcitx5-qt
           kdePackages.fcitx5-chinese-addons
           fcitx5-mozc # Japanese
         ];
+        settings.globalOptions = {
+          "Hotkey/TriggerKeys" = {
+            "0" = "Super+X";
+            "1" = "Zenkaku_Hankaku";
+            "2" = "Hangul";
+          };
+
+          "Hotkey/EnumerateGroupForwardKeys" = {
+            "0" = "Alt+Super+space";
+          };
+          "Hotkey/EnumerateGroupBackwardKeys" = {
+            "0" = "Shift+Super+space";
+          };
+        };
         settings.inputMethod = {
           "Groups/0" = {
             "Name" = "Default";
