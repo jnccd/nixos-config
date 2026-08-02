@@ -1,5 +1,14 @@
 # <img src="https://github.com/user-attachments/assets/d46f6ade-c539-47c6-a7a5-b98c7b4e5559" alt="Diagram" height="40em" style="vertical-align:middle;"> My NixOS Flake
 
+## What does it contain?
+
+- Common Modules that contain aliases and basic settings for nix, journald and so on <br>This is the basis for all system types including servers
+- The same for wsl using the nixos-wsl flake
+- For desktop machines additionally the gui modules which contain nearly all (imo) necessary Windows 10 features in KDE
+   - The taskbar is styled like in win10, the start menu is replaced with a win10 like one
+   - Windows 10 language input is replicated using fcitx5
+   - Libre Hardware Monitor is replaced by a custom conky menu
+
 ## What does it look like?
 
 ![image](https://github.com/user-attachments/assets/7dbbe417-5878-45d9-be5f-b9e11d94240a)
