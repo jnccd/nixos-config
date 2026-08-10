@@ -15,4 +15,4 @@ Name[zh]=在Dev Flake VS Code中打开
 Name[zh_CN]=在Dev Flake VS Code中打开
 Name[de]=In Dev Flake VS Code öffnen
 Icon=vscode
-Exec=nix develop --command bash <<<'nohup code . > /dev/null 2>&1 &'
+Exec=bash -c "cd %u && nix develop --command bash <<<'nohup code . > /dev/null 2>&1 &'"
