@@ -1,0 +1,18 @@
+[Desktop Entry]
+Name=Open in VS Code
+Type=Service
+MimeType=inode/directory
+X-KDE-Priority=TopLevel
+Actions=openInVSCode
+
+[Desktop Action openInVSCode]
+Name=Open in VS Code within Dev Flake
+Name[nl]=Openen in VS Code within Dev Flake
+Name[cs]=Otevřít ve VS Code within Dev Flake
+Name[es]=Abrir en VS Code within Dev Flake
+Name[pl]=Otwórz za pomocą VS Code within Dev Flake
+Name[zh]=在Dev Flake VS Code中打开
+Name[zh_CN]=在Dev Flake VS Code中打开
+Name[de]=In Dev Flake VS Code öffnen
+Icon=vscode
+Exec=nix develop --command bash <<<'nohup code . > /dev/null 2>&1 &'
