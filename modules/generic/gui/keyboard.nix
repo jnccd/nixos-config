@@ -32,10 +32,9 @@ in
 
   config = {
     environment.sessionVariables = {
-      #SKIP_FCITX_USER_PATH = "";
-      GTK_IM_MODULE = "fcitx";
-      QT_IM_MODULE = "fcitx";
-      QT_IM_MODULES = "fcitx";
+      GTK_IM_MODULE = "";
+      QT_IM_MODULE = "";
+      QT_IM_MODULES = "";
     };
     i18n.inputMethod = {
       enable = true;
