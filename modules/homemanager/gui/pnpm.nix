@@ -5,12 +5,13 @@ else
   {
     home.packages = with pkgs; [
       pnpm
+      nodejs_22
     ];
 
+    # Those dont seem to work 🤔
     home.sessionPath = [
       "$HOME/.local/share/pnpm/bin"
     ];
-
     home.sessionVariables = {
       PATH = "$PATH:$HOME/.local/share/pnpm/bin";
       PNPM_HOME = "$HOME/.local/share/pnpm";
