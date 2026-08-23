@@ -16,5 +16,8 @@
         ) (builtins.readDir path)
       )
     );
+
+  unwrapOverrideSet =
+    val: if builtins.isAttrs val && val ? _type && val._type == "override" then val.content else val;
 }
 // (import ./service.nix { inherit pkgs lib; })
