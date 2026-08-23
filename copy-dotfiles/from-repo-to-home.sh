@@ -4,7 +4,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd $SCRIPT_DIR
 
 if [[ -n "$COPY_DOTFILES_SUDOLESS" ]]; then
-  rsync -av ../dotfiles/ ~/
+  rsync -qav ../dotfiles/ ~/
 else
     # Propagate terminal settings to all users
     while IFS=: read -r user _ uid gid _ home shell; do
