@@ -1,4 +1,3 @@
-{ ... }: {
-
-  imports = [ ./vscode.nix ];
+{ customLib, ... }: {
+  imports = customLib.listAllLocalImportables ./.;
 }

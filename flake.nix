@@ -85,6 +85,12 @@
             };
           }
         );
+      customLibForSystem =
+        system:
+        import ./lib {
+          inherit (nixpkgs) lib;
+          pkgs = nixpkgs.legacyPackages.${system};
+        };
 
       # Define NixOS system config set for a host
       mkSystem = host: {
@@ -122,6 +128,7 @@
             extraSpecialArgs = {
               inherit inputs globalArgs homeUser;
               inherit (host) hostname hostArgs system;
+              customLib = customLibForSystem host.system;
             };
 
             modules = [ ./hosts/${host.hostname}/home.nix ];
