@@ -6,7 +6,7 @@
   ...
 }:
 {
-  config = lib.mkIf hostArgs.enableNonEssentialCommonPkgs.enabled {
+  config = lib.mkIf hostArgs.enableNonEssentialCommonPkgs {
     environment.systemPackages = with pkgs; [ btop ];
     security.wrappers.btop = {
       source = "${pkgs.btop}/bin/btop";
