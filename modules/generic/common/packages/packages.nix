@@ -3,15 +3,10 @@
   lib,
   pkgs,
   globalArgs,
+  hostArgs,
   ...
 }:
 {
-  options.dobikoConf.nonEssentialCommonPkgs.enabled = lib.mkOption {
-    type = lib.types.bool;
-    default = true;
-    description = "Enables nonEssentialCommonPkgs";
-  };
-
   config = {
     environment.systemPackages =
       with pkgs;
@@ -24,7 +19,7 @@
         screen # I use this extensively for services
       ]
       ++ (
-        if config.dobikoConf.nonEssentialCommonPkgs.enabled then
+        if hostArgs.enableNonEssentialCommonPkgs then
           [
             nushell
 

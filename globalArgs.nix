@@ -36,6 +36,8 @@ rec {
   # Migrating all options here may make sense for uniformity
   defaultHostArgs = {
     system = "x86_64-linux";
+
+    enableNonEssentialCommonPkgs = true;
     enableDeepseekHarness = false;
   };
 }

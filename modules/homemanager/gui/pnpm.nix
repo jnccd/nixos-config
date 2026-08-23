@@ -1,5 +1,5 @@
-{ pkgs, ... }:
-if false then
+{ pkgs, hostArgs, ... }:
+if !hostArgs.enableNonEssentialCommonPkgs then
   { }
 else
   {

@@ -2,10 +2,11 @@
   config,
   lib,
   pkgs,
+  hostArgs,
   ...
 }:
 {
-  config = lib.mkIf config.dobikoConf.nonEssentialCommonPkgs.enabled {
+  config = lib.mkIf hostArgs.enableNonEssentialCommonPkgs.enabled {
     environment.systemPackages = with pkgs; [ btop ];
     security.wrappers.btop = {
       source = "${pkgs.btop}/bin/btop";

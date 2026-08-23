@@ -4,5 +4,5 @@
 }:
 globalArgs.defaultHostArgs
 // {
-
+  enableNonEssentialCommonPkgs = false;
 }
