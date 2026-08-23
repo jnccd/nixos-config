@@ -42,6 +42,7 @@
             ripgrep
             nixfmt
             nil # LSP for nix lang
+            pnpm
 
             # Network stuff
             dig

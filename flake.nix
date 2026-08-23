@@ -43,11 +43,6 @@
       url = "github:miaupaw/ie-r";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # - Deepseek Harness -
-    deepseek-harness = {
-      url = "github:Moraxyc/deepseek-harness.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # --- Server ---
     working-keycloak-nixpkgs = {

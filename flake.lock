@@ -21,28 +21,6 @@
         "type": "github"
       }
     },
-    "deepseek-harness": {
-      "inputs": {
-        "flake-parts": "flake-parts",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1787458286,
-        "narHash": "sha256-UdLZGQBuFpJY1HwsHkiTndrlSYUG0YZDNnFTtRX/3lI=",
-        "owner": "Moraxyc",
-        "repo": "deepseek-harness.nix",
-        "rev": "f3dd5e6b3f72cf90cb4804095e5a3ca24533da78",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Moraxyc",
-        "repo": "deepseek-harness.nix",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -59,30 +37,9 @@
         "type": "github"
       }
     },
-    "flake-parts": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "deepseek-harness",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1785627969,
-        "narHash": "sha256-4dtXQk/NMePegK/nWp5NSeuZKLATItOq61lpEvmXqGw=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "427bf4bd9435fdf21321c8cc628c24efc14c0f7a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "inputs": {
-        "systems": "systems_4"
+        "systems": "systems_3"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -236,7 +193,6 @@
     "root": {
       "inputs": {
         "crossgrub-theme": "crossgrub-theme",
-        "deepseek-harness": "deepseek-harness",
         "home-manager": "home-manager",
         "instant-eyedropper-r": "instant-eyedropper-r",
         "kwin-effects-better-blur-dx": "kwin-effects-better-blur-dx",
@@ -302,21 +258,6 @@
     },
     "systems_2": {
       "locked": {
-        "lastModified": 1776166891,
-        "narHash": "sha256-bI8yrEGjrohR5hkQox7UrxDH7XqrYMwI8SL/LrJ1+S8=",
-        "owner": "nix-systems",
-        "repo": "triplet",
-        "rev": "6de7bc09397911ce03636afbcf6118745ab2cda0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "triplet",
-        "type": "github"
-      }
-    },
-    "systems_3": {
-      "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
         "owner": "nix-systems",
@@ -330,7 +271,7 @@
         "type": "github"
       }
     },
-    "systems_4": {
+    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -368,7 +309,7 @@
     },
     "utils": {
       "inputs": {
-        "systems": "systems_3"
+        "systems": "systems_2"
       },
       "locked": {
         "lastModified": 1726560853,
