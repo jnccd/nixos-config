@@ -43,6 +43,11 @@
       url = "github:miaupaw/ie-r";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # - Deepseek Harness -
+    deepseek-harness = {
+      url = "github:Moraxyc/deepseek-harness.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # --- Server ---
     working-keycloak-nixpkgs = {
@@ -60,7 +65,9 @@
       ...
     }@inputs:
     let
-      globalArgs = import ./globalArgs.nix;
+      globalArgs = import ./globalArgs.nix {
+        inherit (nixpkgs) lib;
+      };
 
       # Load hosts
       hostsDir = ./hosts;
