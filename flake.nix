@@ -65,17 +65,18 @@
       ...
     }@inputs:
     let
-      globalArgs = import ./globalArgs.nix {
-        inherit (nixpkgs) lib;
-      };
+      globalArgs = import ./globalArgs.nix;
 
       # Load hosts
       hostsDir = ./hosts;
       entries = builtins.readDir hostsDir;
       hostNames = builtins.attrNames (nixpkgs.lib.filterAttrs (name: type: type == "directory") entries);
-      hosts = map (hostname: {
+      hosts = map (hostname: rec {
         inherit hostname;
-        system = builtins.readFile (hostsDir + "/${hostname}/system");
+        hostArgs = import (hostsDir + "/${hostname}/hostArgs.nix") {
+          inherit globalArgs;
+        };
+        system = hostArgs.system;
       }) hostNames;
 
       # Load custom lib
@@ -101,8 +102,7 @@
             inherit (host) system;
             specialArgs = {
               inherit inputs globalArgs isWsl;
-              inherit (host) hostname;
-              inherit (host) system;
+              inherit (host) hostname hostArgs system;
               lib = extendWithCustomLib host.system;
             };
 
@@ -126,7 +126,7 @@
             pkgs = nixpkgs.legacyPackages.${host.system};
             extraSpecialArgs = {
               inherit inputs globalArgs homeUser;
-              inherit (host) hostname;
+              inherit (host) hostname hostArgs system;
             };
 
             modules = [ ./hosts/${host.hostname}/home.nix ];

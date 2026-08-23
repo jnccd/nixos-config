@@ -4,10 +4,11 @@
   lib,
   pkgs,
   globalArgs,
+  hostArgs,
   ...
 }:
 let
-  enableDeepseekHarness = lib.custom.unwrapOverrideSet globalArgs.enableDeepseekHarness;
+  enableDeepseekHarness = hostArgs.enableDeepseekHarness;
 in
 if !enableDeepseekHarness then
   { }

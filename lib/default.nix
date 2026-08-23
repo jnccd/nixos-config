@@ -17,6 +17,7 @@
       )
     );
 
+  # Can be removed, can unwrap lib.mkDefault variables
   unwrapOverrideSet =
     val: if builtins.isAttrs val && val ? _type && val._type == "override" then val.content else val;
 }
