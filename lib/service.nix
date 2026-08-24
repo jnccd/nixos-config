@@ -140,11 +140,18 @@ rec {
           [ "$REPO_CHANGED" -ne 0 ] && unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
 
           mkdir -p ~/.nix-profiles
-          nix develop --profile ~/.nix-profiles/${serviceName} ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
+
+          # Run the app and capture its exit code
+          if nix develop --profile ~/.nix-profiles/${serviceName} ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
             cd ${repoName}
             bash start_desktop_app.sh
-          ''}
+          ''}; then
+              # Success – break the loop
+              break
+          fi
           
+          # If we get here, the app exited with non‑zero (or nix develop failed).
+          # Refresh the repository for the next attempt.
           REPO_CHANGED=0
           OLD_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
           ${scriptForceRefreshGitRepo "./${repoName}"}
