@@ -95,24 +95,20 @@
       # Define NixOS system config set for a host
       mkSystem = host: {
         name = "${host.hostname}";
-        value =
-          let
-            isWsl = nixpkgs.lib.strings.hasSuffix "-wsl" host.hostname;
-          in
-          nixpkgs.lib.nixosSystem {
-            inherit (host) system;
-            specialArgs = {
-              inherit inputs globalArgs isWsl;
-              inherit (host) hostname hostArgs system;
-              lib = extendWithCustomLib host.system;
-            };
-
-            modules = [
-              ./hosts/${host.hostname}/configuration.nix
-              sops-nix.nixosModules.sops
-            ]
-            ++ (if isWsl then [ nixos-wsl.nixosModules.default ] else [ ]);
+        value = nixpkgs.lib.nixosSystem {
+          inherit (host) system;
+          specialArgs = {
+            inherit inputs globalArgs;
+            inherit (host) hostname hostArgs system;
+            lib = extendWithCustomLib host.system;
           };
+
+          modules = [
+            ./hosts/${host.hostname}/configuration.nix
+            sops-nix.nixosModules.sops
+          ]
+          ++ (if host.hostArgs.enableWslModule then [ nixos-wsl.nixosModules.default ] else [ ]);
+        };
       };
 
       # Define HomeManager config set for a host

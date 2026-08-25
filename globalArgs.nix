@@ -37,6 +37,7 @@ rec {
   defaultHostArgs = {
     system = "x86_64-linux";
 
+    enableWslModule = false;
     enableNonEssentialCommonPkgs = true;
     enableDeepseekHarness = false;
   };
