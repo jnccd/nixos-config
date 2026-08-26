@@ -17,4 +17,6 @@
     enableBashIntegration = true;
     nix-direnv.enable = true;
   };
+
+  programs.firejail.enable = true;
 }
