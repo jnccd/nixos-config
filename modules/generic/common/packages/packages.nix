@@ -31,6 +31,7 @@
             # Security
             sops
             age
+            firejail
 
             # Coding
             neovim
