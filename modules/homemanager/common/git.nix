@@ -9,8 +9,8 @@
   programs.git = {
     enable = true;
     settings.user = {
-      Name = homeUser.gitUsername;
-      Email = homeUser.email;
+      Name = homeUser.gitUsername or null;
+      Email = homeUser.email or null;
     };
   };
 }

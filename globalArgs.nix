@@ -23,13 +23,23 @@ rec {
       defaultUid = 900;
       defaultGid = defaultUid;
     }
+    rec {
+      name = "sandbox";
+      isAdmin = false;
+      isSystem = false;
+      defaultUid = 1001;
+      defaultGid = defaultUid;
+    }
   ];
   mainUser = builtins.head (builtins.filter (x: x.isAdmin) baseUsers);
   defaultSystemUser = builtins.head (builtins.filter (x: x.isSystem) baseUsers);
+  sandboxUser = builtins.head (builtins.filter (x: x.name == "sandbox") baseUsers);
 
   # --- Paths ---
-  nixosConfigPath = "/home/${mainUser.name}/git/nixos-config";
+  nixosConfigRepoUrl = "https://github.com/jnccd/nixos-config";
   sopsKeyFile = "/home/${mainUser.name}/.config/sops/age/keys.txt";
+  nixosConfigPath = "/home/${mainUser.name}/git/nixos-config";
+  sandboxConfigPath = "/home/${sandboxUser.name}/git/nixos-config";
 
   # --- Module options ---
   # I dont use nix options because they are checked in the same top level step that loads modules. So if I want to restrict module loading for ones that aren't active I have to use my own static variables for it.
