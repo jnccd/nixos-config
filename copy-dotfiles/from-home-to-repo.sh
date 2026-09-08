@@ -37,6 +37,7 @@ cp_to_dotfiles .config/kdeglobals
 cp_to_dotfiles .config/kcmfonts
 cp_to_dotfiles .config/kdeglobals
 cp_to_dotfiles .config/kcminputrc
+cpr_to_dotfiles .config/plasma-workspace/env/
 cp_to_dotfiles .config/klaunchrc
 cp_to_dotfiles .config/ksplashrc
 cp_to_dotfiles .config/plasmarc
