@@ -59,7 +59,12 @@ anchor="$(cat "$ANCHOR_FILE")"
 # silently clobber your edits. A dry-run rsync with the same anchored path
 # excludes prep uses is the check - `diff --exclude` matches base names only
 # and cannot express `modules/private`, so it must not be used here.
-real_changes="$(rsync -a -c --delete --dry-run --itemize-changes --omit-dir-times \
+#
+# --no-perms is essential: this guard is about CONTENT. The base copy is
+# created by prep with `install -m 0700`, while the repo root is typically 0770,
+# so without it the very first item ("./") always reports `p` and the guard
+# aborts on a permission bit without ever comparing a file.
+real_changes="$(rsync -a -c --delete --dry-run --itemize-changes --omit-dir-times --no-perms \
   --exclude '/.git/' --exclude '/secrets/' --exclude '/modules/private/' \
   "$BASE_DIR/" "$REAL_REPO/" 2>&1 || true)"
 if [[ -n "$real_changes" ]]; then
@@ -75,8 +80,21 @@ log "Snapshotting the sandbox workspace (as root; the sandbox home is 0700)..."
 sudo rm -rf "$STAGE"
 mkdir -p "$CACHE_DIR"
 sudo install -d -o "$MAIN_USER" -g "$MAIN_USER" -m 0700 "$STAGE"
-sudo rsync -aH "$SANDBOX_DIR/" "$STAGE/"
+# NOTE: no -H. Preserving hardlinks across this copy would make $STAGE share
+# inodes with the sandbox workspace, and the `chown -R` below would then re-own
+# the sandbox's git files through them - the same class of bug prep had with
+# the real repo. The agent's own hardlinks are irrelevant to a review snapshot,
+# so copy plainly and keep the two trees inode-disjoint. $STAGE/.git is
+# required by the review diff, so it is deliberately copied.
+sudo rsync -a "$SANDBOX_DIR/" "$STAGE/"
 sudo chown -R "$(id -u):$(id -g)" "$STAGE"
+# The sandbox home is 0700 and owned by the sandbox user, so the main user
+# cannot traverse it: every inspection of the workspace must go through `sudo`
+# (the snapshot above already does). A plain `find` here would fail with EACCES
+# and the guard would silently pass.
+if [[ -n "$(sudo find "$SANDBOX_DIR/.git" -xdev -type f -links +1 -print -quit 2>/dev/null || true)" ]]; then
+  die "$SANDBOX_DIR/.git contains hardlinked files - run ~/ai-sandbox/prep to rebuild the workspace cleanly."
+fi
 
 [[ -d "$STAGE/.git" ]] || die "Sandbox workspace has no .git - run ~/ai-sandbox/prep first."
 git -C "$STAGE" cat-file -e "$anchor^{commit}" 2>/dev/null \

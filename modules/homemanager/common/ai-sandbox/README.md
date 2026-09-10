@@ -127,7 +127,26 @@ Drop `--dry-run` to apply. Notes:
   specifically eyeball: `inputs =` in `flake.nix`, `imports =`, `.gitmodules`,
   `copy-dotfiles/`, and `dotfiles/.config/autostart/`.
 - The agent can only change the system through this review gate; it cannot
-  write to `/home/dobiko`, cannot `sudo` (not in `wheel`), has no ssh keys.
+  write to `/home/dobiko` (0700), cannot `sudo` (not in `wheel`), has no ssh
+  keys, and has no access to `/mnt/nas/*` (mounted `dobiko:dobiko 0770`). This
+  relies on `/home/dobiko` really being 0700 (see below); if it is `0755` the
+  agent can read anything in your home that is not itself 0700.
+- **Network access is deliberately open.** The sandbox user can reach the
+  internet and DNS; that is required for the agent's work. The boundary is
+  filesystem access + the review gate, *not* network isolation. Anything the
+  agent can read it can also upload, so keep secrets out of world-readable
+  paths inside `/home/dobiko`.
+- **The sandbox `.git` never shares inodes with the real `.git`.** `prep` clones
+  with `--no-hardlinks` because a default local `git clone` hardlinks objects,
+  which made the sandbox copy and the real repository the same files: the
+  `chown -R` in `prep` then re-owned the real repo's objects to the sandbox user
+  (real repo fails with `unable to open loose object ...: Permission denied` and
+  `bad object HEAD`), and a delete in the sandbox could destroy real objects.
+  `assert_no_shared_git` in `prep.sh` fails loudly if this ever regresses; do
+  not remove `--no-hardlinks`.
+- `prep` empties `secrets/` and `modules/private/` in the workspace even if they
+  are plain directories rather than gitlinks, so private content never reaches
+  the agent regardless of how the real repo is laid out.
 - The rebuild is atomic per NixOS; roll back a bad rebuild with
   `sudo nixos-rebuild switch --rollback`.
 - **In-sandbox testing is limited.** The sandbox copy has no submodule content,

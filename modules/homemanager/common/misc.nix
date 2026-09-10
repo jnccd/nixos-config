@@ -16,5 +16,6 @@
     username = homeUser.name;
     homeDirectory = "/home/${homeUser.name}";
     stateVersion = globalArgs.homeStateVersion;
+    #mode = "0700";
   };
 }
