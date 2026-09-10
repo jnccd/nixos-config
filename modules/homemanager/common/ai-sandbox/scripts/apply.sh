@@ -46,7 +46,9 @@ DIFF_SCOPE=(-- . ':(exclude)secrets' ':(exclude)modules/private')
 
 [[ "$(id -un)" == "$MAIN_USER" ]] || die "Run me as $MAIN_USER."
 command -v git >/dev/null || die "git not found in PATH."
-[[ -d "$SANDBOX_DIR" ]] || die "No sandbox workspace at $SANDBOX_DIR - run ~/ai-sandbox/prep first."
+# The sandbox home is 0700 and owned by the sandbox user, so checking the
+# workspace needs root (the snapshot below reads it with sudo anyway).
+sudo test -d "$SANDBOX_DIR" || die "No sandbox workspace at $SANDBOX_DIR - run ~/ai-sandbox/prep first."
 [[ -d "$REAL_REPO/.git" ]] || die "No real repo at $REAL_REPO."
 [[ -f "$ANCHOR_FILE" ]] || die "No anchor found (run ~/ai-sandbox/prep first)."
 [[ -d "$BASE_DIR" ]] || die "No base snapshot found (run ~/ai-sandbox/prep first)."
@@ -54,8 +56,12 @@ anchor="$(cat "$ANCHOR_FILE")"
 
 # --- 1. guard: the real repo must still equal the prep-time snapshot ----------
 # If you edited the real repo while the agent worked, refuse: applying could
-# silently clobber your edits. .git and the private submodules are excluded.
-real_changes="$(diff -rq --exclude='.git' --exclude='secrets' --exclude='modules/private' "$BASE_DIR" "$REAL_REPO" 2>&1 || true)"
+# silently clobber your edits. A dry-run rsync with the same anchored path
+# excludes prep uses is the check - `diff --exclude` matches base names only
+# and cannot express `modules/private`, so it must not be used here.
+real_changes="$(rsync -a -c --delete --dry-run --itemize-changes --omit-dir-times \
+  --exclude '/.git/' --exclude '/secrets/' --exclude '/modules/private/' \
+  "$BASE_DIR/" "$REAL_REPO/" 2>&1 || true)"
 if [[ -n "$real_changes" ]]; then
   echo "ERROR: the real repo differs from the base snapshot recorded by prep." >&2
   echo "Changed since prep (first 50 lines):" >&2

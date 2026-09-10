@@ -29,6 +29,11 @@
 #   On this NixOS setup it is provisioned from the dotfiles repo:
 #     dotfiles/.config/plasma-workspace/env/xcursor-sync.sh
 #
+#   CAREFUL: this hook runs BEFORE kwin_wayland creates the Wayland socket.
+#   Never run a Qt GUI tool here unconditionally - kscreen-doctor would abort
+#   with a Qt "no platform plugin" fatal and dump core on every login. See
+#   display_ready() below.
+#
 # PER-MACHINE OVERRIDES (optional)
 #   XCURSOR_THEME        already exported  -> kept as-is
 #   XCURSOR_SIZE         already exported  -> kept as-is
@@ -56,10 +61,27 @@ kde_key() {
     ' "$kcminputrc" 2>/dev/null
 }
 
+# Is a Qt GUI app able to open a display *right now*?
+# At login this hook is sourced before kwin_wayland creates the Wayland
+# socket, so nothing is ready yet; kscreen-doctor would abort (SIGABRT) with a
+# Qt platform-plugin fatal. Only query it once a display or socket exists, and
+# fall back to the saved kwinoutputconfig.json otherwise.
+display_ready() {
+    if [ -n "$DISPLAY" ]; then
+        return 0
+    fi
+    runtime="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+    if [ -n "$WAYLAND_DISPLAY" ]; then
+        [ -S "$runtime/$WAYLAND_DISPLAY" ]
+    else
+        [ -S "$runtime/wayland-0" ]
+    fi
+}
+
 # largest active output scale (KWin's policy for XWayland cursor size)
 current_scale() {
     s=""
-    if command -v timeout >/dev/null 2>&1 && command -v kscreen-doctor >/dev/null 2>&1; then
+    if display_ready && command -v timeout >/dev/null 2>&1 && command -v kscreen-doctor >/dev/null 2>&1; then
         s=$(timeout 5 kscreen-doctor -o 2>/dev/null \
             | sed 's/\x1b\[[0-9;]*m//g' \
             | sed -n 's/^[[:space:]]*Scale:[[:space:]]*\([0-9][0-9.]*\).*/\1/p' \
