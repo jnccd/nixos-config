@@ -18,14 +18,16 @@
 
     ];
 
-    systemd.services = lib.custom.mkGuiAppService rec {
-      username = globalArgs.mainUser.name;
+    # The app's own devShellHook already exports LD_LIBRARY_PATH (pulseaudio)
+    # and PULSE_SERVER, so no envScript is needed: the launcher runs inside that
+    # dev shell with the desktop session's environment inherited.
+    environment.etc = lib.custom.mkGuiAppAutostart {
+      appName = "music-player";
       repoName = "music-player-avalonia-port";
-      repoUrl = "https://github.com/jnccd/${repoName}";
-      defineEnvVarsScript = ''
-        export LD_LIBRARY_PATH="${pkgs.pulseaudio}/lib/:$LD_LIBRARY_PATH"
-        export PULSE_SERVER=unix:/run/user/$(id -u ${username})/pulse/native
-      '';
+      repoUrl = "https://github.com/jnccd/music-player-avalonia-port";
+      # What start_desktop_app.sh executes on its "unchanged" branch; used to
+      # verify a build really happened (see lib/service.nix).
+      artifacts = [ "MusicPlayerAvaloniaPort/bin/Release/net10.0/MusicPlayerAvaloniaPort.dll" ];
     };
   };
 }

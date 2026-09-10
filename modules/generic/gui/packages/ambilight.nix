@@ -18,11 +18,12 @@
 
     ];
 
-    systemd.services = lib.custom.mkGuiAutostartService {
-      serviceName = "hyperhdr-starter";
-      username = globalArgs.mainUser.name;
-      guiScript = pkgs.writeScript "script" ''
-        hyperhdr
+    environment.etc = lib.custom.mkGuiAppAutostart {
+      appName = "hyperhdr";
+      repoName = "hyperhdr";
+      repoUrl = "unused";
+      launcherScript = ''
+        exec ${lib.getExe pkgs.hyperhdr}
       '';
     };
   };

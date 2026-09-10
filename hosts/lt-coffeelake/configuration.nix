@@ -63,6 +63,7 @@
   };
   dobikoConf.postgres.enabled = true;
   dobikoConf.intel_iGPU.enabled = true;
+  dobikoConf.dshWebAutostart.enabled = true;
 
   # --- Bootloader ---
 

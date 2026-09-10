@@ -13,10 +13,16 @@
   };
 
   config = lib.mkIf config.dobikoConf.notes.enabled {
-    systemd.services = lib.custom.mkGuiAppService rec {
-      username = globalArgs.mainUser.name;
+    # KDE autostart via the XDG autostart spec; the generated launcher clones
+    # and refreshes the repo and runs it through its `#desktop` dev shell.
+    # `artifacts` is the binary start_desktop_app.sh runs on its "unchanged"
+    # branch - the launcher uses it to tell a successful build from a failed
+    # one, so the app script itself stays a plain if/else.
+    environment.etc = lib.custom.mkGuiAppAutostart {
+      appName = "notes";
       repoName = "notes";
-      repoUrl = "https://github.com/jnccd/${repoName}";
+      repoUrl = "https://github.com/jnccd/notes";
+      artifacts = [ "NotesAvalonia.Desktop/bin/Release/net10.0/NotesAvalonia.Desktop.dll" ];
     };
   };
 }

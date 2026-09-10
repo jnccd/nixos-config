@@ -19,11 +19,12 @@
 
     ];
 
-    systemd.services = lib.custom.mkGuiAutostartService {
-      serviceName = "eyedropper-starter";
-      username = globalArgs.mainUser.name;
-      guiScript = pkgs.writeScript "script" ''
-        ie-r
+    environment.etc = lib.custom.mkGuiAppAutostart {
+      appName = "eyedropper";
+      repoName = "eyedropper";
+      repoUrl = "unused";
+      launcherScript = ''
+        exec ie-r
       '';
     };
   };

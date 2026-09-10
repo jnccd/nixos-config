@@ -2,6 +2,11 @@
 rec {
   bashEnsureInternet = "until host www.google.de; do sleep 30; done";
   bashWaitForever = "while :; do sleep 2073600; done";
+  # Reconstruct a user's session environment for a *system* service that has to
+  # reach into their session (e.g. bedtime.nix's kdialog warning, which runs
+  # from a system timer as the main user). GUI autostart deliberately does NOT
+  # use this any more: a .desktop launched by KDE already has the real session
+  # environment, so nothing needs reconstructing.
   bashGetUserEnvVars =
     username:
     "export USER=${username} XDG_RUNTIME_DIR=/run/user/$(id -u ${username}) DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u ${username})/bus && eval $(systemctl --user show-environment | xargs -0 -I {} echo export {})";
@@ -92,72 +97,301 @@ rec {
         ${bashWaitForever}
       '';
     };
-  mkGuiAutostartService =
+  # GUI autostart via the XDG autostart spec (the mechanism KDE Plasma uses).
+  #
+  # Why not a systemd system service (what this replaced): the old
+  # mkGuiAutostartService hooked "graphical.target", which is a *system* target
+  # reached at the login screen - before any user session exists - and then
+  # tried to reconstruct a session environment with `systemctl --user
+  # show-environment`. On a multi-user machine there is no "the" session, so it
+  # started as root against a session that wasn't there and retried forever.
+  #
+  # A .desktop in /etc/xdg/autostart is launched by KDE *inside* the session, so
+  # DISPLAY / WAYLAND_DISPLAY / DBUS_SESSION_BUS_ADDRESS / XDG_RUNTIME_DIR and
+  # audio are inherited correctly - no environment reconstruction at all - and
+  # it runs independently for every user who logs in (and only while they are
+  # logged in). Users can still switch an entry off in System Settings ->
+  # Autostart, which writes ~/.config/autostart/<name>.desktop and overrides
+  # this system-wide file.
+  #
+  # A .desktop file cannot carry the orchestration (Exec does not expand shell
+  # variables), so it points at a generated launcher that holds all of it.
+  mkGuiAppAutostart =
     {
-      serviceName,
-      username,
-      guiScript,
-    }:
-    mkWrappedScreenService rec {
-      sessionName = serviceName;
-      inherit username;
-      scriptDirName = sessionName;
-      wantedBy = [ "graphical.target" ];
-      requires = [ "graphical.target" ];
-      after = [ "graphical.target" ];
-      script = pkgs.writeScript "script" ''
-        sleep 1
-        ${bashGetUserEnvVars username}
-        ${guiScript}
-      '';
-    };
-  mkGuiAppService =
-    {
-      username,
+      appName,
       repoName,
       repoUrl,
-      defineEnvVarsScript ? "",
+      flakeAttr ? "desktop",
+      # Extra shell lines evaluated in the session before the app starts, e.g.
+      # additional env vars for apps that need them.
+      envScript ? "",
+      # Repo-relative paths whose executables start_desktop_app.sh runs on its
+      # "unchanged" branch, e.g. [ "Foo/bin/Release/net10.0/Foo.dll" ]. Used to
+      # infer that a build actually happened, so the apps can stay dumb. Empty
+      # means every launch rebuilds (correct, just slower).
+      artifacts ? [ ],
+      # Explicit script, for autostarts that do not use the git+flake pattern
+      # at all (conky's duplicate culler, pipewire-pulse).
+      launcherScript ? null,
+      # Restart after a non-zero exit, e.g. for a long-running app that should
+      # survive a crash. Keep false for anything that exits on purpose.
+      restartOnExit ? false,
     }:
-    mkGuiAutostartService rec {
-      serviceName = "${repoName}-starter";
-      inherit username;
-      guiScript = pkgs.writeScript "script" ''
-        REPO_CHANGED=0
+    let
+      git = "${pkgs.git}/bin/git";
+      # nix uses the stable channel like the rest of the system; the version in
+      # the launcher script's name is cosmetic, its content decides the hash.
+      nixPackage = pkgs.nixVersions.stable;
+      restartClause =
+        if restartOnExit then
+          ''echo "gui-autostart ${appName}: exited $rc, restarting in 5s" >&2; sleep 5''
+        else
+          ''echo "gui-autostart ${appName}: exited $rc" >&2; exit "$rc"'';
+      launcher =
+        if launcherScript != null then
+          pkgs.writeShellScript "gui-autostart-${appName}" launcherScript
+        else
+          pkgs.writeShellScript "gui-autostart-${appName}" ''
+            set -uo pipefail
 
-        # Clone if possible
-        (git clone ${repoUrl} "./${repoName}" && REPO_CHANGED=1) || true
-        # Pull if necessary
-        OLD_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
-        ${scriptForceRefreshGitRepo "./${repoName}"}
-        NEW_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
-        [ "$OLD_REV" != "$NEW_REV" ] && REPO_CHANGED=1
+            # $HOME is the logged-in user's home, so the clone, the profile and
+            # the state file are per-user automatically - no username plumbing.
+            repo="$HOME/.local/share/gui-apps/${repoName}"
+            profile="$HOME/.nix-profiles/${appName}"
+            mkdir -p "$(dirname "$repo")" "$(dirname "$profile")"
 
-        while true; do
-          ${bashGetUserEnvVars username}
-          ${defineEnvVarsScript}
+            # At most one instance per graphical session.
+            #
+            # The lock is scoped by XDG_SESSION_ID, not just the user: a
+            # user-global lock survives logout when the app outlives the
+            # session, and the next login would then be blocked forever with no
+            # explanation. A per-session lock also means KDE's "restore last
+            # session" cannot double-launch: whichever of (restored app,
+            # autostart entry) comes second finds the lock held and stands
+            # down.
+            #
+            # This must say so out loud - "nothing happened" is what a silently
+            # handled duplicate looks like, and that is indistinguishable from a
+            # broken launcher.
+            if command -v flock >/dev/null 2>&1 && [ -n "''${XDG_RUNTIME_DIR:-}" ]; then
+              lock="$XDG_RUNTIME_DIR/gui-autostart-${appName}-''${XDG_SESSION_ID:-nosession}.lock"
+              exec 9>"$lock"
+              if ! flock -n 9; then
+                echo "gui-autostart ${appName}: already running in this session, not starting a second copy"
+                exit 0
+              fi
+            fi
 
-          [ "$REPO_CHANGED" -eq 0 ] && export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1
-          [ "$REPO_CHANGED" -ne 0 ] && unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
+            # nix may not be on a session's PATH; find the binary, don't assume.
+            nix_bin="$(command -v nix || true)"
+            if [ -z "$nix_bin" ]; then
+              PATH="${nixPackage}/bin:$PATH"
+              nix_bin="$(command -v nix || true)"
+            fi
+            if [ -z "$nix_bin" ]; then
+              echo "gui-autostart ${appName}: nix not found on PATH" >&2
+              exit 1
+            fi
 
-          mkdir -p ~/.nix-profiles
+            if [ ! -d "$repo/.git" ]; then
+              ${git} clone ${repoUrl} "$repo" || exit 1
+            fi
 
-          # Run the app and capture its exit code
-          if nix develop --profile ~/.nix-profiles/${serviceName} ./${repoName}#desktop -c bash ${pkgs.writeScript "script" ''
-            cd ${repoName}
-            bash start_desktop_app.sh
-          ''}; then
-              # Success – break the loop
-              break
+            # "Changed" has to mean "changed since the last successful build",
+            # which cannot be decided inside one run: on a fresh clone HEAD
+            # before and after the pull are trivially identical, and treating
+            # that as "unchanged" makes the app try to run a binary that was
+            # never built (it dies with "dotnet ... does not exist").
+            #
+            # Exit status cannot tell us a build succeeded: start_desktop_app.sh
+            # returns 0 both when the .NET build fails and when the user simply
+            # closes the window. And the apps are deliberately dumb, so we infer
+            # it from the artifact instead: start_desktop_app.sh only ever runs
+            # `./bin/Release/.../X.dll` on the UNCHANGED path, so allow that path
+            # only when the artifact exists and is newer than the last build
+            # marker. A failed build never produces a fresh artifact, so the
+            # next launch rebuilds. Set `artifacts` to the path(s) the app
+            # actually executes; empty means "always rebuild".
+            #
+            # Several app repos have a git@github.com: submodule (music-player's
+            # Tmds.DBus, for one). With no key that blocks on the host-key /
+            # auth prompt, which nobody can answer during autostart. Rewrite to
+            # HTTPS (public repos need no credentials) and make ssh fail fast
+            # instead of prompting.
+            export GIT_SSH_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new"
+            ${git} config --global --replace-all \
+              url."https://github.com/".insteadOf "git@github.com:" || true
+
+            ${git} -C "$repo" reset --hard 2>/dev/null || true
+            ${git} -C "$repo" pull --ff-only 2>/dev/null \
+              || echo "gui-autostart ${appName}: pull failed, using local revision" >&2
+            # Keep the linked submodule revisions; never --remote.
+            ${git} -C "$repo" submodule update --init --recursive --force 2>/dev/null || true
+            now="$(${git} -C "$repo" rev-parse HEAD 2>/dev/null || echo "")"
+
+            ${envScript}
+
+            # The apps' start_desktop_app.sh rebuilds when this is unset and
+            # runs the prebuilt binary when it is 1.
+            #
+            # The artifact is a FALLBACK, not proof of anything. It is the only
+            # thing that says "there is something to start", so:
+            #
+            #   no artifact            -> must build (this is the bug where a
+            #                             fresh clone fast-pathed into a binary
+            #                             that was never built)
+            #   artifact + last build
+            #     == this revision     -> run it (the normal fast path)
+            #   artifact + last build
+            #     != this revision,
+            #     already attempted    -> a newer revision failed to build; run
+            #                             the previously built one rather than
+            #                             retrying the broken revision forever
+            #
+            # The attempt is recorded BEFORE building, so a revision that fails
+            # is attempted once per commit, not on every login. Do NOT delete
+            # artifacts to "prove" a build succeeded - that turns a recoverable
+            # failure into a permanent one. Do NOT use artifact timestamps
+            # either: a build can finish in the same second as the marker write
+            # and `-ot` then reports "stale" forever.
+            ${lib.optionalString (artifacts != [ ]) ''
+              artifacts_ok=1
+              for a in ${lib.concatStringsSep " " (map (a: "\"$repo/${a}\"") artifacts)}; do
+                if [ ! -e "$a" ]; then
+                  artifacts_ok=0
+                  break
+                fi
+              done
+
+              last_build="$(cat "$repo/.nix-last-build" 2>/dev/null || echo "")"
+              attempted="$(cat "$repo/.nix-build-attempt" 2>/dev/null || echo "")"
+
+              if [ "''${artifacts_ok}" -eq 1 ]; then
+                if [ -n "$now" ] && [ "$last_build" = "$now" ]; then
+                  export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1
+                  echo "gui-autostart ${appName}: revision $now is built, running it"
+                elif [ -n "$now" ] && [ "$attempted" = "$now" ]; then
+                  # This revision was already attempted and did not mark itself
+                  # built, so the attempt failed: start the newest artifact
+                  # instead of retrying the broken revision on every login.
+                  export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1
+                  echo "gui-autostart ${appName}: revision $now did not build, running the last working build"
+                else
+                  unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
+                  [ -n "$now" ] && printf '%s\n' "$now" > "$repo/.nix-build-attempt"
+                  echo "gui-autostart ${appName}: building revision $now"
+                fi
+              else
+                unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
+                [ -n "$now" ] && printf '%s\n' "$now" > "$repo/.nix-build-attempt"
+                echo "gui-autostart ${appName}: nothing built yet, building revision $now"
+              fi
+            ''}${
+              lib.optionalString (artifacts == [ ]) ''
+                # No artifact declared, so nothing can tell a successful build
+                # from a failed one: always rebuild.
+                unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
+              ''
+            }
+
+            # Positional args do NOT survive `nix develop -c bash -c ... _ "$x"`
+            # (verified: $1 arrives empty), so pass the path via the environment.
+            export NIXOS_JNCCD_GUI_APP_REPO="$repo"
+
+            while :; do
+              "$nix_bin" develop --profile "$profile" "$repo#${flakeAttr}" \
+                -c bash -c 'cd "$NIXOS_JNCCD_GUI_APP_REPO" && bash start_desktop_app.sh'
+              rc=$?
+              # Only a clean exit means this revision produced something
+              # runnable, so only then record it as the last good build. This
+              # has to be inside the `rc == 0` test: writing it unconditionally
+              # marks a FAILED revision as built, and the next launch then takes
+              # the "is built" path with nothing new to run.
+              if [ "$rc" -eq 0 ]; then
+                [ -n "$now" ] && printf '%s\n' "$now" > "$repo/.nix-last-build"
+                exit 0
+              fi
+              ${restartClause}
+            done
+          '';
+    in
+    {
+      # Returns the files to put in environment.etc, so call sites read
+      #   environment.etc = lib.custom.mkGuiAppAutostart { ... };
+      "xdg/autostart/${appName}.desktop".source = pkgs.writeText "autostart-${appName}.desktop" ''
+        [Desktop Entry]
+        Type=Application
+        Name=${appName}
+        Comment=Autostart ${appName} in the desktop session
+        Exec=${launcher}
+        Terminal=false
+        # KDE only: the user runs Plasma, and this keeps entries from appearing
+        # in (and being launched by) other XDG autostart implementations.
+        OnlyShowIn=KDE;
+        # Start after the panel is up rather than racing session bring-up.
+        X-KDE-autostart-after=panel
+      '';
+    };
+
+  # Autostart a plain command in the desktop session, for things that are not a
+  # git repo built through a flake dev shell (e.g. the dsh web UI for the
+  # sandbox user). Same mechanism and guarantees as mkGuiAppAutostart: launched
+  # by KDE inside the session, per-session single instance, and inert for users
+  # who never log into a desktop.
+  #
+  # `shellCommand` is used both to run the command and to locate its binary for
+  # the pre-flight check, so pass a simple `prog [args]` string.
+  mkGuiSessionAutostart =
+    {
+      appName,
+      shellCommand,
+      # Restrict to a single account. This needs an explicit guard rather than
+      # Home Manager plumbing, because /etc/xdg/autostart is global - without it
+      # the command would start for every desktop user.
+      onlyUser ? null,
+      description ? "Autostart ${appName} in the desktop session",
+    }:
+    let
+      prog = builtins.head (lib.splitString " " shellCommand);
+      launcher = pkgs.writeShellScript "gui-autostart-${appName}" ''
+        set -uo pipefail
+
+        ${lib.optionalString (onlyUser != null) ''
+          if [ "$(id -un)" != "${onlyUser}" ]; then
+            exit 0
           fi
-          
-          # If we get here, the app exited with non‑zero (or nix develop failed).
-          # Refresh the repository for the next attempt.
-          REPO_CHANGED=0
-          OLD_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
-          ${scriptForceRefreshGitRepo "./${repoName}"}
-          NEW_REV=$(git -C "./${repoName}" rev-parse HEAD 2>/dev/null || echo "")
-          [ "$OLD_REV" != "$NEW_REV" ] && REPO_CHANGED=1
-        done
+        ''}
+        # At most one per graphical session; see mkGuiAppAutostart for why the
+        # lock is scoped by XDG_SESSION_ID and why the refusal is announced.
+        if command -v flock >/dev/null 2>&1 && [ -n "''${XDG_RUNTIME_DIR:-}" ]; then
+          lock="$XDG_RUNTIME_DIR/gui-autostart-${appName}-''${XDG_SESSION_ID:-nosession}.lock"
+          exec 9>"$lock"
+          if ! flock -n 9; then
+            echo "gui-autostart ${appName}: already running in this session, not starting a second copy"
+            exit 0
+          fi
+        fi
+
+        # This entry lives in /etc, so it cannot be gated on a NixOS option;
+        # report a missing binary rather than dying silently inside KDE.
+        if ! command -v ${prog} >/dev/null 2>&1; then
+          echo "gui-autostart ${appName}: '${prog}' not found on PATH, not starting" >&2
+          exit 0
+        fi
+
+        exec ${shellCommand}
+      '';
+    in
+    {
+      "xdg/autostart/${appName}.desktop".source = pkgs.writeText "autostart-${appName}.desktop" ''
+        [Desktop Entry]
+        Type=Application
+        Name=${appName}
+        Comment=${description}
+        Exec=${launcher}
+        Terminal=false
+        OnlyShowIn=KDE;
+        X-KDE-autostart-after=panel
       '';
     };
 

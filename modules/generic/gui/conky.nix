@@ -23,13 +23,16 @@
 
     ];
 
-    # Ensure Conky runs at most once
-    systemd.services = lib.custom.mkGuiAutostartService {
-      serviceName = "conky-culler";
-      username = globalArgs.mainUser.name;
-      guiScript = pkgs.writeScript "script" ''
-        function cull_conky() {
-          PIDS=$(pgrep -x conky)
+    # Ensure Conky runs at most once. This is not a long-running app - it just
+    # culls duplicates - so it is a oneshot autostart entry, which also makes it
+    # run per-user inside their session.
+    environment.etc = lib.custom.mkGuiAppAutostart {
+      appName = "conky-culler";
+      repoName = "conky-culler";
+      repoUrl = "unused";
+      launcherScript = ''
+        cull_conky() {
+          PIDS=$(pgrep -x conky || true)
           COUNT=$(echo "$PIDS" | wc -w)
 
           if [ "$COUNT" -gt 1 ]; then

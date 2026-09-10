@@ -13,11 +13,12 @@
 
     ];
 
-    systemd.services = lib.custom.mkGuiAutostartService {
-      serviceName = "pgadmin4-starter";
-      username = globalArgs.mainUser.name;
-      guiScript = pkgs.writeScript "script" ''
-        pgadmin4
+    environment.etc = lib.custom.mkGuiAppAutostart {
+      appName = "pgadmin4";
+      repoName = "pgadmin4";
+      repoUrl = "unused";
+      launcherScript = ''
+        exec ${lib.getExe pkgs.pgadmin4-desktopmode}
       '';
     };
   };
