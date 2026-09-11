@@ -133,6 +133,20 @@ rec {
       # Explicit script, for autostarts that do not use the git+flake pattern
       # at all (conky's duplicate culler, pipewire-pulse).
       launcherScript ? null,
+      # Build the app with this shell command instead of `nix develop` + a
+      # repo-side start script. For expensive apps (a Tauri build takes minutes)
+      # set this to something that produces a stable path, and give
+      # `launchCommand` below to run it. The command runs ONLY when the revision
+      # changed, and its output is what gets launched, so a plain login costs
+      # nothing.
+      #
+      #   buildCommand = ''
+      #     exec "$nix_bin" build "$repo#default" --out-link "$build_out"
+      #   '';
+      buildCommand ? null,
+      # What to run once built (the app's own command). Defaults to the
+      # repo-side start_desktop_app.sh inside the flake dev shell.
+      launchCommand ? null,
       # Restart after a non-zero exit, e.g. for a long-running app that should
       # survive a crash. Keep false for anything that exits on purpose.
       restartOnExit ? false,
@@ -146,10 +160,36 @@ rec {
       # nix uses the stable channel like the rest of the system; the version in
       # the launcher script's name is cosmetic, its content decides the hash.
       nixPackage = pkgs.nixVersions.stable;
-      # The command that actually builds/runs the app. The inner `bash -c`
-      # argument is escaped with escapeShellArg so this can be interpolated
-      # into the screen command line without the quoting collapsing.
-      appCommand = ''"$nix_bin" develop --profile "$profile" "$repo#${flakeAttr}" -c bash -c ${lib.escapeShellArg "cd \"$NIXOS_JNCCD_GUI_APP_REPO\" && bash start_desktop_app.sh"}'';
+      # What actually launches the app. With `launchCommand` given, that string
+      # is used verbatim (typically running the built artefact). Otherwise it is
+      # the repo-side start script inside the flake dev shell, and the inner
+      # `bash -c` argument is escaped so it survives interpolation into the
+      # screen command line below.
+      appCommand =
+        if launchCommand != null then
+          launchCommand
+        else
+          ''"$nix_bin" develop --profile "$profile" "$repo#${flakeAttr}" -c bash -c ${lib.escapeShellArg "cd \"$NIXOS_JNCCD_GUI_APP_REPO\" && bash start_desktop_app.sh"}'';
+      # Runs instead of `appCommand` when this revision still needs building.
+      # Falls back to appCommand so the two-mode split only exists when asked
+      # for: with no buildCommand the "build" IS running the app (what the .NET
+      # apps do).
+      #
+      # A buildCommand is expected to record its own success by writing the
+      # revision it built to "$state_dir/built". That is the honest signal: with
+      # `nix build` the exit status is meaningful (unlike the .NET apps' start
+      # script, which returns 0 whether or not the compile worked). If the marker
+      # is never written, the revision is treated as not-built and the previous
+      # build keeps running rather than being lost.
+      buildStep =
+        if buildCommand != null then
+          ''if ! (
+              ${buildCommand}
+            ); then
+              echo "gui-autostart ${appName}: build failed; keeping the previous build" >&2
+            fi''
+        else
+          appCommand;
       # screen keeps its own scrollback, so attaching shows what already
       # happened. Detached (-dmS) on purpose: a KDE autostart entry is not
       # guaranteed a controlling tty, and foreground screen fails with
@@ -159,11 +199,14 @@ rec {
       appInvocation =
         if screenWrap then
           ''"${pkgs.screen}/bin/screen" -L \
-              -Logfile "$HOME/.local/state/gui-autostart/${appName}.log" \
+              -Logfile "$state_dir/app.log" \
               -dmS "gui-${appName}-$(id -un)-''${XDG_SESSION_ID:-nosession}" \
               bash -c ${lib.escapeShellArg appCommand}''
         else
-          appCommand;
+          # Subshell: if launchCommand uses `exec`, it replaces only the
+          # subshell, so the exit status is still observable here (an `exec` at
+          # this level would replace the launcher and skip the bookkeeping).
+          "( ${appCommand} )";
       restartClause =
         if restartOnExit then
           ''echo "gui-autostart ${appName}: exited $rc, restarting in 5s" >&2; sleep 5''
@@ -177,19 +220,21 @@ rec {
             set -uo pipefail
 
             # $HOME is the logged-in user's home, so the clone, the profile and
-            # the state file are per-user automatically - no username plumbing.
+            # the state are per-user automatically - no username plumbing.
             repo="$HOME/.local/share/gui-apps/${repoName}"
             profile="$HOME/.nix-profiles/${appName}"
-            mkdir -p "$(dirname "$repo")" "$(dirname "$profile")"
+            # Per-app state: build markers and (for buildCommand apps) the built
+            # output, which `launchCommand` refers to as "$build_out".
+            state_dir="$HOME/.local/state/gui-autostart/${appName}"
+            build_out="$state_dir/current"
+            mkdir -p "$(dirname "$repo")" "$(dirname "$profile")" "$state_dir"
 
             # Keep a log of the launcher's own work - the revision decision, the
             # git pull, submodule fetch. Without it a failed pull is invisible,
             # which is exactly the kind of "nothing happened" this whole file
             # keeps running into. The app's own output is not here: see the
             # screenWrap option for that.
-            state_dir="$HOME/.local/state/gui-autostart"
-            mkdir -p "$state_dir"
-            exec >>"$state_dir/${appName}.launcher.log" 2>&1
+            exec >>"$state_dir/launcher.log" 2>&1
             echo "--- $(date -Is) gui-autostart ${appName} ---"
 
             # screenWrap runs the app detached, so its exit status is never
@@ -272,8 +317,7 @@ rec {
 
             ${envScript}
 
-            # The apps' start_desktop_app.sh rebuilds when this is unset and
-            # runs the prebuilt binary when it is 1.
+            # Decide whether this revision still needs building, then run.
             #
             # The artifact is a FALLBACK, not proof of anything. It is the only
             # thing that says "there is something to start", so:
@@ -295,45 +339,66 @@ rec {
             # failure into a permanent one. Do NOT use artifact timestamps
             # either: a build can finish in the same second as the marker write
             # and `-ot` then reports "stale" forever.
-            ${lib.optionalString (artifacts != [ ]) ''
-              artifacts_ok=1
-              for a in ${lib.concatStringsSep " " (map (a: "\"$repo/${a}\"") artifacts)}; do
-                if [ ! -e "$a" ]; then
-                  artifacts_ok=0
-                  break
-                fi
-              done
-
-              last_build="$(cat "$repo/.nix-last-build" 2>/dev/null || echo "")"
-              attempted="$(cat "$repo/.nix-build-attempt" 2>/dev/null || echo "")"
-
-              if [ "''${artifacts_ok}" -eq 1 ]; then
-                if [ -n "$now" ] && [ "$last_build" = "$now" ]; then
-                  export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1
-                  echo "gui-autostart ${appName}: revision $now is built, running it"
-                elif [ -n "$now" ] && [ "$attempted" = "$now" ]; then
-                  # This revision was already attempted and did not mark itself
-                  # built, so the attempt failed: start the newest artifact
-                  # instead of retrying the broken revision on every login.
-                  export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1
-                  echo "gui-autostart ${appName}: revision $now did not build, running the last working build"
-                else
-                  unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
-                  [ -n "$now" ] && printf '%s\n' "$now" > "$repo/.nix-build-attempt"
-                  echo "gui-autostart ${appName}: building revision $now"
-                fi
+            #
+            # Markers live under state_dir (per app) rather than inside the
+            # repo, so `git reset --hard` / an agent editing the checkout cannot
+            # disturb them.
+            needs_build=0
+            ${
+              if artifacts == [ ] then
+                ''
+                  # No artifact declared, so nothing can tell a successful build
+                  # from a failed one: always build.
+                  needs_build=1
+                ''
               else
-                unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
-                [ -n "$now" ] && printf '%s\n' "$now" > "$repo/.nix-build-attempt"
-                echo "gui-autostart ${appName}: nothing built yet, building revision $now"
-              fi
-            ''}${
-              lib.optionalString (artifacts == [ ]) ''
-                # No artifact declared, so nothing can tell a successful build
-                # from a failed one: always rebuild.
-                unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
-              ''
+                ''
+                  artifacts_ok=1
+                  for a in ${lib.concatStringsSep " " (map (a: "\"$repo/${a}\"") artifacts)}; do
+                    if [ ! -e "$a" ]; then
+                      artifacts_ok=0
+                      break
+                    fi
+                  done
+
+                  # A buildCommand app records the revision it successfully
+                  # built here; the other apps have no build step and fall back
+                  # to last-build, which the run loop writes below.
+                  last_build="$(cat "$state_dir/built" 2>/dev/null || echo "")"
+                  [ -n "$last_build" ] || last_build="$(cat "$state_dir/last-build" 2>/dev/null || echo "")"
+                  attempted="$(cat "$state_dir/build-attempt" 2>/dev/null || echo "")"
+
+                  if [ "''${artifacts_ok}" -eq 1 ]; then
+                    if [ -n "$now" ] && [ "$last_build" = "$now" ]; then
+                      echo "gui-autostart ${appName}: revision $now is built, running it"
+                    elif [ -n "$now" ] && [ "$attempted" = "$now" ]; then
+                      # Already attempted and did not mark itself built, so the
+                      # attempt failed: run the newest artifact instead of
+                      # retrying the broken revision on every login.
+                      echo "gui-autostart ${appName}: revision $now did not build, running the last working build"
+                    else
+                      needs_build=1
+                    fi
+                  else
+                    needs_build=1
+                    echo "gui-autostart ${appName}: nothing built yet"
+                  fi
+                ''
             }
+
+            if [ "$needs_build" -eq 1 ]; then
+              # Record the attempt BEFORE building so a failure is not retried
+              # every login.
+              [ -n "$now" ] && printf '%s\n' "$now" > "$state_dir/build-attempt"
+              # The .NET apps need this flag to tell their start script to do a
+              # full build rather than run the existing output.
+              unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
+              echo "gui-autostart ${appName}: building revision $now"
+              ${buildStep}
+            else
+              # Tell start_desktop_app.sh to skip its build and run the output.
+              export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1
+            fi
 
             # Positional args do NOT survive `nix develop -c bash -c ... _ "$x"`
             # (verified: $1 arrives empty), so pass the path via the environment.
@@ -342,19 +407,28 @@ rec {
             # a completely separate screen process. Shell variables that are not
             # exported do not exist there, which turns the whole command into an
             # empty string and yields "bash: line 1: : command not found".
-            export nix_bin profile repo
+            export nix_bin profile repo state_dir
             while :; do
               ${appInvocation}
               rc=$?
-              # Only a clean exit means this revision produced something
-              # runnable, so only then record it as the last good build. This
-              # has to be inside the `rc == 0` test: writing it unconditionally
-              # marks a FAILED revision as built, and the next launch then takes
-              # the "is built" path with nothing new to run.
-              if [ "$rc" -eq 0 ]; then
-                [ -n "$now" ] && printf '%s\n' "$now" > "$repo/.nix-last-build"
-                exit 0
-              fi
+              ${
+                if buildCommand != null then
+                  ''
+                    # A buildCommand app records success in "$state_dir/built"
+                    # itself (its build step is the only thing that can tell a
+                    # successful build from a failed one).
+                  ''
+                else
+                  ''
+                    # No separate build step here, so a clean run is what marks
+                    # this revision built; a failure leaves needs_build set for
+                    # the next launch.
+                    if [ "$rc" -eq 0 ] && [ "$needs_build" -eq 1 ]; then
+                      [ -n "$now" ] && printf '%s\n' "$now" > "$state_dir/last-build"
+                    fi
+                  ''
+              }
+              [ "$rc" -eq 0 ] && exit 0
               ${restartClause}
             done
           '';
