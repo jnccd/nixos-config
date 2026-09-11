@@ -136,12 +136,34 @@ rec {
       # Restart after a non-zero exit, e.g. for a long-running app that should
       # survive a crash. Keep false for anything that exits on purpose.
       restartOnExit ? false,
+      # Run the app inside a `screen` session so its stdout/stderr are visible
+      # afterwards: `screen -r gui-<app>` to attach, or read the logfile. Opt-in
+      # because it gives the app a pty, which can change how a GUI app behaves.
+      screenWrap ? false,
     }:
     let
       git = "${pkgs.git}/bin/git";
       # nix uses the stable channel like the rest of the system; the version in
       # the launcher script's name is cosmetic, its content decides the hash.
       nixPackage = pkgs.nixVersions.stable;
+      # The command that actually builds/runs the app. The inner `bash -c`
+      # argument is escaped with escapeShellArg so this can be interpolated
+      # into the screen command line without the quoting collapsing.
+      appCommand = ''"$nix_bin" develop --profile "$profile" "$repo#${flakeAttr}" -c bash -c ${lib.escapeShellArg "cd \"$NIXOS_JNCCD_GUI_APP_REPO\" && bash start_desktop_app.sh"}'';
+      # screen keeps its own scrollback, so attaching shows what already
+      # happened. Detached (-dmS) on purpose: a KDE autostart entry is not
+      # guaranteed a controlling tty, and foreground screen fails with
+      # "Must be connected to a terminal" in that case. Because it is detached,
+      # the launcher's exit status is screen's, not the app's, so this is
+      # opt-in and incompatible with restartOnExit.
+      appInvocation =
+        if screenWrap then
+          ''"${pkgs.screen}/bin/screen" -L \
+              -Logfile "$HOME/.local/state/gui-autostart/${appName}.log" \
+              -dmS "gui-${appName}-$(id -un)-''${XDG_SESSION_ID:-nosession}" \
+              bash -c ${lib.escapeShellArg appCommand}''
+        else
+          appCommand;
       restartClause =
         if restartOnExit then
           ''echo "gui-autostart ${appName}: exited $rc, restarting in 5s" >&2; sleep 5''
@@ -159,6 +181,25 @@ rec {
             repo="$HOME/.local/share/gui-apps/${repoName}"
             profile="$HOME/.nix-profiles/${appName}"
             mkdir -p "$(dirname "$repo")" "$(dirname "$profile")"
+
+            # Keep a log of the launcher's own work - the revision decision, the
+            # git pull, submodule fetch. Without it a failed pull is invisible,
+            # which is exactly the kind of "nothing happened" this whole file
+            # keeps running into. The app's own output is not here: see the
+            # screenWrap option for that.
+            state_dir="$HOME/.local/state/gui-autostart"
+            mkdir -p "$state_dir"
+            exec >>"$state_dir/${appName}.launcher.log" 2>&1
+            echo "--- $(date -Is) gui-autostart ${appName} ---"
+
+            # screenWrap runs the app detached, so its exit status is never
+            # observed and restartOnExit could not do anything. This cannot be a
+            # module assertion: this function's return value IS the
+            # environment.etc attrset, so there is nowhere to put one.
+            ${lib.optionalString (screenWrap && restartOnExit) ''
+              echo "gui-autostart ${appName}: screenWrap and restartOnExit are mutually exclusive (the detached app's exit status is not observable); not starting" >&2
+              exit 1
+            ''}
 
             # At most one instance per graphical session.
             #
@@ -297,10 +338,13 @@ rec {
             # Positional args do NOT survive `nix develop -c bash -c ... _ "$x"`
             # (verified: $1 arrives empty), so pass the path via the environment.
             export NIXOS_JNCCD_GUI_APP_REPO="$repo"
-
+            # The app command is a child process and, with screenWrap, a child of
+            # a completely separate screen process. Shell variables that are not
+            # exported do not exist there, which turns the whole command into an
+            # empty string and yields "bash: line 1: : command not found".
+            export nix_bin profile repo
             while :; do
-              "$nix_bin" develop --profile "$profile" "$repo#${flakeAttr}" \
-                -c bash -c 'cd "$NIXOS_JNCCD_GUI_APP_REPO" && bash start_desktop_app.sh'
+              ${appInvocation}
               rc=$?
               # Only a clean exit means this revision produced something
               # runnable, so only then record it as the last good build. This

@@ -28,6 +28,8 @@
       # What start_desktop_app.sh executes on its "unchanged" branch; used to
       # verify a build really happened (see lib/service.nix).
       artifacts = [ "MusicPlayerAvaloniaPort/bin/Release/net10.0/MusicPlayerAvaloniaPort.dll" ];
+      # Keep the build/runtime output inspectable, same as notes.
+      screenWrap = true;
     };
   };
 }

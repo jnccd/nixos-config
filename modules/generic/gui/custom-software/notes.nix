@@ -23,6 +23,11 @@
       repoName = "notes";
       repoUrl = "https://github.com/jnccd/notes";
       artifacts = [ "NotesAvalonia.Desktop/bin/Release/net10.0/NotesAvalonia.Desktop.dll" ];
+      # Run it in a screen session so the build output and runtime errors stay
+      # inspectable: `screen -r gui-notes-<user>-<session>` to attach, or read
+      # ~/.local/state/gui-autostart/notes.log (and .launcher.log for the git
+      # side). Useful while these apps are still being debugged.
+      screenWrap = true;
     };
   };
 }
