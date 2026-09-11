@@ -79,6 +79,41 @@ If you edit the real repo *while the agent works*, `apply` refuses with a clear
 message instead of silently clobbering your edits - run `prep` again and your
 edits become part of the next base.
 
+## Other repos (the sandbox has no git credentials)
+
+Both scripts take an optional path, so any repo under your home can go through
+the same round-trip instead of only the nixos-config:
+
+```
+~/ai-sandbox/prep  ./git/media-control     # copy it into the sandbox
+   ... agent works in /home/sandbox/git/media-control ...
+~/ai-sandbox/apply ./git/media-control     # review the diff, copy it back
+```
+
+- A path is taken **relative to your home** (or absolute under it) and lands at
+  the **same relative path** under the sandbox home:
+  `/home/dobiko/git/media-control` -> `/home/sandbox/git/media-control`.
+  Anything outside `/home/dobiko` is refused rather than guessed at.
+- Side repos are **copied, never cloned** - that is the point, since the sandbox
+  user has no credentials. `.git` travels with them, so the agent keeps history
+  and `apply` can diff, but the `origin` remote is **removed** in the sandbox
+  copy so a stray `git push` cannot even try.
+- **No argument keeps the old behaviour exactly**: `prep` handles the
+  nixos-config (git clone with `--no-hardlinks`, private submodules emptied,
+  upstream `origin`) and `apply` runs the same `nix-rb` chain afterwards.
+- **Only the argument-less form rebuilds.** `apply <path>` applies the reviewed
+  diff and stops, because a side repo has nothing to do with the system
+  configuration.
+- State is **per repo** - `~/.cache/ai-sandbox/repos/<rel-path>/{base,anchor}` -
+  so several repos can be in flight without clobbering each other. The
+  nixos-config keeps the historic flat `~/.cache/ai-sandbox/{base,anchor}`, so an
+  already-prepared workspace stays valid.
+- Passing the nixos-config explicitly (`prep ./git/nixos-config`) is recognised
+  and still takes the clone path and the flat state.
+
+`apply`'s safety check works the same way for side repos: if the real repo
+changed since the matching `prep`, it refuses rather than clobbering your edit.
+
 ## First activation
 
 The loop needs the account and scripts to exist, so apply this diff to the real

@@ -1,57 +1,98 @@
 #!/usr/bin/env bash
-# apply - review the sandbox user's config edits, apply them to the real repo
-# and rebuild the system. Installed at ~/ai-sandbox/apply.
+# apply - review the sandbox user's edits, apply them to the real repo and (for
+# the nixos-config) rebuild the system. Installed at ~/ai-sandbox/apply.
+#
+#   apply                     -> the nixos-config, then nix-rb (as before)
+#   apply ./git/media-control -> that repo only, no rebuild
 #
 # Run this as @MAIN_USER@ from a SEPARATE TTY (e.g. Ctrl+Alt+F3), NOT from
 # inside the sandbox's KDE session. The sandbox session cannot see, inject into
 # or screenshot that TTY, which makes it a trustworthy approval channel.
 #
 # What it does:
-#   1. verifies the real repo still matches the base snapshot ~/ai-sandbox/prep
-#      recorded (~/.cache/ai-sandbox/base) - i.e. nothing changed in the real
-#      repo while the agent worked,
-#   2. snapshots the sandbox workspace under that main-user-only cache dir -
-#      every git query and the final review run on the snapshot, so the agent
-#      cannot change what is reviewed/applied behind your back (no TOCTOU),
+#   1. verifies the real repo still matches the base snapshot prep recorded -
+#      i.e. nothing changed in the real repo while the agent worked,
+#   2. snapshots the sandbox workspace under the main-user-only cache dir - every
+#      git query and the final review run on the snapshot, so the agent cannot
+#      change what is reviewed/applied behind your back (no TOCTOU),
 #   3. shows a full git diff of the agent's changes against the base commit
 #      (new files included),
 #   4. after you type YES, applies EXACTLY that reviewed diff to the real repo
-#      with `git apply` (never touches .git or the submodule checkouts) and runs
-#      the same chain as the nix-rb alias.
+#      with `git apply` (never touches .git or the submodule checkouts).
 #
-# Iteration: NO commits are needed between rounds. After apply + rebuild, test
-# the result, then run ~/ai-sandbox/prep again for the next round. Commit once
-# in the real repo when you are happy with everything.
+# Only an argument-less run is the nixos-config, and only that run rebuilds the
+# system afterwards: a side repo needs its changes copied back, not a nix-rb.
 #
-# SECURITY: approving this diff means approving Nix code that runs as root
-# during the rebuild and as $MAIN_USER during activation. Review it carefully.
+# SECURITY: approving a nixos-config diff means approving Nix code that runs as
+# root during the rebuild and as $MAIN_USER during activation. Review carefully.
 # Changes to flake.nix / flake.lock / .gitmodules are flagged below on purpose.
 set -euo pipefail
 
 MAIN_USER="@MAIN_USER@"
-SANDBOX_DIR="@SANDBOX_DIR@"
-REAL_REPO="@REAL_REPO@"
+SANDBOX_USER="@SANDBOX_USER@"
+NIXOS_CONFIG_DIR="@SANDBOX_DIR@"
+NIXOS_CONFIG_REAL="@REAL_REPO@"
 CACHE_DIR="/home/${MAIN_USER}/.cache/ai-sandbox"
-ANCHOR_FILE="${CACHE_DIR}/anchor"
-BASE_DIR="${CACHE_DIR}/base"
 STAGE="${CACHE_DIR}/stage"
 PATCH_FILE="${CACHE_DIR}/review.patch"
 
 log() { echo "==> $*"; }
 die() { echo "ERROR: $*" >&2; exit 1; }
 
-# Excluding the submodule paths keeps anything the agent dropped under
-# secrets/ or modules/private/ out of the review diff and out of the patch.
-DIFF_SCOPE=(-- . ':(exclude)secrets' ':(exclude)modules/private')
+# --- resolve the target repo -------------------------------------------------
+[[ $# -le 1 ]] || die "Usage: apply [path-to-repo]"
+
+if [[ $# -eq 0 ]]; then
+  REAL_REPO="$NIXOS_CONFIG_REAL"
+  SANDBOX_DIR="$NIXOS_CONFIG_DIR"
+  IS_NIXOS_CONFIG=1
+else
+  arg="${1%/}"
+  if [[ "$arg" = /* ]]; then
+    REAL_REPO="$arg"
+  else
+    REAL_REPO="/home/${MAIN_USER}/${arg#./}"
+  fi
+  REAL_REPO="$(readlink -f "$REAL_REPO" 2>/dev/null || echo "$REAL_REPO")"
+  case "$REAL_REPO" in
+    "/home/${MAIN_USER}"/*) rel="${REAL_REPO#/home/${MAIN_USER}/}" ;;
+    *) die "Path must be inside /home/${MAIN_USER} (got: $arg)" ;;
+  esac
+  SANDBOX_DIR="/home/${SANDBOX_USER}/${rel}"
+  if [[ "$REAL_REPO" == "$NIXOS_CONFIG_REAL" ]]; then
+    SANDBOX_DIR="$NIXOS_CONFIG_DIR"
+    IS_NIXOS_CONFIG=1
+  else
+    IS_NIXOS_CONFIG=0
+  fi
+fi
+
+if [[ "$IS_NIXOS_CONFIG" -eq 1 ]]; then
+  STATE_DIR="${CACHE_DIR}"
+else
+  STATE_DIR="${CACHE_DIR}/repos/${SANDBOX_DIR#/home/${SANDBOX_USER}/}"
+fi
+BASE_DIR="${STATE_DIR}/base"
+ANCHOR_FILE="${STATE_DIR}/anchor"
+
+# The private submodules only exist in the nixos-config; for a side repo there
+# is nothing to exclude, so the whole tree is in scope.
+if [[ "$IS_NIXOS_CONFIG" -eq 1 ]]; then
+  DIFF_SCOPE=(-- . ':(exclude)secrets' ':(exclude)modules/private')
+  GUARD_EXCLUDES=(--exclude '/.git/' --exclude '/secrets/' --exclude '/modules/private/')
+else
+  DIFF_SCOPE=(-- .)
+  GUARD_EXCLUDES=(--exclude '/.git/')
+fi
 
 [[ "$(id -un)" == "$MAIN_USER" ]] || die "Run me as $MAIN_USER."
 command -v git >/dev/null || die "git not found in PATH."
 # The sandbox home is 0700 and owned by the sandbox user, so checking the
 # workspace needs root (the snapshot below reads it with sudo anyway).
-sudo test -d "$SANDBOX_DIR" || die "No sandbox workspace at $SANDBOX_DIR - run ~/ai-sandbox/prep first."
+sudo test -d "$SANDBOX_DIR" || die "No sandbox workspace at $SANDBOX_DIR - run ~/ai-sandbox/prep${1:+ $1} first."
 [[ -d "$REAL_REPO/.git" ]] || die "No real repo at $REAL_REPO."
-[[ -f "$ANCHOR_FILE" ]] || die "No anchor found (run ~/ai-sandbox/prep first)."
-[[ -d "$BASE_DIR" ]] || die "No base snapshot found (run ~/ai-sandbox/prep first)."
+[[ -f "$ANCHOR_FILE" ]] || die "No anchor for this repo (run ~/ai-sandbox/prep${1:+ $1} first)."
+[[ -d "$BASE_DIR" ]] || die "No base snapshot for this repo (run ~/ai-sandbox/prep${1:+ $1} first)."
 anchor="$(cat "$ANCHOR_FILE")"
 
 # --- 1. guard: the real repo must still equal the prep-time snapshot ----------
@@ -65,13 +106,12 @@ anchor="$(cat "$ANCHOR_FILE")"
 # so without it the very first item ("./") always reports `p` and the guard
 # aborts on a permission bit without ever comparing a file.
 real_changes="$(rsync -a -c --delete --dry-run --itemize-changes --omit-dir-times --no-perms \
-  --exclude '/.git/' --exclude '/secrets/' --exclude '/modules/private/' \
-  "$BASE_DIR/" "$REAL_REPO/" 2>&1 || true)"
+  "${GUARD_EXCLUDES[@]}" "$BASE_DIR/" "$REAL_REPO/" 2>&1 || true)"
 if [[ -n "$real_changes" ]]; then
   echo "ERROR: the real repo differs from the base snapshot recorded by prep." >&2
   echo "Changed since prep (first 50 lines):" >&2
   echo "$real_changes" | head -n 50 >&2
-  die "Run ~/ai-sandbox/prep again - your edits will become part of the next base."
+  die "Run ~/ai-sandbox/prep${1:+ $1} again - your edits will become part of the next base."
 fi
 log "Real repo still matches the base snapshot (anchor ${anchor:0:12})."
 
@@ -93,20 +133,22 @@ sudo chown -R "$(id -u):$(id -g)" "$STAGE"
 # (the snapshot above already does). A plain `find` here would fail with EACCES
 # and the guard would silently pass.
 if [[ -n "$(sudo find "$SANDBOX_DIR/.git" -xdev -type f -links +1 -print -quit 2>/dev/null || true)" ]]; then
-  die "$SANDBOX_DIR/.git contains hardlinked files - run ~/ai-sandbox/prep to rebuild the workspace cleanly."
+  die "$SANDBOX_DIR/.git contains hardlinked files - run ~/ai-sandbox/prep${1:+ $1} to rebuild the workspace cleanly."
 fi
 
-[[ -d "$STAGE/.git" ]] || die "Sandbox workspace has no .git - run ~/ai-sandbox/prep first."
+[[ -d "$STAGE/.git" ]] || die "Sandbox workspace has no .git - run ~/ai-sandbox/prep${1:+ $1} first."
 git -C "$STAGE" cat-file -e "$anchor^{commit}" 2>/dev/null \
-  || die "Base commit $anchor is not in the sandbox workspace (history rewritten?) - run ~/ai-sandbox/prep."
+  || die "Base commit $anchor is not in the sandbox workspace (history rewritten?) - run ~/ai-sandbox/prep${1:+ $1}."
 
-# Changes the agent left inside the private submodule paths are ignored by
-# design (those dirs are empty gitlinks in the sandbox clone). Warn about them.
-sub_hits="$(git -C "$STAGE" status --porcelain 2>/dev/null | grep -E '(^| )((secrets|modules/private)(/|$))' || true)"
-if [[ -n "$sub_hits" ]]; then
-  echo "NOTE: the agent left changes under secrets/ or modules/private/ (private submodules)." >&2
-  echo "Those paths are excluded from review and application:" >&2
-  echo "$sub_hits" >&2
+if [[ "$IS_NIXOS_CONFIG" -eq 1 ]]; then
+  # Changes the agent left inside the private submodule paths are ignored by
+  # design (those dirs are empty gitlinks in the sandbox clone). Warn about them.
+  sub_hits="$(git -C "$STAGE" status --porcelain 2>/dev/null | grep -E '(^| )((secrets|modules/private)(/|$))' || true)"
+  if [[ -n "$sub_hits" ]]; then
+    echo "NOTE: the agent left changes under secrets/ or modules/private/ (private submodules)." >&2
+    echo "Those paths are excluded from review and application:" >&2
+    echo "$sub_hits" >&2
+  fi
 fi
 
 # --- 3. review diff ----------------------------------------------------------
@@ -116,7 +158,7 @@ git -C "$STAGE" diff "$anchor" "${DIFF_SCOPE[@]}" > "$PATCH_FILE" 2>/dev/null ||
 
 if [[ ! -s "$PATCH_FILE" ]]; then
   if [[ -n "$(git -C "$STAGE" status --porcelain 2>/dev/null || true)" ]]; then
-    die "There are changes in the sandbox workspace, but none can be applied via git (only inside private submodule paths?). Run ~/ai-sandbox/prep to reset."
+    die "There are changes in the sandbox workspace, but none can be applied via git. Run ~/ai-sandbox/prep${1:+ $1} to reset."
   fi
   echo "No changes to apply."
   exit 0
@@ -127,21 +169,24 @@ echo "=== Changes that will be applied to $REAL_REPO ==="
 git -C "$STAGE" diff --stat "$anchor" "${DIFF_SCOPE[@]}" || true
 echo
 
-# Flag files that deserve extra scrutiny.
-while IFS= read -r f; do
-  case "$f" in
-    .gitmodules | flake.nix | flake.lock | globalArgs.nix)
-      echo "!! '$f' changed - inspect very carefully: new inputs / repo metadata are"
-      echo "   fetched from the network and executed during the rebuild." ;;
-  esac
-done < <(git -C "$STAGE" diff --name-only "$anchor" "${DIFF_SCOPE[@]}" 2>/dev/null || true)
+if [[ "$IS_NIXOS_CONFIG" -eq 1 ]]; then
+  # Flag files that deserve extra scrutiny. Only meaningful for the config.
+  while IFS= read -r f; do
+    case "$f" in
+      .gitmodules | flake.nix | flake.lock | globalArgs.nix)
+        echo "!! '$f' changed - inspect very carefully: new inputs / repo metadata are"
+        echo "   fetched from the network and executed during the rebuild." ;;
+    esac
+  done < <(git -C "$STAGE" diff --name-only "$anchor" "${DIFF_SCOPE[@]}" 2>/dev/null || true)
 
-if git -C "$STAGE" diff --name-only "$anchor" "${DIFF_SCOPE[@]}" 2>/dev/null | grep -q '^dotfiles/'; then
-  echo "!! dotfiles/ changed - these get rsynced into the homes of ALL real users"
-  echo "   (including yours) by the rebuild. Check for .config/autostart entries."
+  if git -C "$STAGE" diff --name-only "$anchor" "${DIFF_SCOPE[@]}" 2>/dev/null | grep -q '^dotfiles/'; then
+    echo "!! dotfiles/ changed - these get rsynced into the homes of ALL real users"
+    echo "   (including yours) by the rebuild. Check for .config/autostart entries."
+  fi
+
+  echo
 fi
 
-echo
 echo "Full diff is saved at: $PATCH_FILE"
 if [[ -t 0 ]]; then
   read -r -p "Show the full diff now? [y/N] " show
@@ -152,7 +197,11 @@ fi
 
 # --- 4. approval -------------------------------------------------------------
 echo
-read -r -p "Type YES to apply exactly this diff to $REAL_REPO and rebuild the system: " ans
+if [[ "$IS_NIXOS_CONFIG" -eq 1 ]]; then
+  read -r -p "Type YES to apply exactly this diff to $REAL_REPO and rebuild the system: " ans
+else
+  read -r -p "Type YES to apply exactly this diff to $REAL_REPO (no rebuild): " ans
+fi
 if [[ "$ans" != "YES" ]]; then
   echo "Aborted. Nothing was changed."
   exit 0
@@ -167,7 +216,14 @@ echo
 echo "=== Real repo status after apply (changes are uncommitted) ==="
 git -C "$REAL_REPO" status --short || true
 
-# --- 6. rebuild (same chain as the nix-rb alias) -----------------------------
+# --- 6. rebuild (nixos-config only) ------------------------------------------
+if [[ "$IS_NIXOS_CONFIG" -eq 0 ]]; then
+  echo
+  echo "Done - the changes are in $REAL_REPO (uncommitted). No rebuild was run,"
+  echo "because this was not the nixos-config."
+  exit 0
+fi
+
 echo
 echo "Rebuilding - equivalent of:"
 echo "  nix-cpd && sudo nixos-rebuild switch --flake $REAL_REPO?submodules=1"
