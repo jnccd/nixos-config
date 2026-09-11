@@ -20,6 +20,10 @@
   };
 
   config = lib.mkIf config.dobikoConf.media-remote.enabled {
+    sops.secrets."media_remote/pass" = {
+      owner = globalArgs.mainUser.name;
+    };
+
     environment.etc = lib.custom.mkGuiAppAutostart {
       appName = "media-remote";
       repoName = "media-remote";
@@ -40,6 +44,10 @@
           echo "gui-autostart media-remote: nix build failed for $now" >&2
           exit 1
         fi
+      '';
+
+      envScript = ''
+        export PASSWORD="$(cat "${config.sops.secrets."media_remote/pass".path}")"
       '';
 
       # The built app. The package also installs the MediaControlServer it
