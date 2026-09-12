@@ -119,8 +119,18 @@ rec {
   mkGuiAppAutostart =
     {
       appName,
-      repoName,
-      repoUrl,
+      # The repo is OPTIONAL. Most apps are a git repo plus a flake, but some are
+      # just "run this command at login" - a driver, a system binary - with
+      # nothing to clone. Those used to have to pass a dummy `repoUrl = "unused"`,
+      # which was a trap rather than a contract: delete the `launcherScript` and
+      # the launcher would dutifully run `git clone unused` ten times. With
+      # repoUrl = null the launcher has no git step, no revision and no build,
+      # and runs `launchCommand` every session.
+      #
+      # repoName only names the per-user clone directory, so it need not match
+      # the URL; it defaults to appName.
+      repoName ? appName,
+      repoUrl ? null,
       flakeAttr ? "desktop",
       # Extra shell lines evaluated in the session before the app starts, e.g.
       # additional env vars for apps that need them.
@@ -203,9 +213,18 @@ rec {
       # the repo-side start script inside the flake dev shell, and the inner
       # `bash -c` argument is escaped so it survives interpolation into the
       # screen command line below.
+      # No repoUrl means there is no checkout, no revision and nothing to build:
+      # the app is just a command to run each session.
+      hasRepo = repoUrl != null;
+      # The clone only runs when hasRepo, but Nix interpolates this into the
+      # shell text at EVAL time - so a null repoUrl would still fail to coerce
+      # here even though the shell never reaches the line.
+      cloneUrl = if hasRepo then repoUrl else "";
       appCommand =
         if launchCommand != null then
           launchCommand
+        else if !hasRepo then
+          throw "mkGuiAppAutostart ${appName}: launchCommand is required when repoUrl is null, because there is no flake for a dev shell to run."
         else
           ''"$nix_bin" develop --profile "$profile" "$repo#${flakeAttr}" -c bash -c ${lib.escapeShellArg "cd \"$NIXOS_JNCCD_GUI_APP_REPO\" && bash start_desktop_app.sh"}'';
       # Runs instead of `appCommand` when this revision still needs building.
@@ -288,6 +307,10 @@ rec {
             # the state are per-user automatically - no username plumbing.
             repo="$HOME/.local/share/gui-apps/${repoName}"
             profile="$HOME/.nix-profiles/${appName}"
+            # 1 when there is a repo to clone and build, 0 for a bare-command app
+            # (repoUrl = null). Decided in Nix and tested in shell so the whole git
+            # section can be skipped without duplicating it as a Nix string.
+            has_repo=${if hasRepo then "1" else "0"}
             # Per-app state: build markers and (for buildCommand apps) the built
             # output, which `launchCommand` refers to as "$build_out".
             state_dir="$HOME/.local/state/gui-autostart/${appName}"
@@ -319,6 +342,11 @@ rec {
             # At most one instance per graphical session; see sessionLockGuard.
             ${sessionLockGuard}
 
+            # Everything from here to the matching `else` needs a checkout:
+            # cloning, the revision, the build decision. A bare-command app has
+            # none of that, so skip the whole block.
+            if [ "$has_repo" = 1 ]; then
+
             # nix may not be on a session's PATH; find the binary, don't assume.
             nix_bin="$(command -v nix || true)"
             if [ -z "$nix_bin" ]; then
@@ -345,7 +373,7 @@ rec {
                     echo "gui-autostart ${appName}: refusing to clean unexpected clone path $repo" >&2
                     exit 1 ;;
                 esac
-                if ${git} clone ${repoUrl} "$repo"; then
+                if ${git} clone ${cloneUrl} "$repo"; then
                   clone_ok=1
                   break
                 fi
@@ -420,6 +448,13 @@ rec {
             ${git} -C "$repo" submodule update --init --recursive --force 2>/dev/null || true
             now="$(${git} -C "$repo" rev-parse HEAD 2>/dev/null || echo "")"
 
+            else
+              # No repo: no revision to compare, nothing to build, no nix needed.
+              # Still define what the rest of the script reads, for `set -u`.
+              now=""
+              nix_bin=""
+            fi
+
             ${envScript}
 
             # Decide whether this revision still needs building, then run.
@@ -451,7 +486,14 @@ rec {
             # disturb them.
             needs_build=0
             ${
-              if artifacts == [ ] then
+              if !hasRepo then
+                ''
+                  # Nothing to build without a repo, so the command just runs.
+                  # Without this branch artifacts = [ ] would set needs_build=1
+                  # and buildStep (which falls back to appCommand) would run the
+                  # app a second time.
+                ''
+              else if artifacts == [ ] then
                 ''
                   # No artifact declared, so nothing can tell a successful build
                   # from a failed one: always build.

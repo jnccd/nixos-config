@@ -22,8 +22,6 @@
   # under graphical.target, i.e. at the login screen).
   environment.etc = lib.custom.mkGuiAppAutostart {
     appName = "pipewire-pulse-starter";
-    repoName = "pipewire-pulse-starter";
-    repoUrl = "unused";
     launcherScript = ''
       exec ${pkgs.pipewire}/bin/pipewire-pulse
     '';

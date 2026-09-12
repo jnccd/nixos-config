@@ -35,8 +35,6 @@
     # guarantee without the polling or the deliberate sleeps.
     environment.etc = lib.custom.mkGuiAppAutostart {
       appName = "conky";
-      repoName = "conky";
-      repoUrl = "unused";
       launcherScript = ''
         exec conky -c "$HOME/.config/conky/conky.conf"
       '';
