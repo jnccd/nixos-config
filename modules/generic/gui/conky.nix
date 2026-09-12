@@ -23,34 +23,22 @@
 
     ];
 
-    # Ensure Conky runs at most once. This is not a long-running app - it just
-    # culls duplicates - so it is a oneshot autostart entry, which also makes it
-    # run per-user inside their session.
+    # Start conky once per graphical session.
+    #
+    # This runs through the shared autostart helper so it gets the same
+    # per-session flock as the other GUI apps (notes, music-player): the entry
+    # lives in the global /etc/xdg/autostart, and KDE's "restore last session"
+    # can re-run it, so the lock is what stops a second copy.
+    #
+    # It replaces a culler that re-ran `pgrep -x conky` a few times after login
+    # and killed all but one instance. The lock gives the same single-instance
+    # guarantee without the polling or the deliberate sleeps.
     environment.etc = lib.custom.mkGuiAppAutostart {
-      appName = "conky-culler";
-      repoName = "conky-culler";
+      appName = "conky";
+      repoName = "conky";
       repoUrl = "unused";
       launcherScript = ''
-        cull_conky() {
-          PIDS=$(pgrep -x conky || true)
-          COUNT=$(echo "$PIDS" | wc -w)
-
-          if [ "$COUNT" -gt 1 ]; then
-              echo "Found $COUNT Conky processes. Keeping one, killing the rest..."
-              FIRST_PID=$(echo "$PIDS" | head -n 1)
-              echo "$PIDS" | grep -v "^$FIRST_PID$" | xargs -r kill
-          else
-              echo "One or no Conky instances running."
-          fi
-        }
-
-        cull_conky
-        sleep 1
-        cull_conky
-        sleep 3
-        cull_conky
-        sleep 15
-        cull_conky
+        exec conky -c "$HOME/.config/conky/conky.conf"
       '';
     };
   };

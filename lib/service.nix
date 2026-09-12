@@ -163,6 +163,38 @@ rec {
     }:
     let
       git = "${pkgs.git}/bin/git";
+      # Guards shared by both launcher shapes below. A `launcherScript` replaces
+      # the generated launcher wholesale, so anything not repeated there is
+      # silently lost - which is why the conky culler had to de-duplicate itself
+      # by hand. Keep these in one place so the two shapes cannot drift apart.
+      onlyUserGuard = lib.optionalString (onlyUser != null) ''
+        if [ "$(id -un)" != "${onlyUser}" ]; then
+          echo "gui-autostart ${appName}: meant for ${onlyUser} only, this is $(id -un); not starting"
+          exit 0
+        fi
+      '';
+      # At most one instance per graphical session.
+      #
+      # The lock is scoped by XDG_SESSION_ID, not just the user: a user-global
+      # lock survives logout when the app outlives the session, and the next
+      # login would then be blocked forever with no explanation. A per-session
+      # lock also means KDE's "restore last session" cannot double-launch:
+      # whichever of (restored app, autostart entry) comes second finds the lock
+      # held and stands down.
+      #
+      # This must say so out loud - "nothing happened" is what a silently
+      # handled duplicate looks like, and that is indistinguishable from a
+      # broken launcher.
+      sessionLockGuard = ''
+        if command -v flock >/dev/null 2>&1 && [ -n "''${XDG_RUNTIME_DIR:-}" ]; then
+          lock="$XDG_RUNTIME_DIR/gui-autostart-${appName}-''${XDG_SESSION_ID:-nosession}.lock"
+          exec 9>"$lock"
+          if ! flock -n 9; then
+            echo "gui-autostart ${appName}: already running in this session, not starting a second copy"
+            exit 0
+          fi
+        fi
+      '';
       # nix uses the stable channel like the rest of the system; the version in
       # the launcher script's name is cosmetic, its content decides the hash.
       nixPackage = pkgs.nixVersions.stable;
@@ -220,7 +252,34 @@ rec {
           ''echo "gui-autostart ${appName}: exited $rc" >&2; exit "$rc"'';
       launcher =
         if launcherScript != null then
-          pkgs.writeShellScript "gui-autostart-${appName}" launcherScript
+          # An explicit script replaces the generated launcher below, so the
+          # bookkeeping that launcher provides has to be repeated here or it is
+          # silently lost: the per-app log, the single-account guard and the
+          # per-session lock. Without the lock a launcherScript app is the one
+          # shape that KDE's session restore can still double-launch - which is
+          # exactly the duplicate-conky problem this used to work around with a
+          # separate culler.
+          pkgs.writeShellScript "gui-autostart-${appName}" ''
+            set -uo pipefail
+
+            state_dir="$HOME/.local/state/gui-autostart/${appName}"
+            mkdir -p "$state_dir"
+            exec >>"$state_dir/launcher.log" 2>&1
+            echo "--- $(date -Is) gui-autostart ${appName} ---"
+
+            ${onlyUserGuard}
+            ${sessionLockGuard}
+
+            # Subshell: a trailing `exec` in launcherScript replaces only the
+            # subshell, so this wrapper stays alive and keeps holding the lock
+            # for as long as the app runs.
+            (
+              ${launcherScript}
+            )
+            rc=$?
+            echo "gui-autostart ${appName}: exited $rc" >&2
+            exit "$rc"
+          ''
         else
           pkgs.writeShellScript "gui-autostart-${appName}" ''
             set -uo pipefail
@@ -246,12 +305,7 @@ rec {
             # /etc/xdg/autostart is global, so systemd starts this for every
             # graphical login. Stand down for any other account, and log it -
             # a silent exit is indistinguishable from a broken launcher.
-            ${lib.optionalString (onlyUser != null) ''
-              if [ "$(id -un)" != "${onlyUser}" ]; then
-                echo "gui-autostart ${appName}: meant for ${onlyUser} only, this is $(id -un); not starting"
-                exit 0
-              fi
-            ''}
+            ${onlyUserGuard}
 
             # screenWrap runs the app detached, so its exit status is never
             # observed and restartOnExit could not do anything. This cannot be a
@@ -262,27 +316,8 @@ rec {
               exit 1
             ''}
 
-            # At most one instance per graphical session.
-            #
-            # The lock is scoped by XDG_SESSION_ID, not just the user: a
-            # user-global lock survives logout when the app outlives the
-            # session, and the next login would then be blocked forever with no
-            # explanation. A per-session lock also means KDE's "restore last
-            # session" cannot double-launch: whichever of (restored app,
-            # autostart entry) comes second finds the lock held and stands
-            # down.
-            #
-            # This must say so out loud - "nothing happened" is what a silently
-            # handled duplicate looks like, and that is indistinguishable from a
-            # broken launcher.
-            if command -v flock >/dev/null 2>&1 && [ -n "''${XDG_RUNTIME_DIR:-}" ]; then
-              lock="$XDG_RUNTIME_DIR/gui-autostart-${appName}-''${XDG_SESSION_ID:-nosession}.lock"
-              exec 9>"$lock"
-              if ! flock -n 9; then
-                echo "gui-autostart ${appName}: already running in this session, not starting a second copy"
-                exit 0
-              fi
-            fi
+            # At most one instance per graphical session; see sessionLockGuard.
+            ${sessionLockGuard}
 
             # nix may not be on a session's PATH; find the binary, don't assume.
             nix_bin="$(command -v nix || true)"
