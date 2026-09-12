@@ -280,7 +280,31 @@ rec {
             fi
 
             if [ ! -d "$repo/.git" ]; then
-              ${git} clone ${repoUrl} "$repo" || exit 1
+              # Same reasoning as the pull below: this runs at session start,
+              # often before the network is usable, and a one-shot clone that
+              # fails leaves no app at all - worse than an old one. Retry, and
+              # clear the partial directory git leaves behind, because git clone
+              # refuses a non-empty target on the next attempt.
+              clone_ok=0
+              for clone_try in 1 2 3 4 5 6 7 8 9 10; do
+                case "$repo" in
+                  "$HOME/.local/share/gui-apps/"*)
+                    rm -rf "$repo" ;;
+                  *)
+                    echo "gui-autostart ${appName}: refusing to clean unexpected clone path $repo" >&2
+                    exit 1 ;;
+                esac
+                if ${git} clone ${repoUrl} "$repo"; then
+                  clone_ok=1
+                  break
+                fi
+                echo "gui-autostart ${appName}: clone attempt $clone_try failed; retrying" >&2
+                sleep 5
+              done
+              if [ "$clone_ok" -ne 1 ]; then
+                echo "gui-autostart ${appName}: git clone FAILED after 10 attempts; cannot start without a checkout" >&2
+                exit 1
+              fi
             fi
 
             # "Changed" has to mean "changed since the last successful build",
@@ -309,8 +333,27 @@ rec {
               url."https://github.com/".insteadOf "git@github.com:" || true
 
             ${git} -C "$repo" reset --hard 2>/dev/null || true
-            ${git} -C "$repo" pull --ff-only 2>/dev/null \
-              || echo "gui-autostart ${appName}: pull failed, using local revision" >&2
+
+            # The pull is the ONLY way a new revision can arrive, and it runs at
+            # session start - frequently before the network is actually usable.
+            # This used to discard its stderr and give up after a single try, so
+            # one transient failure left the checkout on an old revision that
+            # then matched "$state_dir/built" exactly: the launcher reported
+            # "revision <old> is built, running it" on every login and never
+            # found out that newer commits existed. Retry, and never fail
+            # silently - "we are stuck on an old build" must not be
+            # indistinguishable from "there was nothing to do".
+            pull_ok=0
+            for pull_try in 1 2 3 4 5; do
+              if ${git} -C "$repo" pull --ff-only >/dev/null 2>&1; then
+                pull_ok=1
+                break
+              fi
+              sleep 3
+            done
+            if [ "$pull_ok" -eq 0 ]; then
+              echo "gui-autostart ${appName}: git pull FAILED after 5 attempts; staying on the local revision, so new commits will NOT be picked up this login" >&2
+            fi
             # Keep the linked submodule revisions; never --remote.
             ${git} -C "$repo" submodule update --init --recursive --force 2>/dev/null || true
             now="$(${git} -C "$repo" rev-parse HEAD 2>/dev/null || echo "")"
@@ -333,12 +376,13 @@ rec {
             #                             the previously built one rather than
             #                             retrying the broken revision forever
             #
-            # The attempt is recorded BEFORE building, so a revision that fails
-            # is attempted once per commit, not on every login. Do NOT delete
-            # artifacts to "prove" a build succeeded - that turns a recoverable
-            # failure into a permanent one. Do NOT use artifact timestamps
-            # either: a build can finish in the same second as the marker write
-            # and `-ot` then reports "stale" forever.
+            # A *completed* failed build is recorded in build-attempt (after the
+            # build step, below), so a revision that genuinely fails is attempted
+            # once per commit rather than on every login. Do NOT delete artifacts
+            # to "prove" a build succeeded - that turns a recoverable failure
+            # into a permanent one. Do NOT use artifact timestamps either: a
+            # build can finish in the same second as the marker write and `-ot`
+            # then reports "stale" forever.
             #
             # Markers live under state_dir (per app) rather than inside the
             # repo, so `git reset --hard` / an agent editing the checkout cannot
@@ -387,14 +431,30 @@ rec {
             }
 
             if [ "$needs_build" -eq 1 ]; then
-              # Record the attempt BEFORE building so a failure is not retried
-              # every login.
-              [ -n "$now" ] && printf '%s\n' "$now" > "$state_dir/build-attempt"
               # The .NET apps need this flag to tell their start script to do a
               # full build rather than run the existing output.
               unset NIXOS_JNCCD_GUI_STARTER_UNCHANGED
               echo "gui-autostart ${appName}: building revision $now"
               ${buildStep}
+              ${
+                if buildCommand != null then
+                  ''
+                    # Record the attempt only NOW, once the build has actually run
+                    # to completion and failed. Marking it *before* the build is
+                    # subtly wrong: a build killed part-way (logout, reboot, OOM,
+                    # closed lid) never writes "$state_dir/built", so it looked
+                    # exactly like a failed attempt and that revision was never
+                    # retried - the launcher then silently started the previous
+                    # build forever. If this script is killed, no marker is
+                    # written and the next login tries again.
+                    if [ -n "$now" ] && [ "$(cat "$state_dir/built" 2>/dev/null || echo "")" != "$now" ]; then
+                      printf '%s\n' "$now" > "$state_dir/build-attempt"
+                      echo "gui-autostart ${appName}: build of $now failed; running the previous build until a newer revision appears" >&2
+                    fi
+                  ''
+                else
+                  ""
+              }
             else
               # Tell start_desktop_app.sh to skip its build and run the output.
               export NIXOS_JNCCD_GUI_STARTER_UNCHANGED=1

@@ -62,6 +62,13 @@
           ExecStart = "${pkgs.ydotool}/bin/ydotoold";
           Restart = "on-failure";
           RestartSec = "2";
+
+          # The unit is installed for every account (nothing in NixOS scopes a
+          # systemd.user unit to particular users), but only accounts in `input`
+          # can open /dev/uinput. Without this, every other user starts the
+          # daemon, gets "failed to open uinput device: Permission denied", and
+          # restarts every 2s forever.
+          ConditionUser = globalArgs.mainUser.name;
         };
       };
 
