@@ -80,8 +80,6 @@
         appName = "media-remote";
         repoName = "media-remote";
         repoUrl = "https://github.com/jnccd/media-remote";
-        # The desktop wrapper is this flake's default package.
-        flakeAttr = "default";
 
         # Main user only. The server binds the fixed port below, and it also
         # needs this user's sops secret, so a second desktop account running its
@@ -89,43 +87,28 @@
         # dumps a core file at login.
         onlyUser = globalArgs.mainUser.name;
 
-        # `nix-rb`'s equivalent for this repo. Runs only when the revision
-        # changed. The out-link lands in the repo's clone (gitignored) because
-        # `artifacts` is resolved relative to the repo, and the success marker is
-        # written here rather than by the launcher: with `nix build` the exit
-        # status is what tells a good build from a bad one.
-        buildCommand = ''
-          mkdir -p "$repo/.nix-build"
-          if nix build "$repo#default" --out-link "$repo/.nix-build/current"; then
-            printf '%s\n' "$now" > "$state_dir/built"
-          else
-            echo "gui-autostart media-remote: nix build failed for $now" >&2
-            exit 1
-          fi
-        '';
+        # Built on the client from source, like notes and music-player, rather
+        # than with `nix build`: the wrapper is a plain Avalonia app, so the
+        # repo's own dev shell plus a `dotnet build` in start_desktop_app.sh is a
+        # few seconds, and a new commit needs no per-revision Nix packaging.
+        # `desktop` is the dev shell that carries the SkiaSharp native libraries.
+        flakeAttr = "desktop";
+
+        # What start_desktop_app.sh runs on its "unchanged" branch. The launcher
+        # uses its existence to tell a successful build from a failed one. It is
+        # the .dll, not the apphost next to it: the app is started through the
+        # `dotnet` muxer, because the SDK-generated apphost mixes glibc versions
+        # on NixOS and crashes before managed code runs.
+        artifacts = [ "DesktopApp/bin/Release/net8.0/media-control-desktop.dll" ];
 
         envScript = ''
           export PASSWORD="$(cat "${config.sops.secrets."media_remote/pass".path}")"
           export PORT=${toString PORT}
-          # WebKitGTK 2.52 under KWin/Wayland leaves the Tauri webview unpainted:
-          # the window comes up blank and even its window buttons only respond
-          # after a maximise/unmaximise forces a repaint. Its DMA-BUF renderer is
-          # the usual cause, so fall back to the shared-memory path. If the
-          # window still misbehaves, WEBKIT_DISABLE_COMPOSITING_MODE=1 is the
-          # heavier hammer.
-          export WEBKIT_DISABLE_DMABUF_RENDERER=1
         '';
 
-        # The built app. The package also installs the MediaControlServer it
-        # spawns, right next to this binary (src-tauri probes for it there).
-        launchCommand = ''"$repo/.nix-build/current/bin/media-control-desktop"'';
-
-        # Must match what the build command links. Used to tell whether anything
-        # is runnable at all, and as the fallback when a build fails.
-        artifacts = [ ".nix-build/current/bin/media-control-desktop" ];
-
-        # Keep the build output visible; the package's own wrapper already sets
-        # LD_LIBRARY_PATH for the dlopen()ed tray library.
+        # Keep the app's stdout visible: the Avalonia wrapper echoes the server's
+        # log to it, so `screen -r gui-media-remote-<user>-<session>` shows the
+        # server's output.
         screenWrap = true;
       };
     };
