@@ -83,6 +83,12 @@
         # The desktop wrapper is this flake's default package.
         flakeAttr = "default";
 
+        # Main user only. The server binds the fixed port below, and it also
+        # needs this user's sops secret, so a second desktop account running its
+        # own copy is not just wasteful: the copy aborts on the port clash and
+        # dumps a core file at login.
+        onlyUser = globalArgs.mainUser.name;
+
         # `nix-rb`'s equivalent for this repo. Runs only when the revision
         # changed. The out-link lands in the repo's clone (gitignored) because
         # `artifacts` is resolved relative to the repo, and the success marker is
@@ -101,6 +107,13 @@
         envScript = ''
           export PASSWORD="$(cat "${config.sops.secrets."media_remote/pass".path}")"
           export PORT=${toString PORT}
+          # WebKitGTK 2.52 under KWin/Wayland leaves the Tauri webview unpainted:
+          # the window comes up blank and even its window buttons only respond
+          # after a maximise/unmaximise forces a repaint. Its DMA-BUF renderer is
+          # the usual cause, so fall back to the shared-memory path. If the
+          # window still misbehaves, WEBKIT_DISABLE_COMPOSITING_MODE=1 is the
+          # heavier hammer.
+          export WEBKIT_DISABLE_DMABUF_RENDERER=1
         '';
 
         # The built app. The package also installs the MediaControlServer it

@@ -154,6 +154,12 @@ rec {
       # afterwards: `screen -r gui-<app>` to attach, or read the logfile. Opt-in
       # because it gives the app a pty, which can change how a GUI app behaves.
       screenWrap ? false,
+      # Restrict this app to a single account. /etc/xdg/autostart is global, and
+      # systemd's XDG-autostart generator turns it into a user unit for EVERY
+      # graphical login, so without this a second desktop user starts their own
+      # copy. Harmless for a window, but for anything holding a fixed port the
+      # second copy aborts. Same guard as mkGuiSessionAutostart's onlyUser.
+      onlyUser ? null,
     }:
     let
       git = "${pkgs.git}/bin/git";
@@ -236,6 +242,16 @@ rec {
             # screenWrap option for that.
             exec >>"$state_dir/launcher.log" 2>&1
             echo "--- $(date -Is) gui-autostart ${appName} ---"
+
+            # /etc/xdg/autostart is global, so systemd starts this for every
+            # graphical login. Stand down for any other account, and log it -
+            # a silent exit is indistinguishable from a broken launcher.
+            ${lib.optionalString (onlyUser != null) ''
+              if [ "$(id -un)" != "${onlyUser}" ]; then
+                echo "gui-autostart ${appName}: meant for ${onlyUser} only, this is $(id -un); not starting"
+                exit 0
+              fi
+            ''}
 
             # screenWrap runs the app detached, so its exit status is never
             # observed and restartOnExit could not do anything. This cannot be a
@@ -329,8 +345,19 @@ rec {
             # HTTPS (public repos need no credentials) and make ssh fail fast
             # instead of prompting.
             export GIT_SSH_COMMAND="ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new"
-            ${git} config --global --replace-all \
-              url."https://github.com/".insteadOf "git@github.com:" || true
+            # Apply the rewrite through the ENVIRONMENT, scoped to this script.
+            #
+            # This used to be `git config --global`, which wrote to the logged-in
+            # user's ~/.gitconfig and therefore rewrote the remote of EVERY repo
+            # they own - so a normal SSH clone of a public repo suddenly wanted a
+            # GitHub username/password and hung on the desktop askpass helper.
+            # Worse, `--replace-all` re-applied it on every login, so removing it
+            # by hand did not stick. GIT_CONFIG_* affects this process and the git
+            # children it spawns (the clone and the submodule fetches below) and
+            # touches no config file at all.
+            export GIT_CONFIG_COUNT=1
+            export GIT_CONFIG_KEY_0='url.https://github.com/.insteadOf'
+            export GIT_CONFIG_VALUE_0='git@github.com:'
 
             ${git} -C "$repo" reset --hard 2>/dev/null || true
 
