@@ -63,6 +63,16 @@
   dobikoConf.wine.enabled = true;
   dobikoConf.ambilight.enabled = true;
 
+  # This is the only machine with the headroom for the model-based GIMP
+  # plug-ins (rembg background removal and the stable-diffusion.cpp prompt
+  # inpainting). Use CUDA on the NVIDIA card; set
+  # dobikoConf.gimp.ai.promptInpaint.model to a checkpoint to enable
+  # "Filters > AI > Transform Selection with Prompt..." (the download
+  # commands are documented on that option: `nixos-option
+  # dobikoConf.gimp.ai.promptInpaint.model`).
+  dobikoConf.gimp.ai.enable = true;
+  dobikoConf.gimp.ai.promptInpaint.backend = "cuda";
+
   # --- Misc ---
 
   time.hardwareClockInLocalTime = true;

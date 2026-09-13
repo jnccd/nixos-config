@@ -19,7 +19,6 @@
           [
             # Multimedia
             vlc
-            gimp
             inkscape-with-extensions
             kdePackages.kdenlive
             blender
