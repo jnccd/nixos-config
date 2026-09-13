@@ -64,7 +64,7 @@ in
 
     # Home only rebuild
     nix-cpd = "bash ${nixosConfigPath}/copy-dotfiles/from-repo-to-home.sh";
-    nix-hrb = "export COPY_DOTFILES_SUDOLESS=true && nix-cpd && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
+    nix-hrb = "export COPY_DOTFILES_SUDOLESS=true && nix-cpd && home-manager switch -b backup --flake ${nixosConfigPath} && nix-cpd";
     # Rebuild
     nix-rb = "sudo sleep 0 && export COPY_DOTFILES_SUDOLESS= && nix-cpd && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
     # Pull and rebuild

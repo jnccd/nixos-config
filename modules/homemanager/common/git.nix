@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   globalArgs,
   homeUser,
@@ -8,9 +9,9 @@
 {
   programs.git = {
     enable = true;
-    settings.user = {
-      Name = homeUser.gitUsername or null;
-      Email = homeUser.email or null;
+    settings.user = lib.mkIf (homeUser ? gitUsername) {
+      Name = homeUser.gitUsername;
+      Email = homeUser.email;
     };
   };
 }

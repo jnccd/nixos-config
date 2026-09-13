@@ -69,6 +69,7 @@
     enabled = true;
     serverUrl = "http://minis:8096/web/";
   };
+  dobikoConf.openHomeRebuild = true;
 
   # --- Bootloader ---
 
