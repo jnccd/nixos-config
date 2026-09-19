@@ -28,8 +28,8 @@ in
 
   # Add the cachix binary cache for deepseek harness, if enabled. This is needed to get the web-ui bundle.
   nix.settings = lib.mkIf enable {
-    substituters = [ "https://deepseek-harness-nix.cachix.org" ];
-    trusted-public-keys = [
+    substituters = lib.mkAfter [ "https://deepseek-harness-nix.cachix.org" ];
+    trusted-public-keys = lib.mkAfter [
       "deepseek-harness-nix.cachix.org-1:5NrkwLN9veNMhiINtU5ZeV4isXFhFsOwn6Ms7J1M+TA="
     ];
   };
