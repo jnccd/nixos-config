@@ -125,5 +125,20 @@ in
             )
           );
         }
+      )
+    // ({
+      systemd.services = builtins.foldl' (acc: x: acc // x) { } (
+        map (
+          user:
+          lib.custom.mkScreenService {
+            sessionName = "set-home-perms-${user.name}";
+            username = user.name;
+            script = pkgs.writeScript "set-home-perms-script" ''
+              home=$(getent passwd "${user.name}" | cut -d: -f6)
+              chmod ${user.folderMode or "0750"} $home
+            '';
+          }
+        ) usersToDefine
       );
+    });
 }
