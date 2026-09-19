@@ -22,7 +22,7 @@ in
 
     profiles.web = {
       bundles = [ pkgs.dsh.bundles.web-ui ];
-      mode = "mutable";
+      mode = "mutable"; # Add plugins with dsh plugin --profile web add dsh-plugin-browser-use
     };
   };
 
