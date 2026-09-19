@@ -7,6 +7,7 @@
 
     # - Core -
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,6 +47,7 @@
     # - Deepseek Harness -
     deepseek-harness = {
       url = "github:Moraxyc/deepseek-harness.nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # --- Server ---
