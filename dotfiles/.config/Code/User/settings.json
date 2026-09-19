@@ -13,7 +13,15 @@
   "cSpell.numSuggestions": 24,
   "cSpell.dictionaryDefinitions": [],
   "cSpell.language": "en,de",
-  "cSpell.userWords": ["Dont", "livelock", "nixos", "lockscreen"],
+  "cSpell.userWords": [
+    "cachix",
+    "deepseek",
+    "Dont",
+    "livelock",
+    "lockscreen",
+    "nixos",
+    "pkgs"
+  ],
   "editor.wordWrap": "on",
   "editor.formatOnSave": true,
   "workbench.iconTheme": "material-icon-theme",
