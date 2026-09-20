@@ -79,6 +79,18 @@ vim.keymap.set("n", "<M-f>", builtin.live_grep, {})
 vim.keymap.set("n", "<M-q>", ":bdelete<CR>")
 vim.keymap.set("n", "<M-g>", ":Neogit<CR>")
 
+-- Clipboard keymaps using OSC 52 (works over SSH)
+-- Normal mode: copy current line / paste from system clipboard
+vim.keymap.set('n', '<C-c>', '"+yy', { desc = "Copy current line to system clipboard" })
+vim.keymap.set('n', '<C-v>', '"+p',  { desc = "Paste from system clipboard after cursor" })
+
+-- Visual mode: copy selection / paste over selection
+vim.keymap.set('v', '<C-c>', '"+y', { desc = "Copy selection to system clipboard" })
+vim.keymap.set('v', '<C-v>', '"+p', { desc = "Paste over selection from system clipboard" })
+
+-- Insert mode: paste from system clipboard
+vim.keymap.set('i', '<C-v>', '<C-r>+', { desc = "Paste from system clipboard" })
+
 -- Nvim-tree setup
 require("nvim-tree").setup()
 vim.keymap.set("n", "<C-n>", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
