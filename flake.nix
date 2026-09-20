@@ -49,11 +49,6 @@
       url = "github:Moraxyc/deepseek-harness.nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-
-    # --- Server ---
-    working-keycloak-nixpkgs = {
-      url = "github:nixos/nixpkgs/8bb5646e0bed5dbd3ab08c7a7cc15b75ab4e1d0f";
-    };
   };
 
   outputs =
