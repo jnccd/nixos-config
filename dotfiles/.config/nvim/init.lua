@@ -119,8 +119,8 @@ cmp.setup({
 })
 
 -- LSP setup
-local lspconfig = require("lspconfig")
-lspconfig.lua_ls.setup({}) -- Example: Lua language server
+vim.lsp.config('lua_ls', {})  -- Konfiguriert den Lua Language Server
+vim.lsp.enable('lua_ls')      -- Aktiviert den Server
 
 -- C# stuff
 local dap, dapui = require("dap"), require("dapui")
