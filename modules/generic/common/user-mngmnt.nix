@@ -78,7 +78,6 @@ in
     }
     //
       # Postgres db access setup
-
       (
         let
           dbAccessUsernames = (
@@ -126,19 +125,25 @@ in
           );
         }
       )
-    // ({
-      systemd.services = builtins.foldl' (acc: x: acc // x) { } (
-        map (
-          user:
-          lib.custom.mkScreenService {
-            sessionName = "set-home-perms-${user.name}";
-            username = user.name;
-            script = pkgs.writeScript "set-home-perms-script" ''
-              home=$(getent passwd "${user.name}" | cut -d: -f6)
-              chmod ${user.folderMode or "0750"} $home
-            '';
-          }
-        ) usersToDefine
-      );
-    });
+    //
+      # User folder access deny
+      ({
+        systemd.services =
+          let
+            usersToManageAccessFor = builtins.filter (u: u != globalArgs.mainUser) usersToDefine; # Main user perms are managed in open-home-rebuild.nix, so skip it here
+
+            accessManagementScriptServices = map (
+              user:
+              lib.custom.mkScreenService {
+                sessionName = "set-home-perms-${user.name}";
+                username = user.name;
+                script = pkgs.writeScript "set-home-perms-script" ''
+                  home=$(getent passwd "${user.name}" | cut -d: -f6)
+                  chmod ${user.folderMode or "0750"} $home
+                '';
+              }
+            ) usersToManageAccessFor;
+          in
+          builtins.foldl' (acc: x: acc // x) { } accessManagementScriptServices;
+      });
 }
