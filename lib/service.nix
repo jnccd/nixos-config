@@ -170,6 +170,11 @@ rec {
       # copy. Harmless for a window, but for anything holding a fixed port the
       # second copy aborts. Same guard as mkGuiSessionAutostart's onlyUser.
       onlyUser ? null,
+      # The opposite of onlyUser: accounts that must NOT run this app, while
+      # everyone else - including desktop accounts added later - still does.
+      # Same /etc/xdg/autostart reasoning: it is global, so skipping an account
+      # has to be explicit.
+      skipUsers ? [ ],
     }:
     let
       git = "${pkgs.git}/bin/git";
@@ -182,6 +187,15 @@ rec {
           echo "gui-autostart ${appName}: meant for ${onlyUser} only, this is $(id -un); not starting"
           exit 0
         fi
+      '';
+      # Deny-list counterpart to onlyUserGuard. A `case` rather than a chain of
+      # tests so adding accounts costs nothing at runtime.
+      skipUsersGuard = lib.optionalString (skipUsers != [ ]) ''
+        case "$(id -un)" in
+          ${lib.concatStringsSep "|" skipUsers})
+            echo "gui-autostart ${appName}: not for $(id -un); not starting"
+            exit 0 ;;
+        esac
       '';
       # At most one instance per graphical session.
       #
@@ -287,6 +301,7 @@ rec {
             echo "--- $(date -Is) gui-autostart ${appName} ---"
 
             ${onlyUserGuard}
+            ${skipUsersGuard}
             ${sessionLockGuard}
 
             # Subshell: a trailing `exec` in launcherScript replaces only the
@@ -329,6 +344,7 @@ rec {
             # graphical login. Stand down for any other account, and log it -
             # a silent exit is indistinguishable from a broken launcher.
             ${onlyUserGuard}
+            ${skipUsersGuard}
 
             # screenWrap runs the app detached, so its exit status is never
             # observed and restartOnExit could not do anything. This cannot be a
