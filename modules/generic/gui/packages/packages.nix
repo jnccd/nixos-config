@@ -27,6 +27,7 @@
             krita
             libresprite
             jellyfin-desktop
+            songrec
 
             # Monitoring
             mission-center
