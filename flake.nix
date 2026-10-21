@@ -81,6 +81,7 @@
         nixpkgs.lib.extend (
           self: super: {
             custom = import ./lib {
+              inherit inputs;
               inherit (nixpkgs) lib;
               pkgs = nixpkgs.legacyPackages.${system};
             };
@@ -89,6 +90,7 @@
       customLibForSystem =
         system:
         import ./lib {
+          inherit inputs;
           inherit (nixpkgs) lib;
           pkgs = nixpkgs.legacyPackages.${system};
         };
