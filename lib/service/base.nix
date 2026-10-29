@@ -20,9 +20,10 @@ rec {
   scriptForceRefreshGitRepo =
     repoPath:
     pkgs.writeScript "for-refresh-git-repo-script" ''
-      git -C ${repoPath} reset --hard
+      git -C ${repoPath} reset --hard --quiet
       git -C ${repoPath} pull
-      git -C ${repoPath} submodule update --init --recursive --force # Dont update --recursive --remote, keep linked versions
+      git -C ${repoPath} submodule update --init --recursive --force # Dont update --recursive --remote, keep linked commit versions
+      echo "Current HEAD: $(git -C ${repoPath} log -1 --oneline)"
     '';
 
   mkScreenService =
