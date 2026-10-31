@@ -5,7 +5,7 @@
 globalArgs.defaultHostArgs
 // {
   deepseekHarness = {
-    enabled = false;
+    enabled = true;
     webAutostartInSandbox = true;
   };
 }
