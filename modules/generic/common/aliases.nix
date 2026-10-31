@@ -67,6 +67,7 @@ in
     nix-hrb = "export COPY_DOTFILES_SUDOLESS=true && nix-cpd && home-manager switch -b backup --flake ${nixosConfigPath} && nix-cpd";
     # Rebuild
     nix-rb = "sudo sleep 0 && export COPY_DOTFILES_SUDOLESS= && nix-cpd && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 && nix-cpd";
+    nix-rb1 = "sudo sleep 0 && export COPY_DOTFILES_SUDOLESS= && nix-cpd && sudo nixos-rebuild switch --flake ${nixosConfigPath}?submodules=1 --max-jobs 1 && home-manager switch -b backup --flake ${nixosConfigPath}?submodules=1 --max-jobs 1 && nix-cpd";
     # Pull and rebuild
     nix-prb = "sudo sleep 0 && git-pull-nixconf && nix-rb";
     nix-gc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
