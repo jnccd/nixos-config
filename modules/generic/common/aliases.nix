@@ -91,5 +91,54 @@ in
     (pkgs.writeShellScriptBin "scrn-kill" ''
       screen -X -S $1 quit
     '') # Kill a screen instance
+
+    # Necessary for s below
+    pkgs.fzf
   ];
+
+  # Lists screen sessions and allows the user to select one to attach to. If the session belongs to another user, it will use sudo to attach to it.
+  environment.interactiveShellInit = ''
+    s() {
+      sudo -v || return 1
+
+      local selection session_id owner screendir
+      selection=$(sudo bash -c '
+        list_sessions() {
+          local d="$1"
+          local u="$2"
+          [ -d "$d" ] || return
+          SCREENDIR="$d" screen -ls 2>/dev/null | grep -E "^\s+[0-9]+\." | grep -E "Attached|Detached" | while read -r line; do
+            sid=$(echo "$line" | awk "{print \$1}")
+            echo -e "$sid\t$u\t$d"
+          done
+        }
+
+        while IFS=: read -r user _ _ _ _ home _; do
+          home=''${home%/}
+          [ -d "$home/.screen" ] && list_sessions "$home/.screen" "$user"
+        done < /etc/passwd
+
+        if [ -d /run/screen ]; then
+          for dir in /run/screen/S-*; do
+            [ -d "$dir" ] || continue
+            u=$(basename "$dir" | sed "s/^S-//")
+            list_sessions "$dir" "$u"
+          done
+        fi
+      ' | fzf --height 40% --reverse --delimiter='\t' --with-nth='1,2' --prompt="Screen Session> ")
+
+      if [ -n "$selection" ]; then
+          session_id=$(echo "$selection" | cut -f1)
+          owner=$(echo "$selection" | cut -f2)
+          screendir=$(echo "$selection" | cut -f3)
+          
+          if [ "$owner" = "$USER" ]; then
+              SCREENDIR="$screendir" screen -r "$session_id"
+          else
+              echo "Attaching to $owner's session ($session_id)..."
+              sudo -u "$owner" env TERM="$TERM" SCREENDIR="$screendir" screen -r "$session_id"
+          fi
+      fi
+    }
+  '';
 }
