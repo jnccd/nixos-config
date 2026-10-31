@@ -41,7 +41,7 @@
             # Productivity
             libreoffice-qt6-fresh
             thunderbird
-            anki
+            anki-bin
 
             # Fonts
             plemoljp-nf # Neovim fonts
