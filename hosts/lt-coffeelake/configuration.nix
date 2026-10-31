@@ -81,4 +81,10 @@
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/boot";
   };
+
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd"; # zstd provides a good compression ratio
+    memoryPercent = 50; # Allocate up to 50% of your physical RAM
+  };
 }

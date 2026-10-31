@@ -41,8 +41,7 @@
   swapDevices = [
     {
       device = "/swapfile";
-      priority = 1000;
-      size = 8192;
+      size = 10240; # 10 GiB
     }
   ];
 
