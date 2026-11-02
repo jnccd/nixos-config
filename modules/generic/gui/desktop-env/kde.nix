@@ -65,9 +65,4 @@ in
     # Spectacle seems to have problems finding the tessdata
     environment.sessionVariables.TESSDATA_PREFIX = "${pkgs.tesseract}/share/tessdata";
   };
-
-  environment.shellAliases = {
-    kshutdown = "qdbus-qt6 org.kde.Shutdown /Shutdown org.kde.Shutdown.logoutAndShutdown";
-    kreboot = "qdbus-qt6 org.kde.Shutdown /Shutdown org.kde.Shutdown.logoutAndReboot";
-  };
 }

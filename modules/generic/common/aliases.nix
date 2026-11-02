@@ -74,6 +74,10 @@ in
     nix-gc = "sudo nix-collect-garbage -d && nix-collect-garbage -d";
     nix-tr = "nix-tree /run/current-system";
 
+    # KDE
+    kshutdown = "qdbus-qt6 org.kde.Shutdown /Shutdown org.kde.Shutdown.logoutAndShutdown";
+    kreboot = "qdbus-qt6 org.kde.Shutdown /Shutdown org.kde.Shutdown.logoutAndReboot";
+
     fix-screen-service-perms = ''
       while IFS=: read -r user _ uid gid _ home shell; do
         if [ -d "$home/screen-runs" ]; then
