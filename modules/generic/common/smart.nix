@@ -9,6 +9,18 @@
 {
   environment.systemPackages = with pkgs; [ smartmontools ];
 
+  security.sudo.extraRules = [
+    {
+      users = [ globalArgs.mainUser.name ];
+      commands = [
+        {
+          command = "${pkgs.smartmontools}/bin/smartctl";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
   services.smartd = {
     enable = !hostArgs.enableWslModule; # Donest make sense on wsl
 
